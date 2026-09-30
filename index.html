@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>Santiago Sierra | Desarrollo web en Bucaramanga</title>
+    <meta name="description" content="Sitios web para negocios de Bucaramanga: catálogo, agenda de citas y WhatsApp que funciona. Entrega en dos semanas y dominio a su nombre.">
+    <link rel="canonical" href="https://santiago3336.github.io/">
+    <meta name="theme-color" content="#2F4BD8">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232F4BD8'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='17' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Santiago Sierra · Desarrollo web">
+    <meta property="og:title" content="Santiago Sierra | Desarrollo web en Bucaramanga">
+    <meta property="og:description" content="Sitios web para negocios de Bucaramanga: catálogo, agenda de citas y WhatsApp que funciona. Entrega en dos semanas y dominio a su nombre.">
+    <meta property="og:url" content="https://santiago3336.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+    <style>
+      :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+      body{margin:0}
+      img{max-width:100%}
+      [hidden]{display:none!important}
+    </style>
+  </head>
+  <body>
+<style>
+/* Layout: una columna estrecha, la prueba antes del discurso, el precio antes del contacto */
+:root{
+  --bg:#F4F5F7; --surface:#FFFFFF; --deep:#15171C;
+  --ink:#15171C; --ink-2:#4A505E; --ink-3:#6C7382;
+  --line:#E2E5EB; --line-2:#CBD1DB;
+  --accent:#2F4BD8; --accent-soft:#EDF0FE; --accent-ink:#2A43C4;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Work Sans','Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12141A; --surface:#1A1D24; --deep:#0C0E13;
+  --ink:#ECEEF3; --ink-2:#B4BCCA; --ink-3:#99A1B0;
+  --line:#272B34; --line-2:#363C48;
+  --accent:#97ACFF; --accent-soft:#1B2136; --accent-ink:#B3C2FF;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#12141A; --surface:#1A1D24; --deep:#0C0E13;
+  --ink:#ECEEF3; --ink-2:#B4BCCA; --ink-3:#99A1B0;
+  --line:#272B34; --line-2:#363C48;
+  --accent:#97ACFF; --accent-soft:#1B2136; --accent-ink:#B3C2FF;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.022em;margin:0;text-wrap:balance}
+a{color:var(--accent)}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:#fff;padding:10px 14px;border-radius:0 0 7px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px}
+
+header{border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:14px;padding-block:16px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em}
+.brand span{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+.hbar .cta{margin-left:auto}
+
+.btn{font-family:var(--body);font-size:15px;font-weight:600;padding:11px 18px;border-radius:9px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#101218}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
+.btn:hover{filter:brightness(1.08)}
+:root .btn.line{background:transparent;color:var(--accent)}
+.btn.sm{font-size:14px;padding:9px 14px}
+
+.hero{padding-block:52px 40px}
+.hero h1{font-size:clamp(31px,7.2vw,50px);font-weight:800;line-height:1.04;max-width:24ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{color:var(--ink-2);font-size:18px;max-width:50ch;margin:18px 0 0}
+.hero .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:28px}
+.facts span{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px}
+
+section{padding-block:34px;border-top:1px solid var(--line)}
+h2{font-size:clamp(23px,4.8vw,30px);font-weight:700}
+.sub{color:var(--ink-2);margin:9px 0 0;max-width:52ch}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px}
+
+.work{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px;margin-top:22px}
+@media(max-width:620px){.work{grid-template-columns:1fr}}
+.wcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.wthumb{height:112px;position:relative;overflow:hidden}
+.wthumb .t{position:absolute;inset:0;display:grid;place-items:center}
+.wcard .body{padding:15px;display:flex;flex-direction:column;flex:1}
+.wcard h3{font-size:18px;font-weight:700}
+.wcard .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-top:5px}
+.wcard p{font-size:14.5px;color:var(--ink-2);margin:10px 0 0}
+.wcard .go{margin-top:auto;padding-top:14px}
+.nota{font-size:13.5px;color:var(--ink-3);margin-top:16px;border-left:2px solid var(--line-2);padding-left:11px}
+
+.incluye{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:22px}
+.inc{background:var(--surface);padding:16px}
+.inc b{display:block;font-family:var(--display);font-size:16px;font-weight:700}
+.inc small{display:block;color:var(--ink-2);font-size:14px;margin-top:5px;line-height:1.45}
+
+ol.pasos{list-style:none;counter-reset:p;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:14px}
+ol.pasos li{counter-increment:p;display:flex;gap:14px;align-items:flex-start}
+ol.pasos li::before{content:counter(p);flex:0 0 auto;width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--mono);font-size:13px;font-weight:500;display:grid;place-items:center;margin-top:2px}
+ol.pasos b{display:block;font-weight:600}
+ol.pasos small{color:var(--ink-2);font-size:14.5px}
+
+.precio{background:var(--deep);color:#EEF0F5;border-radius:13px;padding:26px;margin-top:22px}
+.precio h3{font-size:clamp(21px,4.4vw,27px);font-weight:700;color:#fff}
+.precio .rango{font-family:var(--display);font-size:clamp(28px,7vw,42px);font-weight:800;color:#fff;margin-top:14px;line-height:1;font-variant-numeric:tabular-nums}
+.precio .rango small{font-family:var(--body);font-size:14px;font-weight:400;color:#A7AEBD;display:block;margin-top:7px}
+.precio ul{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:8px;font-size:14.5px;color:#C2C8D4}
+.precio li{display:flex;gap:9px;align-items:flex-start}
+.precio li svg{flex:0 0 auto;margin-top:5px}
+.precio p.fin{color:#A7AEBD;font-size:14px;margin:18px 0 0}
+
+.yo{display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px}
+.yo p{margin:0;color:var(--ink-2)}
+.yo p strong{color:var(--ink);font-weight:600}
+
+.contacto{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:24px;margin-top:22px}
+.contacto h3{font-size:22px;font-weight:700}
+.contacto p{color:var(--ink-2);margin:9px 0 0;max-width:46ch}
+.vias{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.via{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.via .et{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);min-width:78px}
+.via .val{font-family:var(--mono);font-size:15px;user-select:all;flex:1;min-width:0;word-break:break-all}
+.copy{font-family:var(--body);font-size:12.5px;font-weight:600;padding:6px 10px;border-radius:6px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+
+footer{padding-block:26px 34px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<a class="skip" href="#trabajo">Ir a los ejemplos</a>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">Santiago Sierra<span>Desarrollo web · Bucaramanga</span></div>
+    <a class="btn sm cta" id="cta-top" href="#contacto">Hablemos 15 minutos</a>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <section class="hero" style="border-top:0">
+    <h1>Su negocio ya tiene clientes. Lo que no tiene es <em>dónde encontrarlo</em>.</h1>
+    <p class="lede">Hago sitios web para negocios de Bucaramanga que ya tienen reputación en Google pero no tienen a dónde mandar al cliente. Entrega en dos semanas.</p>
+    <div class="row">
+      <a class="btn" href="#contacto">Hablemos 15 minutos</a>
+      <a class="btn line" href="#trabajo">Ver ejemplos</a>
+    </div>
+    <div class="facts">
+      <span>Entrega en 2 semanas</span>
+      <span>Dominio a su nombre</span>
+      <span>Catálogo y agenda por WhatsApp</span>
+      <span>SEO local</span>
+    </div>
+  </section>
+
+  <section id="trabajo">
+    <p class="eyebrow">Ejemplos</p>
+    <h2>Cómo se ve el trabajo</h2>
+    <p class="sub">Tres sitios completos y funcionales que puede abrir ahora mismo. Toque los filtros, arme una cotización, reserve una clase: todo funciona.</p>
+
+    <div class="work">
+      <article class="wcard">
+        <div class="wthumb" style="background:linear-gradient(140deg,#C8500F,#8A3407)">
+          <div class="t">
+            <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 18 16 8M5 17l1.5-4L10 11l5-5 3 3-5 5-2 3.5L7 19z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="body">
+          <h3>Ferretería</h3>
+          <span class="tag">Catálogo B2B · Cotizador</span>
+          <p>Catálogo filtrable por línea con referencia y precio, cotizador que arma el pedido completo y cuenta para maestros de obra.</p>
+          <div class="go"><a class="btn line sm" href="demos/ferreteria/">Abrir el ejemplo</a></div>
+        </div>
+      </article>
+
+      <article class="wcard">
+        <div class="wthumb" style="background:linear-gradient(140deg,#C4302D,#5B3A6E)">
+          <div class="t">
+            <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="body">
+          <h3>Gimnasio</h3>
+          <span class="tag">Planes · Horario · Reservas</span>
+          <p>Planes con precio a la vista, horario de clases con cupos por día y reserva de clase de prueba que llega directo al WhatsApp.</p>
+          <div class="go"><a class="btn line sm" href="demos/gimnasio/">Abrir el ejemplo</a></div>
+        </div>
+      </article>
+
+      <article class="wcard">
+        <div class="wthumb" style="background:linear-gradient(140deg,#1F6F5C,#123F35)">
+          <div class="t">
+            <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 3 5 6v4l2-1v9h10v-9l2 1V6l-4-3-3 2z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="body">
+          <h3>Marca de ropa</h3>
+          <span class="tag">Catálogo · Colección · Políticas</span>
+          <p>Catálogo con filtros por colección, políticas de cambio y envío, ubicación del local y horarios.</p>
+          <div class="go"><a class="btn line sm" href="https://santiago3336.github.io/Santiago_Clothes/">Abrir el ejemplo</a></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="nota">Los tres son ejemplos de demostración con marcas inventadas — «Santiago Ferretería», «Santiago GYM» y «Santiago Prendas» — hechos para mostrar el diseño y las funciones. Los precios, horarios y referencias son de ejemplo, y no llevan reseñas porque no se inventan opiniones de clientes.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Qué incluye</p>
+    <h2>Lo que entrego, siempre</h2>
+    <div class="incluye">
+      <div class="inc"><b>Sitio completo</b><small>Diseñado para el celular primero, porque ahí lo van a abrir sus clientes.</small></div>
+      <div class="inc"><b>SEO local</b><small>Que aparezca cuando alguien busque su servicio en su zona de la ciudad.</small></div>
+      <div class="inc"><b>WhatsApp que funciona</b><small>Botón que abre el chat con el mensaje ya escrito, y catálogo ordenado.</small></div>
+      <div class="inc"><b>Política de datos</b><small>Política de tratamiento, aviso de privacidad y autorización, como exige la ley.</small></div>
+      <div class="inc"><b>Accesibilidad medida</b><small>Contraste verificado con instrumento, no a ojo. Se opera con teclado.</small></div>
+      <div class="inc"><b>Dominio a su nombre</b><small>Registrado con sus datos. El sitio es suyo, no mío.</small></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Cómo trabajo</p>
+    <h2>Cuatro pasos, sin sorpresas</h2>
+    <ol class="pasos">
+      <li><div><b>Una llamada de 15 minutos</b><small>Me cuenta qué vende y a quién. Yo le digo si un sitio le sirve o si le sirve otra cosa.</small></div></li>
+      <li><div><b>Le armo un ejemplo de su página, sin costo</b><small>Con su negocio, no con el de otro. Si no le gusta, no perdió nada.</small></div></li>
+      <li><div><b>Dos semanas de desarrollo</b><small>Con una revisión a mitad de camino para que no haya sorpresas al final.</small></div></li>
+      <li><div><b>Entrega con todo a su nombre</b><small>Dominio, hosting y accesos suyos. Le explico cómo cambiar textos y fotos usted mismo.</small></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <p class="eyebrow">Cuánto cuesta</p>
+    <h2>El precio, de frente</h2>
+    <div class="precio">
+      <h3>Entre $2.500.000 y $5.000.000</h3>
+      <div class="rango">COP<small>El precio final depende de cuántas secciones necesite y de si lleva catálogo, agenda o pedidos en línea.</small></div>
+      <ul id="lista-precio"></ul>
+      <p class="fin">Anticipo del 50% para arrancar y el saldo contra entrega. El dominio y el correo del dominio los paga usted directamente, a su nombre: entre $60.000 y $120.000 al año.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Quién hace el trabajo</p>
+    <h2>Sobre mí</h2>
+    <div class="yo">
+      <p><strong>Soy Santiago Sierra, desarrollador web en Bucaramanga.</strong> Trabajo con un socio y nos dedicamos a sitios para negocios de la ciudad: comercio, talleres, consultorios, gimnasios.</p>
+      <p>Vengo de soporte técnico y atención al cliente, y eso cambia cómo hago las cosas: sé qué se siente cuando un cliente escribe y nadie le contesta. Por eso los sitios que hago están armados para que el cliente encuentre lo que busca y pueda escribir en dos toques.</p>
+      <p>Llevamos poco tiempo trabajando así, y prefiero decirlo que inventar una trayectoria. Por eso el ejemplo de su página va sin costo y sin compromiso: el riesgo lo corro yo, no usted.</p>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="contacto">
+      <h3>Hablemos 15 minutos</h3>
+      <p>Escríbame por WhatsApp y le digo de una si le puedo ayudar o no. Sin insistir después.</p>
+      <div class="vias">
+        <div class="via">
+          <span class="et">WhatsApp</span>
+          <span class="val" id="v-wa"></span>
+          <button class="copy" data-copy="v-wa">Copiar</button>
+        </div>
+        <div class="via">
+          <span class="et">Correo</span>
+          <span class="val" id="v-mail"></span>
+          <button class="copy" data-copy="v-mail">Copiar</button>
+        </div>
+      </div>
+      <div style="margin-top:20px"><a class="btn" id="cta-wa" href="#" target="_blank" rel="noopener">Escribir por WhatsApp</a></div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Santiago Sierra · Desarrollo web · Bucaramanga, Santander.
+    Los ejemplos de esta página son demostraciones con marcas inventadas y no corresponden a negocios reales.
+  </div>
+</footer>
+
+<script>
+/* ===== CAMBIA SOLO ESTAS LÍNEAS ===== */
+const CONFIG = {
+  whatsapp: "315 514 0200",                 // tu número, sin +57
+  correo:   "contacto.santiagosierra@gmail.com", // considera un correo aparte para el trabajo
+  saludo:   "Hola Santiago, vi su página y quiero preguntarle por un sitio web para mi negocio."
+};
+/* ==================================== */
+
+const CHK = '<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#97ACFF" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg>';
+const QUE_DEFINE = [
+  "Un sitio de 4 a 5 secciones, con SEO local: la parte baja del rango.",
+  "Catálogo con filtros, agenda de citas o cuenta para mayoristas: la parte alta.",
+  "Pedidos con pago en línea: es otro proyecto y se cotiza aparte.",
+  "Mantenimiento mensual opcional, desde el segundo mes."
+];
+document.getElementById("lista-precio").innerHTML =
+  QUE_DEFINE.map(t => `<li>${CHK}<span>${t}</span></li>`).join("");
+
+const wa = CONFIG.whatsapp.replace(/\D/g, "");
+document.getElementById("v-wa").textContent = "+57 " + CONFIG.whatsapp;
+document.getElementById("v-mail").textContent = CONFIG.correo;
+document.getElementById("cta-wa").href =
+  "https://wa.me/57" + wa + "?text=" + encodeURIComponent(CONFIG.saludo);
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if(!b) return;
+  const txt = document.getElementById(b.dataset.copy).textContent;
+  navigator.clipboard?.writeText(txt)
+    .then(() => { b.textContent = "Copiado"; setTimeout(() => b.textContent = "Copiar", 1500); })
+    .catch(() => { b.textContent = "Selecciónalo"; setTimeout(() => b.textContent = "Copiar", 1800); });
+});
+</script>
+
+  </body>
+</html>
