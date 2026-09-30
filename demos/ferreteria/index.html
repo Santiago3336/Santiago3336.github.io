@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>Santiago Ferretería | Catálogo y cotizador en línea (demo)</title>
+    <meta name="description" content="Demo de sitio web para ferretería: catálogo por línea de producto con precios, cotizador que arma el pedido y cuenta para constructores. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <link rel="canonical" href="https://santiago3336.github.io/demos/ferreteria/">
+    <meta name="theme-color" content="#C8500F">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C8500F'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='17' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Santiago Sierra · Desarrollo web">
+    <meta property="og:title" content="Santiago Ferretería | Catálogo y cotizador en línea (demo)">
+    <meta property="og:description" content="Demo de sitio web para ferretería: catálogo por línea de producto con precios, cotizador que arma el pedido y cuenta para constructores. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <meta property="og:url" content="https://santiago3336.github.io/demos/ferreteria/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+    <style>
+      :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+      body{margin:0}
+      img{max-width:100%}
+      [hidden]{display:none!important}
+    </style>
+  </head>
+  <body>
+<style>
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--orange);color:#fff;padding:10px 14px;border-radius:0 0 6px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+/* Layout: mostrador digital — buscador y filtros arriba, rejilla de referencias, cotizador fijo al pie */
+:root{
+  --bg:#F4F3F1; --surface:#FFFFFF; --panel:#1C1E1D;
+  --ink:#161917; --ink-2:#55605B; --ink-3:#6B756F;
+  --line:#DEDCD8; --line-2:#C6C3BE;
+  --orange:#C8500F; --orange-soft:#FBEAE0; --steel:#2F4A54; --steel-soft:#E6EDEF;
+  --ok:#2C6E4B;
+  --display:'Archivo Narrow','Arial Narrow',Arial,sans-serif;
+  --body:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141615; --surface:#1D201E; --panel:#0E100F;
+  --ink:#EDEEEC; --ink-2:#A8B0AB; --ink-3:#9AA29D;
+  --line:#2C302E; --line-2:#3C4240;
+  --orange:#F0834A; --orange-soft:#2E1C12; --steel:#8FB4BF; --steel-soft:#18262A;
+  --ok:#6FBF8F; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#141615; --surface:#1D201E; --panel:#0E100F;
+  --ink:#EDEEEC; --ink-2:#A8B0AB; --ink-3:#9AA29D;
+  --line:#2C302E; --line-2:#3C4240;
+  --orange:#F0834A; --orange-soft:#2E1C12; --steel:#8FB4BF; --steel-soft:#18262A;
+  --ok:#6FBF8F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:78px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.01em;margin:0}
+.demo{margin:0;background:var(--panel);color:#E8E6E2;font-size:12px;text-align:center;padding:7px 16px;letter-spacing:.02em}
+.demo b{color:var(--orange)}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:16px}
+
+header{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.hbar{display:flex;align-items:center;gap:14px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+.logo svg{flex:0 0 auto}
+.logo span{font-family:var(--display);font-weight:700;font-size:19px;line-height:1;text-transform:uppercase;letter-spacing:.01em}
+.logo em{display:block;font-family:var(--body);font-style:normal;font-size:10.5px;color:var(--ink-3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+nav{margin-left:auto;display:flex;gap:18px}
+nav a{font-size:14px;color:var(--ink-2);text-decoration:none}
+nav a:hover{color:var(--orange)}
+@media(max-width:700px){nav{display:none}}
+
+.hero{padding-block:36px 26px}
+.hero h1{font-size:clamp(30px,7vw,52px);font-weight:700;line-height:1.02;text-transform:uppercase;max-width:22ch;text-wrap:balance}
+.hero h1 i{font-style:normal;color:var(--orange)}
+.hero p{color:var(--ink-2);max-width:52ch;margin:14px 0 0;font-size:16px}
+.trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.trust span{font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.trust b{color:var(--ink);font-weight:600}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-block:18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);margin-top:8px}
+.search{flex:1 1 240px;min-width:0;display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line-2);border-radius:5px;padding:9px 11px}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font-family:var(--body);font-size:14.5px;outline:none}
+.lineas{display:flex;flex-wrap:wrap;gap:6px}
+.lin{font-family:var(--body);font-size:12.5px;padding:7px 11px;border-radius:4px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.lin:hover{border-color:var(--orange);color:var(--orange)}
+.lin[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:600}
+
+h2.sec{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:34px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:12px}
+.prod{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:13px;display:flex;flex-direction:column;min-width:0}
+.prod .ln{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:600}
+.prod h3{font-size:16px;font-weight:600;margin-top:5px;line-height:1.2}
+.ref{font-size:11.5px;color:var(--ink-3);margin-top:4px;font-variant-numeric:tabular-nums}
+.price{font-family:var(--display);font-size:22px;font-weight:700;margin-top:10px;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--body);font-size:12px;font-weight:400;color:var(--ink-3)}
+.add{margin-top:11px;font-family:var(--body);font-size:13px;font-weight:600;padding:8px;border-radius:5px;border:1px solid var(--line-2);background:transparent;color:var(--ink);cursor:pointer;width:100%}
+.add:hover{border-color:var(--orange);color:var(--orange)}
+.add.in{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.none{grid-column:1/-1;padding:26px;text-align:center;color:var(--ink-3);border:1px dashed var(--line-2);border-radius:7px}
+
+.obra{background:var(--panel);color:#E9E7E3;border-radius:10px;padding:26px;margin-top:38px}
+.obra h2{font-family:var(--display);font-size:clamp(22px,4.6vw,30px);font-weight:700;text-transform:uppercase;color:#fff}
+.obra p{color:#B8B4AE;max-width:54ch;margin:10px 0 0}
+.ventajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:#33352F;border-radius:7px;overflow:hidden;margin-top:20px}
+.ventajas div{background:#232622;padding:14px}
+.ventajas b{display:block;font-family:var(--display);font-size:17px;color:var(--orange);font-weight:700}
+.ventajas small{display:block;color:#A9A5A0;font-size:12.5px;margin-top:3px}
+.obra textarea{width:100%;margin-top:18px;min-height:88px;font-family:var(--body);font-size:14px;background:#171916;color:#E9E7E3;border:1px solid #3A3D38;border-radius:6px;padding:11px;resize:vertical}
+.obra textarea::placeholder{color:#75716C}
+
+.lineas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:12px;margin-top:14px}
+.lcard{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:15px 13px;text-align:center}
+.lcard svg{display:block;margin:0 auto 9px}
+.lcard b{font-family:var(--display);font-size:15px;font-weight:600;display:block}
+.lcard small{color:var(--ink-3);font-size:12px}
+
+.info{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:620px){.info{grid-template-columns:1fr}}
+.icard{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:17px}
+.icard h3{font-size:16px;font-weight:600}
+.icard p{margin:8px 0 0;color:var(--ink-2);font-size:14px}
+.icard dl{margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px}
+.icard dt{color:var(--ink-3)}
+.icard dd{margin:0;font-variant-numeric:tabular-nums}
+
+.cot{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line-2);padding:10px 16px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:0 -2px 12px rgba(0,0,0,.07)}
+.cot .in{max-width:1060px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cot .txt{flex:1;min-width:0;font-size:13.5px;color:var(--ink-2)}
+.cot .txt b{color:var(--ink);font-variant-numeric:tabular-nums}
+.cta{font-family:var(--body);font-size:14px;font-weight:600;padding:11px 17px;border-radius:6px;border:1px solid var(--orange);background:var(--orange);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+.cta:hover{filter:brightness(1.07)}
+.cta.ghost{background:transparent;color:var(--orange)}
+.cta[disabled]{opacity:.45;cursor:default;filter:none}
+
+.sheet{position:fixed;inset:0;background:rgba(10,12,11,.55);display:grid;place-items:end center;z-index:40;padding:16px}
+.sheet[hidden]{display:none}
+.sheet .box{background:var(--surface);border-radius:12px;max-width:560px;width:100%;padding:20px;max-height:82vh;overflow:auto}
+.sheet h3{font-size:19px;font-weight:700}
+.sheet pre{white-space:pre-wrap;font-family:var(--body);font-size:13.5px;background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:13px;margin:13px 0 0;color:var(--ink)}
+.sheet .nota{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+.sheet .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+footer{margin-top:44px;padding-block:22px 30px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
+footer b{color:var(--ink-2)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<p class="demo">Sitio de <b>demostración</b> · «Santiago Ferretería» es una marca inventada para mostrar el diseño. Precios y referencias son de ejemplo.</p>
+
+<a class="skip" href="#catalogo">Ir al catálogo</a>
+<header>
+  <div class="wrap hbar">
+    <a class="logo" href="#top">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect x="1" y="1" width="28" height="28" rx="5" fill="var(--orange)"/>
+        <path d="M9 21.5 19.5 11M8 20l2-5 5-2 6-6 2 2-6 6-2 5-5 2z" stroke="#fff" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <span>Santiago<br>Ferretería<em>Bucaramanga</em></span>
+    </a>
+    <nav>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#obra">Para obra</a>
+      <a href="#lineas">Líneas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap" id="top">
+  <section class="hero">
+    <h1>Todo para la obra, <i>con el precio a la vista</i></h1>
+    <p>Más de 4.000 referencias en eléctrico, plomería, herramienta y construcción. Cotiza en línea y te confirmamos disponibilidad el mismo día.</p>
+    <div class="trust">
+      <span><b>Lun a sáb</b> · 7:00 a.m. a 6:00 p.m.</span>
+      <span>Despacho en Bucaramanga y área metropolitana</span>
+      <span>Crédito a <b>30 días</b> para constructores</span>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <div class="tools" id="catalogo">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8" stroke="var(--ink-3)" stroke-width="1.6" fill="none"/><path d="M10.4 10.4 14 14" stroke="var(--ink-3)" stroke-width="1.6"/></svg>
+      <input id="q" type="search" placeholder="Buscar referencia: cable, cemento, taladro…" aria-label="Buscar en el catálogo">
+    </label>
+    <div class="lineas" id="filtros"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <h2 class="sec" id="cnt">Catálogo</h2>
+  <div class="grid" id="grid" aria-live="polite"></div>
+
+  <section class="obra" id="obra">
+    <h2>Cuenta para maestros y constructoras</h2>
+    <p>Si compras para obra, no cotices referencia por referencia. Pega tu lista de materiales y te devolvemos la cotización completa, con disponibilidad y tiempo de entrega.</p>
+    <div class="ventajas">
+      <div><b>Hasta 18%</b><small>de descuento por volumen</small></div>
+      <div><b>30 días</b><small>de crédito con cupo aprobado</small></div>
+      <div><b>Entrega en obra</b><small>sin costo desde $400.000</small></div>
+      <div><b>Un asesor fijo</b><small>el mismo para toda la obra</small></div>
+    </div>
+    <textarea id="lista" placeholder="Ejemplo:&#10;20 bultos de cemento gris 50 kg&#10;150 m de cable THHN #12&#10;8 tubos PVC presión 1/2&quot; x 6 m"></textarea>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="cta" id="enviarLista">Pedir cotización de la lista</button>
+    </div>
+  </section>
+
+  <h2 class="sec" id="lineas">Líneas que manejamos</h2>
+  <div class="lineas-grid" id="lgrid"></div>
+
+  <h2 class="sec" id="contacto">Dónde estamos</h2>
+  <div class="info">
+    <div class="icard">
+      <h3>Almacén</h3>
+      <p>Carrera 15 # 33-62, Centro<br>Bucaramanga, Santander</p>
+      <dl>
+        <dt>Lun a vie</dt><dd>7:00 a.m. – 6:00 p.m.</dd>
+        <dt>Sábado</dt><dd>7:00 a.m. – 4:00 p.m.</dd>
+        <dt>Domingo</dt><dd>Cerrado</dd>
+      </dl>
+    </div>
+    <div class="icard">
+      <h3>Reseñas de Google</h3>
+      <p>En el sitio real, acá se muestran las reseñas verdaderas del negocio traídas de su ficha de Google, con la calificación y los comentarios de sus propios clientes.</p>
+      <p style="color:var(--ink-3);font-size:13px">En esta demostración el bloque queda vacío a propósito: no se inventan reseñas.</p>
+    </div>
+  </div>
+
+  <footer>
+    <b>Santiago Ferretería</b> es una marca inventada. Este sitio existe para mostrar cómo se vería el catálogo en línea de una ferretería de Bucaramanga: precios, referencias, dirección y descuentos son de ejemplo y no corresponden a ningún negocio real.
+  </footer>
+</div>
+
+</main>
+
+<div class="cot">
+  <div class="in">
+    <span class="txt" id="resumen" role="status" aria-live="polite">Tu cotización está vacía. Agrega referencias del catálogo.</span>
+    <button class="cta ghost" id="limpiar" hidden>Vaciar</button>
+    <button class="cta" id="verCot" disabled>Enviar cotización</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <h3 id="sh-t">Así sale tu cotización</h3>
+    <pre id="sh-msg"></pre>
+    <p class="nota">En el sitio real este botón abre directamente el WhatsApp del almacén con el mensaje ya escrito. En la demostración solo se muestra el texto.</p>
+    <div class="row">
+      <button class="cta" id="copiar">Copiar mensaje</button>
+      <button class="cta ghost" id="cerrar">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROD = [
+  {l:"Eléctrico", n:"Cable THHN #12 AWG", r:"REF 4012-BL", u:"metro", p:3400},
+  {l:"Eléctrico", n:"Breaker enchufable 20A", r:"REF 7120-EN", u:"unidad", p:18500},
+  {l:"Eléctrico", n:"Tomacorriente doble con polo a tierra", r:"REF 2208-PT", u:"unidad", p:9900},
+  {l:"Eléctrico", n:"Bombillo LED 12W luz fría", r:"REF 5512-LF", u:"unidad", p:8200},
+  {l:"Plomería", n:"Tubo PVC presión 1/2\" x 6 m", r:"REF 1106-PR", u:"unidad", p:14800},
+  {l:"Plomería", n:"Codo PVC 90° 1/2\"", r:"REF 1190-CD", u:"unidad", p:1300},
+  {l:"Plomería", n:"Llave terminal cromada 1/2\"", r:"REF 3350-CR", u:"unidad", p:32000},
+  {l:"Plomería", n:"Sifón para lavaplatos", r:"REF 3412-SF", u:"unidad", p:11500},
+  {l:"Herramienta", n:"Taladro percutor 1/2\" 750W", r:"REF 8075-PC", u:"unidad", p:289000},
+  {l:"Herramienta", n:"Pulidora 4 1/2\" 850W", r:"REF 8085-PU", u:"unidad", p:215000},
+  {l:"Herramienta", n:"Juego de destornilladores 6 piezas", r:"REF 8206-JD", u:"juego", p:34900},
+  {l:"Herramienta", n:"Cinta métrica 5 m", r:"REF 8305-CM", u:"unidad", p:18900},
+  {l:"Tornillería", n:"Tornillo drywall 1\" — caja 1.000", r:"REF 6101-DW", u:"caja", p:26500},
+  {l:"Tornillería", n:"Chazo plástico #8 — bolsa 100", r:"REF 6208-CH", u:"bolsa", p:7800},
+  {l:"Construcción", n:"Cemento gris 50 kg", r:"REF 9050-CG", u:"bulto", p:29500},
+  {l:"Construcción", n:"Estuco plástico 5 kg", r:"REF 9105-EP", u:"caneca", p:21000},
+  {l:"Pintura", n:"Vinilo tipo 1 — galón", r:"REF 7401-V1", u:"galón", p:62000},
+  {l:"Pintura", n:"Brocha 3\" cerda natural", r:"REF 7503-BR", u:"unidad", p:9500}
+];
+const ICON = {
+  "Eléctrico":'<path d="M13 2 5 14h6l-1 8 8-12h-6l1-8z" fill="var(--orange)"/>',
+  "Plomería":'<path d="M4 8h9a4 4 0 0 1 4 4v8" stroke="var(--steel)" stroke-width="2.4" fill="none"/><rect x="2" y="5" width="4" height="6" rx="1" fill="var(--steel)"/>',
+  "Herramienta":'<path d="M6 18 16 8M5 17l1.5-4L10 11l5-5 3 3-5 5-2 3.5L7 19z" stroke="var(--orange)" stroke-width="2" fill="none" stroke-linejoin="round"/>',
+  "Tornillería":'<path d="M12 3v14l-3 4V3z" fill="var(--steel)"/><path d="M12 6h5M12 10h5M12 14h5" stroke="var(--steel)" stroke-width="1.8"/>',
+  "Construcción":'<rect x="3" y="12" width="8" height="5" fill="var(--orange)"/><rect x="13" y="12" width="8" height="5" fill="var(--orange)" opacity=".55"/><rect x="8" y="6" width="8" height="5" fill="var(--orange)" opacity=".8"/>',
+  "Pintura":'<rect x="5" y="9" width="11" height="11" rx="2" stroke="var(--steel)" stroke-width="2.2" fill="none"/><path d="M8 9V5h9v4" stroke="var(--steel)" stroke-width="2.2" fill="none"/>'
+};
+const LINEAS = ["Eléctrico","Plomería","Herramienta","Tornillería","Construcción","Pintura"];
+const CUENTA = {"Eléctrico":"cables, breakers, tomas, iluminación","Plomería":"PVC, grifería, sanitarios","Herramienta":"eléctrica y manual","Tornillería":"tornillos, chazos, anclajes","Construcción":"cemento, estuco, agregados","Pintura":"vinilos, esmaltes, brochas"};
+
+const $ = s => document.querySelector(s);
+const cop = n => "$" + n.toLocaleString("es-CO");
+let filtro = "Todas", busca = "", cart = {}, ultimoFoco = null;
+function abrirSheet(txt){ ultimoFoco = document.activeElement; $("#sh-msg").textContent = txt; $("#sheet").hidden = false; $("#cerrar").focus(); }
+function cerrarSheet(){ $("#sheet").hidden = true; if(ultimoFoco && ultimoFoco.isConnected) ultimoFoco.focus(); }
+
+$("#filtros").innerHTML = ["Todas",...LINEAS]
+  .map(l => `<button class="lin" data-l="${l}" aria-pressed="${l==="Todas"}">${l}</button>`).join("");
+$("#lgrid").innerHTML = LINEAS.map(l =>
+  `<div class="lcard"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">${ICON[l]}</svg>
+   <b>${l}</b><small>${CUENTA[l]}</small></div>`).join("");
+
+function visibles(){
+  const q = busca.trim().toLowerCase();
+  return PROD.filter(p => (filtro==="Todas" || p.l===filtro) &&
+    (!q || (p.n+" "+p.l+" "+p.r).toLowerCase().includes(q)));
+}
+function pintar(){
+  const v = visibles();
+  $("#cnt").textContent = filtro==="Todas" ? `Catálogo · ${v.length} referencias` : `${filtro} · ${v.length} referencias`;
+  $("#grid").innerHTML = v.length ? v.map(p => {
+    const k = p.r, q = cart[k]?.q || 0;
+    return `<article class="prod">
+      <span class="ln">${p.l}</span>
+      <h3>${p.n}</h3>
+      <span class="ref">${p.r} · por ${p.u}</span>
+      <span class="price">${cop(p.p)} <small>/ ${p.u}</small></span>
+      <button class="add ${q?"in":""}" data-add="${k}">${q ? `En la cotización · ${q}` : "Agregar a cotización"}</button>
+    </article>`;
+  }).join("") : `<p class="none">No hay referencias que coincidan con «${busca}». Prueba con otra palabra o pide la cotización por lista abajo.</p>`;
+}
+function resumen(){
+  const it = Object.values(cart);
+  const n = it.reduce((a,b)=>a+b.q,0);
+  const t = it.reduce((a,b)=>a+b.q*b.p,0);
+  $("#resumen").innerHTML = n
+    ? `<b>${n}</b> ${n===1?"ítem":"ítems"} en tu cotización · subtotal <b>${cop(t)}</b>`
+    : "Tu cotización está vacía. Agrega referencias del catálogo.";
+  $("#verCot").disabled = !n;
+  $("#limpiar").hidden = !n;
+}
+function mensaje(){
+  const it = Object.values(cart);
+  const t = it.reduce((a,b)=>a+b.q*b.p,0);
+  return "Buenos días, quiero cotizar estas referencias:\n\n"
+    + it.map(i => `• ${i.q} ${i.u}${i.q>1?"s":""} — ${i.n} (${i.r})`).join("\n")
+    + `\n\nSubtotal según la página: ${cop(t)}\n¿Me confirman disponibilidad y tiempo de entrega?`;
+}
+
+document.addEventListener("click", e => {
+  const l = e.target.closest("[data-l]");
+  if(l){ filtro = l.dataset.l;
+    document.querySelectorAll("[data-l]").forEach(b => b.setAttribute("aria-pressed", b.dataset.l===filtro));
+    pintar(); return; }
+  const a = e.target.closest("[data-add]");
+  if(a){ const p = PROD.find(x => x.r===a.dataset.add);
+    cart[p.r] = {...p, q:(cart[p.r]?.q||0)+1}; pintar(); resumen(); return; }
+  if(e.target.id==="limpiar"){ cart = {}; pintar(); resumen(); return; }
+  if(e.target.id==="verCot"){ abrirSheet(mensaje()); return; }
+  if(e.target.id==="enviarLista"){
+    const v = $("#lista").value.trim();
+    abrirSheet(v
+      ? "Buenos días, necesito cotización para obra de esta lista:\n\n" + v + "\n\n¿Me confirman precios, disponibilidad y si aplica descuento por volumen?"
+      : "Escribe primero tu lista de materiales en el cuadro de arriba."); return; }
+  if(e.target.id==="cerrar" || e.target.id==="sheet"){ cerrarSheet(); return; }
+  if(e.target.id==="copiar"){
+    const b = e.target;
+    navigator.clipboard?.writeText($("#sh-msg").textContent)
+      .then(()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar mensaje",1500);})
+      .catch(()=>{b.textContent="Selecciona el texto y cópialo";});
+  }
+});
+$("#q").addEventListener("input", e => { busca = e.target.value; pintar(); });
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !$("#sheet").hidden) cerrarSheet(); });
+$("#sheet").addEventListener("keydown", e => {
+  if(e.key !== "Tab") return;
+  const f = [...$("#sheet").querySelectorAll("button")];
+  const first = f[0], last = f[f.length-1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
+pintar(); resumen();
+</script>
+
+  </body>
+</html>
