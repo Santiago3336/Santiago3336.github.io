@@ -1,0 +1,4 @@
+# Archivos del repositorio que GitHub Pages no debe publicar en el sitio.
+# Siguen visibles en el repositorio público de GitHub.
+exclude:
+  - SECURITY-NOTAS.md

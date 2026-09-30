@@ -30,7 +30,8 @@ Santiago_Clothes está en otro repositorio y no entra en esta revisión.
 - **Enforce HTTPS: activo.** La API devuelve `https_enforced: true` y `http://` redirige a `https://` con un 301.
 - **GitHub Pages no permite cabeceras HTTP propias** (CSP, `Permissions-Policy`, `Referrer-Policy`, etc.).
 - Para sitios de clientes, usar **Netlify** o **Cloudflare Pages** con un archivo `_headers`.
-- Todo lo que está en este repositorio público se puede ver en GitHub, y GitHub Pages sirve también los `.md`. Este archivo, por ejemplo, se abre en `/SECURITY-NOTAS.md` aunque no esté enlazado. **No escribir aquí nada privado.**
+- GitHub Pages sirve también los `.md`. Este archivo está excluido del sitio en `_config.yml` (`exclude:`), así que no se abre en `/SECURITY-NOTAS.md`.
+- Aun así, sigue visible en el repositorio público de GitHub. **No escribir aquí nada privado.**
 
 ## Si algún día se conecta un formulario a un servidor
 
