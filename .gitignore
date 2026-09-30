@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+
+# Registros
+*.log
+
+# Navegador headless (Playwright / Puppeteer) y temporales
+test-results/
+playwright-report/
+playwright/.cache/
+.cache/
+.local-chromium/
+__pycache__/
+*.tmp
