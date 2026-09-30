@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>Santiago GYM | Planes, horarios y clase de prueba (demo)</title>
+    <meta name="description" content="Demo de sitio web para gimnasio: planes con precio a la vista, horario de clases con cupos y reserva de clase de prueba gratis. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <link rel="canonical" href="https://santiago3336.github.io/demos/gimnasio/">
+    <meta name="theme-color" content="#C4302D">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23C4302D'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='17' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Santiago Sierra · Desarrollo web">
+    <meta property="og:title" content="Santiago GYM | Planes, horarios y clase de prueba (demo)">
+    <meta property="og:description" content="Demo de sitio web para gimnasio: planes con precio a la vista, horario de clases con cupos y reserva de clase de prueba gratis. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <meta property="og:url" content="https://santiago3336.github.io/demos/gimnasio/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap">
+    <style>
+      :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+      body{margin:0}
+      img{max-width:100%}
+      [hidden]{display:none!important}
+    </style>
+  </head>
+  <body>
+<style>
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--coral);color:#fff;padding:10px 14px;border-radius:0 0 8px 0;font-weight:700;text-decoration:none}
+.skip:focus{left:0}
+/* Layout: una sola columna de decisión — planes primero, horario después, prueba gratis al final */
+:root{
+  --bg:#FBF7F4; --surface:#FFFFFF; --deep:#2A1A33;
+  --ink:#1F1424; --ink-2:#5E5066; --ink-3:#71677A;
+  --line:#E7DFE4; --line-2:#D3C7CE;
+  --coral:#C4302D; --coral-soft:#FBE7E4; --plum:#5B3A6E; --plum-soft:#F0E8F4;
+  --display:'Anton','Arial Black',sans-serif;
+  --body:'Barlow','Helvetica Neue',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171219; --surface:#211A25; --deep:#120D16;
+  --ink:#F1EBF3; --ink-2:#B3A8B9; --ink-3:#9C91A3;
+  --line:#2F2634; --line-2:#3F3446;
+  --coral:#F5776F; --coral-soft:#33191B; --plum:#C7A5D9; --plum-soft:#251A2C;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#171219; --surface:#211A25; --deep:#120D16;
+  --ink:#F1EBF3; --ink-2:#B3A8B9; --ink-3:#9C91A3;
+  --line:#2F2634; --line-2:#3F3446;
+  --coral:#F5776F; --coral-soft:#33191B; --plum:#C7A5D9; --plum-soft:#251A2C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.num{font-family:var(--display);font-weight:400;letter-spacing:.005em;margin:0;text-transform:uppercase}
+.demo{margin:0;background:var(--deep);color:#EDE6F0;font-size:12px;text-align:center;padding:7px 16px}
+.demo b{color:var(--coral)}
+.wrap{max-width:900px;margin:0 auto;padding-inline:16px}
+
+header{background:var(--surface);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:12px;padding-block:13px}
+.logo{display:flex;align-items:baseline;gap:7px;text-decoration:none;color:var(--ink)}
+.logo .m{font-family:var(--display);font-size:22px;line-height:1}
+.logo .m i{font-style:normal;color:var(--coral)}
+.logo small{font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
+nav{margin-left:auto;display:flex;gap:16px}
+nav a{font-size:14.5px;font-weight:500;color:var(--ink-2);text-decoration:none}
+nav a:hover{color:var(--coral)}
+@media(max-width:680px){nav{display:none}}
+
+.hero{background:var(--deep);color:#F3EDF5;padding-block:44px 40px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-70px;top:-70px;width:290px;height:290px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(216,67,63,.34),transparent 68%)}
+.hero h1{font-size:clamp(34px,9vw,62px);line-height:.96;max-width:17ch;position:relative}
+.hero h1 i{font-style:normal;color:var(--coral)}
+.hero p{color:#C3B8C9;max-width:46ch;margin:16px 0 0;font-size:17px;position:relative}
+.hrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;position:relative}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#3A2B44;border-radius:8px;overflow:hidden;margin-top:30px;position:relative}
+.stats div{background:#241A2B;padding:15px 14px}
+.stats b{display:block;font-family:var(--display);font-size:26px;color:#fff;line-height:1}
+.stats small{display:block;color:#AFA2B6;font-size:12px;margin-top:4px}
+
+h2.sec{font-size:clamp(22px,5vw,32px);margin:42px 0 6px}
+.sub{color:var(--ink-2);margin:0 0 18px;max-width:52ch}
+
+.planes{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:20px 18px;display:flex;flex-direction:column}
+.plan.best{border-color:var(--coral);border-width:2px;padding:19px 17px}
+.tagbest{font-family:var(--body);font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
+.plan h3{font-size:20px}
+.plan .num{font-size:37px;line-height:1;margin-top:11px;font-variant-numeric:tabular-nums}
+.plan .per{font-family:var(--body);font-size:13px;color:var(--ink-3);margin-top:3px}
+.plan ul{list-style:none;padding:0;margin:15px 0 0;display:flex;flex-direction:column;gap:7px;font-size:14.5px;color:var(--ink-2)}
+.plan li{display:flex;gap:8px;align-items:flex-start}
+.plan li svg{flex:0 0 auto;margin-top:4px}
+.plan .pick{margin-top:auto;padding-top:17px}
+
+.horario{background:var(--surface);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.dias{display:flex;overflow-x:auto;border-bottom:1px solid var(--line)}
+.dia{flex:1 0 auto;font-family:var(--body);font-size:13.5px;font-weight:600;padding:12px 15px;border:0;background:transparent;color:var(--ink-3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent}
+.dia[aria-pressed="true"]{color:var(--coral);border-bottom-color:var(--coral)}
+.clases{padding:6px 0}
+.clase{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.clase:last-child{border-bottom:0}
+.clase .h{font-family:var(--body);font-weight:700;font-size:14.5px;min-width:62px;font-variant-numeric:tabular-nums}
+.clase .n{flex:1;min-width:0}
+.clase .n b{display:block;font-size:15.5px;font-weight:600}
+.clase .n small{color:var(--ink-3);font-size:13px}
+.cupo{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.cupo.libre{background:var(--plum-soft);color:var(--plum)}
+.cupo.pocos{background:var(--coral-soft);color:var(--coral)}
+
+.sedes{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:620px){.sedes{grid-template-columns:1fr}}
+.sede{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:18px}
+.sede h3{font-size:18px}
+.sede p{margin:8px 0 0;color:var(--ink-2);font-size:14.5px}
+.sede dl{margin:11px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.sede dt{color:var(--ink-3)}
+.sede dd{margin:0;font-variant-numeric:tabular-nums}
+
+.prueba{background:var(--coral);color:#fff;border-radius:13px;padding:26px;margin-top:42px}
+.prueba h2{font-size:clamp(23px,5vw,34px);color:#fff;margin:0}
+.prueba p{color:#FFEDEB;max-width:46ch;margin:10px 0 0}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+@media(max-width:560px){.form{grid-template-columns:1fr}}
+.form label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#FFEDEB;margin-bottom:5px}
+.form input,.form select{width:100%;font-family:var(--body);font-size:15px;padding:11px;border-radius:7px;border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff}
+.form input::placeholder{color:#FFDDD9}
+.form select option{color:#1F1424}
+.full{grid-column:1/-1}
+
+.btn{font-family:var(--body);font-size:15px;font-weight:700;padding:12px 20px;border-radius:8px;border:2px solid var(--coral);background:var(--coral);color:#fff;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.btn:hover{filter:brightness(1.08)}
+.btn.line{background:transparent;color:var(--coral)}
+.btn.oncoral{background:#fff;color:var(--coral);border-color:#fff}
+.btn.light{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.45)}
+.btn.block{width:100%}
+
+.sheet{position:fixed;inset:0;background:rgba(18,13,22,.6);display:grid;place-items:center;z-index:40;padding:16px}
+.sheet[hidden]{display:none}
+.sheet .box{background:var(--surface);border-radius:13px;max-width:540px;width:100%;padding:22px;max-height:82vh;overflow:auto}
+.sheet h3{font-size:21px}
+.sheet pre{white-space:pre-wrap;font-family:var(--body);font-size:14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:13px;margin:13px 0 0;color:var(--ink)}
+.sheet .nota{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+.sheet .row{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+footer{margin-top:44px;padding-block:22px 32px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
+footer b{color:var(--ink-2)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--plum);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<p class="demo">Sitio de <b>demostración</b> · «Santiago GYM» es una marca inventada para mostrar el diseño. Precios, horarios y sedes son de ejemplo.</p>
+
+<a class="skip" href="#planes">Ir a los planes</a>
+<header>
+  <div class="wrap hbar">
+    <a class="logo" href="#top"><span class="m">SANTIAGO <i>GYM</i></span><small>Bucaramanga</small></a>
+    <nav>
+      <a href="#planes">Planes</a>
+      <a href="#horario">Horario</a>
+      <a href="#sedes">Sedes</a>
+      <a href="#prueba">Clase gratis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>Entrena hoy. <i>La primera clase va por nuestra cuenta.</i></h1>
+    <p>Dos sedes en Bucaramanga, 40 clases dirigidas a la semana y planes desde $69.000 al mes. Sin matrícula y sin contratos de un año.</p>
+    <div class="hrow">
+      <a class="btn oncoral" href="#prueba">Reservar clase de prueba</a>
+      <a class="btn light" href="#planes">Ver planes y precios</a>
+    </div>
+    <div class="stats">
+      <div><b>2</b><small>sedes: Cabecera y Antonia Santos</small></div>
+      <div><b>40</b><small>clases dirigidas por semana</small></div>
+      <div><b>5 a.m.</b><small>abrimos de lunes a sábado</small></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <h2 class="sec" id="planes">Planes y precios</h2>
+  <p class="sub">Sin matrícula, sin cláusula de permanencia. Puedes congelar el plan hasta 15 días si viajas.</p>
+  <div class="planes" id="planes-g"></div>
+
+  <h2 class="sec" id="horario">Horario de clases</h2>
+  <p class="sub">Cupos por clase. El cupo que ves acá es de ejemplo; en el sitio real se actualiza solo con las reservas.</p>
+  <div class="horario">
+    <div class="dias" id="dias"></div>
+    <div class="clases" id="clases" aria-live="polite"></div>
+  </div>
+
+  <h2 class="sec" id="sedes">Sedes</h2>
+  <div class="sedes">
+    <div class="sede">
+      <h3>Sede Cabecera</h3>
+      <p>Calle 49 # 38-09<br>Cabecera del Llano</p>
+      <dl>
+        <dt>Lun a vie</dt><dd>5:00 a.m. – 10:00 p.m.</dd>
+        <dt>Sábado</dt><dd>6:00 a.m. – 4:00 p.m.</dd>
+        <dt>Domingo</dt><dd>8:00 a.m. – 1:00 p.m.</dd>
+      </dl>
+    </div>
+    <div class="sede">
+      <h3>Sede Antonia Santos</h3>
+      <p>Carrera 27 con Calle 32<br>Antonia Santos</p>
+      <dl>
+        <dt>Lun a vie</dt><dd>5:00 a.m. – 9:00 p.m.</dd>
+        <dt>Sábado</dt><dd>6:00 a.m. – 3:00 p.m.</dd>
+        <dt>Domingo</dt><dd>Cerrado</dd>
+      </dl>
+    </div>
+  </div>
+
+  <section class="prueba" id="prueba">
+    <h2>Tu primera clase, gratis</h2>
+    <p>Escoge el día y la clase. Te confirmamos el cupo por WhatsApp en menos de una hora.</p>
+    <div class="form">
+      <div><label for="p-nom">Nombre</label><input id="p-nom" placeholder="Tu nombre"></div>
+      <div><label for="p-tel">Celular</label><input id="p-tel" placeholder="300 000 0000" inputmode="tel"></div>
+      <div><label for="p-sede">Sede</label><select id="p-sede"><option>Cabecera</option><option>Antonia Santos</option></select></div>
+      <div><label for="p-clase">Clase</label><select id="p-clase"></select></div>
+      <div class="full"><button class="btn oncoral block" id="p-enviar">Reservar mi clase gratis</button></div>
+    </div>
+  </section>
+
+  <footer>
+    <b>Santiago GYM</b> es una marca inventada. Este sitio existe para mostrar cómo se vería la página de un gimnasio de Bucaramanga: precios, horarios, sedes y cupos son de ejemplo y no corresponden a ningún negocio real. No se incluyen reseñas ni testimonios porque no se inventan opiniones de clientes.
+  </footer>
+</div>
+
+</main>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+    <h3 id="sh-t">Así llega la reserva</h3>
+    <pre id="sh-msg"></pre>
+    <p class="nota">En el sitio real este botón abre el WhatsApp del gimnasio con el mensaje ya escrito, o guarda la reserva en su sistema. En la demostración solo se muestra el texto.</p>
+    <div class="row">
+      <button class="btn" id="copiar">Copiar mensaje</button>
+      <button class="btn line" id="cerrar">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PLANES = [
+  {n:"Día", p:12000, per:"pase por día", best:false, v:["Acceso a la sede que elijas","Incluye clases dirigidas","Sin inscripción"]},
+  {n:"Mensual", p:69000, per:"al mes", best:false, v:["Acceso a las dos sedes","Clases dirigidas ilimitadas","Congelación de 15 días"]},
+  {n:"Trimestral", p:179000, per:"cada 3 meses · $59.700 al mes", best:true, v:["Todo lo del mensual","Valoración física cada mes","Plan de entrenamiento escrito","2 pases de invitado"]},
+  {n:"Anual", p:590000, per:"al año · $49.100 al mes", best:false, v:["Todo lo del trimestral","Acompañamiento nutricional","Camiseta de la sede"]}
+];
+const DIAS = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+const HOR = {
+  Lunes:[["5:30","Funcional","Sede Cabecera · 45 min",8],["6:30","Spinning","Sede Cabecera · 50 min",2],["12:15","Full body express","Antonia Santos · 30 min",11],["18:00","Crossfit","Sede Cabecera · 60 min",1],["19:00","Rumba fitness","Antonia Santos · 55 min",14]],
+  Martes:[["5:30","Fuerza guiada","Sede Cabecera · 60 min",6],["6:30","Funcional","Antonia Santos · 45 min",9],["12:15","Core y movilidad","Sede Cabecera · 30 min",12],["18:00","Spinning","Antonia Santos · 50 min",3],["19:00","Boxeo recreativo","Sede Cabecera · 60 min",7]],
+  Miércoles:[["5:30","Funcional","Sede Cabecera · 45 min",5],["6:30","Spinning","Sede Cabecera · 50 min",4],["12:15","Full body express","Antonia Santos · 30 min",10],["18:00","Crossfit","Sede Cabecera · 60 min",2],["19:00","Rumba fitness","Antonia Santos · 55 min",13]],
+  Jueves:[["5:30","Fuerza guiada","Sede Cabecera · 60 min",8],["6:30","Funcional","Antonia Santos · 45 min",7],["12:15","Core y movilidad","Sede Cabecera · 30 min",15],["18:00","Spinning","Antonia Santos · 50 min",1],["19:00","Boxeo recreativo","Sede Cabecera · 60 min",6]],
+  Viernes:[["5:30","Funcional","Sede Cabecera · 45 min",9],["6:30","Spinning","Sede Cabecera · 50 min",5],["12:15","Full body express","Antonia Santos · 30 min",12],["18:00","Crossfit","Sede Cabecera · 60 min",4],["19:00","Rumba fitness","Antonia Santos · 55 min",16]],
+  "Sábado":[["7:00","Funcional al aire libre","Parque de los Niños · 60 min",18],["8:30","Spinning","Sede Cabecera · 50 min",6],["10:00","Movilidad y estiramiento","Sede Cabecera · 45 min",14]]
+};
+const $ = s => document.querySelector(s);
+const cop = n => "$" + n.toLocaleString("es-CO");
+const CHK = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="var(--coral)" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg>';
+let dia = "Lunes", ultimoFoco = null;
+
+$("#planes-g").innerHTML = PLANES.map(p => `
+  <article class="plan ${p.best?"best":""}">
+    ${p.best?'<span class="tagbest">El que más escogen</span>':""}
+    <h3>${p.n}</h3>
+    <span class="num">${cop(p.p)}</span>
+    <span class="per">${p.per}</span>
+    <ul>${p.v.map(v=>`<li>${CHK}<span>${v}</span></li>`).join("")}</ul>
+    <div class="pick"><button class="btn ${p.best?"":"line"} block" data-plan="${p.n}">Quiero el ${p.n.toLowerCase()}</button></div>
+  </article>`).join("");
+
+$("#dias").innerHTML = DIAS.map(d => `<button class="dia" data-d="${d}" aria-pressed="${d===dia}">${d}</button>`).join("");
+
+function pintarDia(){
+  $("#clases").innerHTML = HOR[dia].map(([h,n,s,c]) => `
+    <div class="clase">
+      <span class="h">${h}</span>
+      <span class="n"><b>${n}</b><small>${s}</small></span>
+      <span class="cupo ${c<=3?"pocos":"libre"}">${c<=3?`Quedan ${c}`:`${c} cupos`}</span>
+    </div>`).join("");
+  const set = [...new Set(DIAS.flatMap(d => HOR[d].map(c => c[1])))].sort();
+  $("#p-clase").innerHTML = set.map(c => `<option>${c}</option>`).join("");
+}
+function abrir(txt){ ultimoFoco = document.activeElement; $("#sh-msg").textContent = txt; $("#sheet").hidden = false; $("#cerrar").focus(); }
+function cerrarSheet(){ $("#sheet").hidden = true; if(ultimoFoco && ultimoFoco.isConnected) ultimoFoco.focus(); }
+
+document.addEventListener("click", e => {
+  const d = e.target.closest("[data-d]");
+  if(d){ dia = d.dataset.d;
+    document.querySelectorAll("[data-d]").forEach(b => b.setAttribute("aria-pressed", b.dataset.d===dia));
+    pintarDia(); return; }
+  const pl = e.target.closest("[data-plan]");
+  if(pl){ const p = PLANES.find(x=>x.n===pl.dataset.plan);
+    abrir(`Buenos días, quiero el plan ${p.n.toLowerCase()} (${cop(p.p)} ${p.per}).\n\n¿Qué necesito para inscribirme y en qué sede lo activo?`); return; }
+  if(e.target.id==="p-enviar"){
+    const n = $("#p-nom").value.trim(), t = $("#p-tel").value.trim();
+    if(!n || !t){ abrir("Falta tu nombre y tu celular para reservar el cupo."); return; }
+    abrir(`Buenos días, quiero reservar la clase de prueba gratis.\n\nNombre: ${n}\nCelular: ${t}\nSede: ${$("#p-sede").value}\nClase: ${$("#p-clase").value}\n\n¿Me confirman el cupo?`);
+    return; }
+  if(e.target.id==="cerrar" || e.target.id==="sheet"){ cerrarSheet(); return; }
+  if(e.target.id==="copiar"){
+    const b = e.target;
+    navigator.clipboard?.writeText($("#sh-msg").textContent)
+      .then(()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar mensaje",1500);})
+      .catch(()=>{b.textContent="Selecciona el texto y cópialo";});
+  }
+});
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !$("#sheet").hidden) cerrarSheet(); });
+$("#sheet").addEventListener("keydown", e => {
+  if(e.key !== "Tab") return;
+  const f = [...$("#sheet").querySelectorAll("button")];
+  const first = f[0], last = f[f.length-1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
+pintarDia();
+</script>
+
+  </body>
+</html>
