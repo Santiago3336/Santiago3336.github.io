@@ -13,7 +13,7 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 |---|---|---|---|
 | Santiago Ferretería | [demos/ferreteria/](https://santiago3336.github.io/demos/ferreteria/) | Ferretería y materiales | Catálogo B2B con cotizador |
 | Santiago GYM | [demos/gimnasio/](https://santiago3336.github.io/demos/gimnasio/) | Gimnasio | Planes y reservas |
-| Santiago Clothes | [Santiago_Clothes/](https://santiago3336.github.io/Santiago_Clothes/) | Tienda de ropa | Catálogo de ropa ([repositorio aparte](https://github.com/santiago3336/Santiago_Clothes)) |
+| Santiago Prendas | [Santiago_Clothes/](https://santiago3336.github.io/Santiago_Clothes/) | Tienda de ropa | Catálogo de ropa ([repositorio aparte](https://github.com/santiago3336/Santiago_Clothes)) |
 
 ## Cómo está hecho
 
