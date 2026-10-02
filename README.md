@@ -20,6 +20,7 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 - HTML, CSS y JavaScript, sin frameworks ni dependencias.
 - Cada página es un solo archivo `index.html`.
 - Las tipografías vienen de Google Fonts.
+- El fondo de la portada es una ciudad de noche dibujada con Canvas 2D: calles inventadas (no es un mapa real), sin librerías ni archivos externos. La cámara se mueve con el scroll y, si el sistema pide reducir el movimiento, queda como imagen fija.
 - Publicado con GitHub Pages desde la rama `main`.
 
 ```
