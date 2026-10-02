@@ -1,6 +1,6 @@
 # Santiago Sierra · Desarrollo web
 
-Este repositorio es mi sitio profesional, publicado en **https://santiago3336.github.io/**. Hago sitios web para negocios de Bucaramanga. Aquí también están las páginas de demostración que muestro a los clientes.
+Este repositorio es mi sitio profesional, publicado en **https://santiago3336.github.io/**. Hago sitios web para negocios de Bucaramanga. Aquí también están las páginas de demostración que muestro a los clientes y mi [trayectoria](https://santiago3336.github.io/trayectoria/): experiencia, formación y certificados verificables de Microsoft Learn.
 
 > [!WARNING]
 > **Las tres demos son MARCAS INVENTADAS**, creadas solo para mostrar el diseño.
@@ -24,6 +24,7 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 
 ```
 index.html                  → página profesional
+trayectoria/index.html      → experiencia, formación y certificados
 demos/ferreteria/index.html → demo de ferretería
 demos/gimnasio/index.html   → demo de gimnasio
 ```

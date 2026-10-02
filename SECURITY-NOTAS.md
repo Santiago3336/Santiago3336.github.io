@@ -1,10 +1,11 @@
 # Notas de seguridad y cumplimiento
 
-Son notas internas. No se enlazan desde el sitio. Última revisión: 29 de septiembre de 2026.
+Son notas internas. No se enlazan desde el sitio. Última revisión: 1 de octubre de 2026.
 
-Las "tres páginas" de este repositorio son:
+Las páginas de este repositorio son:
 
 - `index.html`
+- `trayectoria/index.html`
 - `demos/ferreteria/index.html`
 - `demos/gimnasio/index.html`
 
@@ -12,12 +13,16 @@ Santiago_Clothes está en otro repositorio y no entra en esta revisión.
 
 ## Datos personales
 
-- **Las tres páginas no recogen ni envían datos personales.** No usan `fetch`, `XMLHttpRequest`, `sendBeacon` ni WebSocket. No tienen formularios con `action`. No usan cookies, `localStorage` ni `sessionStorage`. No tienen analítica ni píxeles.
+- **Ninguna página recoge ni envía datos personales.** No usan `fetch`, `XMLHttpRequest`, `sendBeacon` ni WebSocket. No tienen formularios con `action`. No usan cookies, `localStorage` ni `sessionStorage`. No tienen analítica ni píxeles.
 - Por eso **no llevan política de tratamiento de datos ni aviso de cookies**.
 - El formulario de clase de prueba del gimnasio pide nombre y celular. Solo arma el mensaje y lo muestra en pantalla para que el visitante lo copie. Los datos no salen del navegador.
 - El cotizador de la ferretería funciona igual.
 - El botón de WhatsApp de la portada abre `wa.me` con un saludo fijo. No manda ningún dato del visitante. Si el visitante escribe algo, lo hace él mismo dentro de WhatsApp.
-- Los únicos datos personales publicados a propósito son **mi número de WhatsApp y mi correo de trabajo**, en el bloque `CONFIG` de `index.html`.
+- Los datos de contacto publicados a propósito son **mi número de WhatsApp y mi correo de trabajo**, en el bloque `CONFIG` de `index.html`.
+- `trayectoria/` publica a propósito, como en mi hoja de vida: nombre completo, empresa y cargo actuales, colegio y bootcamp, y enlaces a LinkedIn, GitHub y a mis logros de Microsoft Learn.
+- La trayectoria **no** publica mi correo personal, dirección, documento ni foto.
+- Los logros de Microsoft Learn se ven sin iniciar sesión, aunque el perfil esté en privado. Muestran solo nombre, logro y fecha.
+- Los enlaces a Microsoft Learn, LinkedIn y GitHub son solo enlaces: la página no carga nada de esos sitios.
 
 ## Terceros
 

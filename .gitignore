@@ -21,3 +21,6 @@ playwright/.cache/
 .local-chromium/
 __pycache__/
 *.tmp
+
+# Caché del revisor de diseño (impeccable)
+.impeccable/
