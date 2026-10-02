@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>Trayectoria | Santiago Sierra · Desarrollo web</title>
+    <meta name="description" content="Experiencia, formación y certificados de Joel Santiago Sierra Leon: soporte técnico y atención al cliente, entrenamiento en desarrollo de software en Campuslands y módulos de Git en Microsoft Learn.">
+    <link rel="canonical" href="https://santiago3336.github.io/trayectoria/">
+    <meta name="theme-color" content="#2F4BD8">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232F4BD8'/%3E%3Ctext x='16' y='22' font-family='Arial,sans-serif' font-size='17' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="profile">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Santiago Sierra · Desarrollo web">
+    <meta property="og:title" content="Trayectoria | Santiago Sierra · Desarrollo web">
+    <meta property="og:description" content="Experiencia en soporte técnico y atención al cliente, formación en desarrollo de software y certificados verificables.">
+    <meta property="og:url" content="https://santiago3336.github.io/trayectoria/">
+    <meta property="og:image" content="https://santiago3336.github.io/trayectoria/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+    <style>
+      :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+      body{margin:0}
+      [hidden]{display:none!important}
+    </style>
+  </head>
+  <body>
+<style>
+/* Mismos tokens y piezas que la portada (index.html) */
+:root{
+  --bg:#F4F5F7; --surface:#FFFFFF; --deep:#15171C;
+  --ink:#15171C; --ink-2:#4A505E; --ink-3:#676E7D;
+  --line:#E2E5EB; --line-2:#CBD1DB;
+  --accent:#2F4BD8; --accent-soft:#EDF0FE; --accent-ink:#2A43C4;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Work Sans','Helvetica Neue',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12141A; --surface:#1A1D24; --deep:#0C0E13;
+  --ink:#ECEEF3; --ink-2:#B4BCCA; --ink-3:#99A1B0;
+  --line:#272B34; --line-2:#363C48;
+  --accent:#97ACFF; --accent-soft:#1B2136; --accent-ink:#B3C2FF;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#12141A; --surface:#1A1D24; --deep:#0C0E13;
+  --ink:#ECEEF3; --ink-2:#B4BCCA; --ink-3:#99A1B0;
+  --line:#272B34; --line-2:#363C48;
+  --accent:#97ACFF; --accent-soft:#1B2136; --accent-ink:#B3C2FF;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.022em;margin:0;text-wrap:balance}
+a{color:var(--accent)}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:#fff;padding:10px 14px;border-radius:0 0 7px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px}
+
+header{border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:14px;padding-block:16px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.brand span{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+.nav{margin-left:auto}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:20px}
+.nav a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:500}
+.nav a:hover,.nav a[aria-current]{color:var(--ink)}
+.nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+.menu-btn{display:none;margin-left:auto;width:42px;height:42px;place-items:center;border:1px solid var(--line-2);border-radius:9px;background:transparent;color:var(--ink);cursor:pointer}
+@media (max-width:720px){
+  .js .menu-btn{display:grid}
+  .js .nav{display:none;flex-basis:100%;margin-left:0}
+  .js .nav.open{display:block}
+  .nav ul{flex-direction:column;gap:0}
+  .nav a{display:block;padding:13px 2px;border-top:1px solid var(--line);font-size:16px}
+}
+
+.btn{font-family:var(--body);font-size:15px;font-weight:600;padding:11px 18px;border-radius:9px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+:root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#101218}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn{color:#fff}}
+.btn:hover{filter:brightness(1.08)}
+:root .btn.line{background:transparent;color:var(--accent)}
+
+.hero{padding-block:52px 34px}
+.hero h1{font-size:clamp(31px,7.2vw,50px);font-weight:800;line-height:1.04;max-width:20ch}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .lede{color:var(--ink-2);font-size:18px;max-width:52ch;margin:18px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px}
+.facts span,.facts a{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px;text-decoration:none}
+.facts a:hover{border-color:var(--accent);color:var(--accent)}
+
+section{padding-block:34px;border-top:1px solid var(--line);scroll-margin-top:12px}
+h2{font-size:clamp(23px,4.8vw,30px);font-weight:700}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px}
+.sub{color:var(--ink-2);margin:9px 0 0;max-width:52ch}
+
+.linea{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.cuando{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.item h3{font-size:18px;font-weight:700;margin-top:6px}
+.donde{color:var(--ink-2);font-size:15px;margin-top:2px}
+.item ul{margin:10px 0 0;padding-left:18px;color:var(--ink-2);font-size:14.5px}
+.item li+li{margin-top:4px}
+.item p{margin:8px 0 0;color:var(--ink-2);font-size:14.5px}
+.item .go{margin-top:12px;font-size:14.5px;font-weight:600}
+
+.ruta{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:14px}
+.ruta:first-of-type{margin-top:22px}
+.cab{display:flex;align-items:baseline;gap:6px 12px;padding:16px 18px;flex-wrap:wrap}
+.tipo{flex-basis:100%;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.cab b{font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:-.01em;flex:1 1 260px}
+.ruta small{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.ruta a{font-size:14px;font-weight:600}
+.ruta summary{padding:12px 18px;border-top:1px solid var(--line);cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-2)}
+.ruta summary:hover{color:var(--ink)}
+.certs{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+.certs li{display:flex;align-items:baseline;gap:6px 12px;padding:12px 18px;flex-wrap:wrap}
+.certs li+li{border-top:1px solid var(--line)}
+.certs b{font-weight:500;font-size:15px;flex:1 1 260px}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.grupo{margin-top:20px}
+.grupo h3{font-size:16px;font-weight:700}
+.grupo .facts{margin-top:10px}
+
+.contacto{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:24px;margin-top:4px}
+.contacto h3{font-size:22px;font-weight:700}
+.contacto p{color:var(--ink-2);margin:9px 0 0;max-width:46ch}
+.contacto .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+
+footer{padding-block:26px 34px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<a class="skip" href="#experiencia">Ir a la experiencia</a>
+
+<header>
+  <div class="wrap hbar">
+    <a class="brand" href="../">Santiago Sierra<span>Desarrollo web · Bucaramanga</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menú">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <ul>
+        <li><a href="../">Inicio</a></li>
+        <li><a href="../#trabajo">Ejemplos</a></li>
+        <li><a href="./" aria-current="page">Trayectoria</a></li>
+        <li><a href="../#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <section class="hero" style="border-top:0">
+    <p class="eyebrow">Trayectoria</p>
+    <h1>Soporte, código y <em>trato con el cliente</em>.</h1>
+    <p class="lede">Soy Joel Santiago Sierra Leon. Trabajo como auxiliar de soporte técnico y atención al cliente, tengo formación en desarrollo de software y hago sitios web para negocios de Bucaramanga.</p>
+    <div class="facts">
+      <a href="#experiencia">Experiencia</a>
+      <a href="#formacion">Formación</a>
+      <a href="#certificados">Certificados</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#habilidades">Habilidades</a>
+    </div>
+  </section>
+
+  <section id="experiencia">
+    <p class="eyebrow">Experiencia</p>
+    <h2>Dónde trabajo</h2>
+    <ol class="linea">
+      <li class="item">
+        <span class="cuando">Junio 2025 — Actualidad</span>
+        <h3>Auxiliar de Soporte</h3>
+        <div class="donde">Smart Data &amp; Automation</div>
+        <ul>
+          <li>Soporte técnico a clientes y solución de incidencias.</li>
+          <li>Gestión de tickets de principio a fin en Freshdesk: diagnóstico, seguimiento y cierre de casos técnicos.</li>
+          <li>Capacitación a clientes en el uso de las plataformas.</li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section id="formacion">
+    <p class="eyebrow">Formación</p>
+    <h2>Dónde estudié</h2>
+    <ol class="linea">
+      <li class="item">
+        <span class="cuando">2024</span>
+        <h3>Entrenamiento en Desarrollo de Software</h3>
+        <div class="donde">Campuslands · Bucaramanga</div>
+        <p>Python, HTML y CSS, JavaScript, MySQL y Java, con proyectos y exámenes por módulo. Los repositorios de esa etapa están en mi GitHub.</p>
+        <div class="go"><a href="https://github.com/Santiago3336?tab=repositories" target="_blank" rel="noopener">Ver repositorios en GitHub</a></div>
+      </li>
+      <li class="item">
+        <span class="cuando">2023</span>
+        <h3>Bachiller</h3>
+        <div class="donde">Colegio Monterrosales Homeschool Colombia</div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="certificados">
+    <p class="eyebrow">Certificados</p>
+    <h2>Microsoft Learn</h2>
+    <p class="sub">Dos rutas de aprendizaje completas y 11 módulos. Cada logro se puede verificar en la página oficial de Microsoft.</p>
+
+    <div class="ruta">
+      <div class="cab">
+        <span class="tipo">Ruta de aprendizaje · C#</span>
+        <b>Escribir el primer código con C# (Introducción a C#, parte 1)</b>
+        <small>12 nov 2024</small>
+        <a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/qtgudbpe" target="_blank" rel="noopener" aria-label="Verificar la ruta Escribir el primer código con C# en Microsoft Learn">Verificar</a>
+      </div>
+      <details>
+        <summary>Ver los 6 módulos de la ruta</summary>
+        <ul class="certs">
+          <li><b>Escritura del primer código de C#</b><small>5 nov 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/qtl6c8de" target="_blank" rel="noopener" aria-label="Verificar Escritura del primer código de C# en Microsoft Learn">Verificar</a></li>
+          <li><b>Almacenar y recuperar datos mediante valores literales y variables en C#</b><small>11 nov 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/uyzr7bn3" target="_blank" rel="noopener" aria-label="Verificar Almacenar y recuperar datos mediante valores literales y variables en C# en Microsoft Learn">Verificar</a></li>
+          <li><b>Realizar formato básico de cadenas en C#</b><small>11 nov 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/kgu62c2b" target="_blank" rel="noopener" aria-label="Verificar Realizar formato básico de cadenas en C# en Microsoft Learn">Verificar</a></li>
+          <li><b>Realizar operaciones básicas en números en C#</b><small>11 nov 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/87m2ld6w" target="_blank" rel="noopener" aria-label="Verificar Realizar operaciones básicas en números en C# en Microsoft Learn">Verificar</a></li>
+          <li><b>Proyecto guiado: Cálculo e impresión de calificaciones de alumnos</b><small>12 nov 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/zktgqj62" target="_blank" rel="noopener" aria-label="Verificar Proyecto guiado: Cálculo e impresión de calificaciones de alumnos en Microsoft Learn">Verificar</a></li>
+          <li><b>Proyecto guiado: Cálculo del GPA final</b><small>12 nov 2024 · evaluación aprobada</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/n2eb7ayf" target="_blank" rel="noopener" aria-label="Verificar Proyecto guiado: Cálculo del GPA final en Microsoft Learn">Verificar</a></li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="ruta">
+      <div class="cab">
+        <span class="tipo">Ruta de aprendizaje · Git</span>
+        <b>Introducción al control de versiones con Git</b>
+        <small>10 abr 2024</small>
+        <a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/9fwlkc3u" target="_blank" rel="noopener" aria-label="Verificar la ruta Introducción al control de versiones con Git en Microsoft Learn">Verificar</a>
+      </div>
+      <details>
+        <summary>Ver los 4 módulos de la ruta</summary>
+        <ul class="certs">
+          <li><b>Introducción a Git</b><small>10 abr 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/cn8dj679" target="_blank" rel="noopener" aria-label="Verificar Introducción a Git en Microsoft Learn">Verificar</a></li>
+          <li><b>Procedimientos para crear y modificar un proyecto de Git</b><small>10 abr 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/kls2jgjb" target="_blank" rel="noopener" aria-label="Verificar Procedimientos para crear y modificar un proyecto de Git en Microsoft Learn">Verificar</a></li>
+          <li><b>Edición de código mediante creación de ramas y combinación en Git</b><small>10 abr 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/8ay9t38w" target="_blank" rel="noopener" aria-label="Verificar Edición de código mediante creación de ramas y combinación en Git en Microsoft Learn">Verificar</a></li>
+          <li><b>Colaboración con Git</b><small>10 abr 2024</small><a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/jcg4apzt" target="_blank" rel="noopener" aria-label="Verificar Colaboración con Git en Microsoft Learn">Verificar</a></li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="ruta">
+      <div class="cab">
+        <span class="tipo">Módulo · C#</span>
+        <b>Instalación y configuración de Visual Studio Code para el desarrollo de C#</b>
+        <small>20 nov 2024 · evaluación aprobada</small>
+        <a href="https://learn.microsoft.com/es-mx/users/joelleon-8831/achievements/p59al654" target="_blank" rel="noopener" aria-label="Verificar Instalación y configuración de Visual Studio Code para el desarrollo de C# en Microsoft Learn">Verificar</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <p class="eyebrow">Proyectos</p>
+    <h2>Lo que he construido</h2>
+    <ol class="linea">
+      <li class="item">
+        <span class="cuando">2026 · Proyecto propio</span>
+        <h3>Desarrollo web para negocios</h3>
+        <p>Sitios para negocios de Bucaramanga. Las demos de ferretería, gimnasio y tienda de ropa están hechas en HTML, CSS y JavaScript, publicadas en GitHub Pages.</p>
+        <div class="go"><a href="../#trabajo">Ver los ejemplos</a></div>
+      </li>
+      <li class="item">
+        <span class="cuando">2024 · Campuslands</span>
+        <h3>Sistema de Gestión de Usuarios</h3>
+        <p>Sistema en Python para que un administrador gestione usuarios, estados, horarios y temas de docencia.</p>
+      </li>
+      <li class="item">
+        <span class="cuando">2024 · Campuslands</span>
+        <h3>Kario Media</h3>
+        <p>Proyecto en HTML y CSS con animaciones de carga y diseño adaptable a varios dispositivos.</p>
+      </li>
+      <li class="item">
+        <span class="cuando">2024 · Campuslands</span>
+        <h3>CampusBike</h3>
+        <p>Base de datos MySQL para gestionar usuarios, ítems y ventas mediante consultas y subconsultas SQL.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="habilidades">
+    <p class="eyebrow">Habilidades</p>
+    <h2>Con qué trabajo</h2>
+    <div class="grupo">
+      <h3>Técnicas</h3>
+      <div class="facts">
+        <span>Soporte técnico</span><span>Atención al cliente</span><span>Python</span><span>JavaScript</span><span>HTML y CSS</span><span>MySQL</span><span>Java</span><span>.NET</span><span>Excel</span><span>Git y GitHub</span>
+      </div>
+    </div>
+    <div class="grupo">
+      <h3>Competencias</h3>
+      <div class="facts">
+        <span>Responsable</span><span>Persistente</span><span>Trabajo en equipo</span><span>Comunicación</span><span>Autodidacta</span>
+      </div>
+    </div>
+    <div class="grupo">
+      <h3>Idiomas</h3>
+      <div class="facts">
+        <span>Español — nativo</span><span>Inglés — intermedio (B1–B2)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="contacto">
+      <h3>¿Hablamos?</h3>
+      <p>Para un sitio web, escríbame por WhatsApp desde la página principal. Para temas laborales, también estoy en LinkedIn y GitHub.</p>
+      <div class="row">
+        <a class="btn" href="../#contacto">Ir al contacto</a>
+        <a class="btn line" href="https://www.linkedin.com/in/joel-santiago-sierra-leon-691153208/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn line" href="https://github.com/Santiago3336" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Santiago Sierra · Desarrollo web · Bucaramanga, Santander.
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add("js");
+const menuBtn = document.querySelector(".menu-btn"), nav = document.getElementById("nav");
+const setMenu = open => { nav.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open); };
+menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+nav.addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && nav.classList.contains("open")) { setMenu(false); menuBtn.focus(); } });
+</script>
+
+  </body>
+</html>
