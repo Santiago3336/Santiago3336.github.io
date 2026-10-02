@@ -63,9 +63,23 @@ a{color:var(--accent)}
 
 header{border-bottom:1px solid var(--line)}
 .hbar{display:flex;align-items:center;gap:14px;padding-block:16px;flex-wrap:wrap}
-.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em}
+.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
 .brand span{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
-.hbar .cta{margin-left:auto}
+.nav{margin-left:auto}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:20px}
+.nav a{color:var(--ink-2);text-decoration:none;font-size:15px;font-weight:500}
+.nav a:hover,.nav a[aria-current]{color:var(--ink)}
+.nav a[aria-current]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+.menu-btn{display:none;margin-left:auto;width:42px;height:42px;place-items:center;border:1px solid var(--line-2);border-radius:9px;background:transparent;color:var(--ink);cursor:pointer}
+@media (max-width:720px){
+  .js .menu-btn{display:grid}
+  .js .hbar .cta{display:none}
+  .nav{order:9}
+  .js .nav{display:none;flex-basis:100%;margin-left:0}
+  .js .nav.open{display:block}
+  .nav ul{flex-direction:column;gap:0}
+  .nav a{display:block;padding:13px 2px;border-top:1px solid var(--line);font-size:16px}
+}
 
 .btn{font-family:var(--body);font-size:15px;font-weight:600;padding:11px 18px;border-radius:9px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
 :root[data-theme="dark"] .btn,:root:not([data-theme="light"]) .btn{color:#101218}
@@ -142,7 +156,18 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 
 <header>
   <div class="wrap hbar">
-    <div class="brand">Santiago Sierra<span>Desarrollo web · Bucaramanga</span></div>
+    <a class="brand" href="./">Santiago Sierra<span>Desarrollo web · Bucaramanga</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menú">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <ul>
+        <li><a href="./" aria-current="page">Inicio</a></li>
+        <li><a href="#trabajo">Ejemplos</a></li>
+        <li><a href="trayectoria/">Trayectoria</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
     <a class="btn sm cta" id="cta-top" href="#contacto">Hablemos 15 minutos</a>
   </div>
 </header>
@@ -261,9 +286,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
     <p class="eyebrow">Quién hace el trabajo</p>
     <h2>Sobre mí</h2>
     <div class="yo">
-      <p><strong>Soy Santiago Sierra, desarrollador web en Bucaramanga.</strong> Trabajo con un socio y nos dedicamos a sitios para negocios de la ciudad: comercio, talleres, consultorios, gimnasios.</p>
-      <p>Vengo de soporte técnico y atención al cliente, y eso cambia cómo hago las cosas: sé qué se siente cuando un cliente escribe y nadie le contesta. Por eso los sitios que hago están armados para que el cliente encuentre lo que busca y pueda escribir en dos toques.</p>
-      <p>Llevamos poco tiempo trabajando así, y prefiero decirlo que inventar una trayectoria. Por eso el ejemplo de su página va sin costo y sin compromiso: el riesgo lo corro yo, no usted.</p>
+      <p><strong>Soy Santiago Sierra, desarrollador web en Bucaramanga.</strong> Hago sitios para negocios de la ciudad: comercio, talleres, consultorios, gimnasios.</p>
+      <p>También trabajo en soporte técnico y atención al cliente, y eso cambia cómo hago las cosas: sé qué se siente cuando un cliente escribe y nadie le contesta. Por eso los sitios que hago están armados para que el cliente encuentre lo que busca y pueda escribir en dos toques.</p>
+      <p>Llevo poco tiempo haciendo sitios para negocios, y prefiero decirlo que inventar experiencia. Por eso el ejemplo de su página va sin costo y sin compromiso: el riesgo lo corro yo, no usted.</p>
+      <p><a href="trayectoria/">Ver mi trayectoria: experiencia, formación y certificados →</a></p>
     </div>
   </section>
 
@@ -297,6 +323,13 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 </footer>
 
 <script>
+document.documentElement.classList.add("js");
+const menuBtn = document.querySelector(".menu-btn"), nav = document.getElementById("nav");
+const setMenu = open => { nav.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open); };
+menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+nav.addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && nav.classList.contains("open")) { setMenu(false); menuBtn.focus(); } });
+
 /* ===== CAMBIA SOLO ESTAS LÍNEAS ===== */
 const CONFIG = {
   whatsapp: "315 514 0200",                 // tu número, sin +57
