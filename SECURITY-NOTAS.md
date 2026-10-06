@@ -1,6 +1,6 @@
 # Notas de seguridad y cumplimiento
 
-Son notas internas. No se enlazan desde el sitio. Última revisión: 1 de octubre de 2026.
+Son notas internas. No se enlazan desde el sitio. Última revisión: 6 de octubre de 2026.
 
 Las páginas de este repositorio son:
 
@@ -15,8 +15,11 @@ Santiago_Clothes está en otro repositorio y no entra en esta revisión.
 
 - **Ninguna página recoge ni envía datos personales.** No usan `fetch`, `XMLHttpRequest`, `sendBeacon` ni WebSocket. No tienen formularios con `action`. No usan cookies, `localStorage` ni `sessionStorage`. No tienen analítica ni píxeles.
 - Por eso **no llevan política de tratamiento de datos ni aviso de cookies**.
-- El formulario de clase de prueba del gimnasio pide nombre y celular. Solo arma el mensaje y lo muestra en pantalla para que el visitante lo copie. Los datos no salen del navegador.
-- El cotizador de la ferretería funciona igual.
+- El formulario de clase de prueba del gimnasio pide nombre, celular, sede, día y clase. Solo arma el mensaje y lo muestra en pantalla para que el visitante lo copie. Los datos no salen del navegador.
+- El cotizador de la ferretería funciona igual: el carrito vive solo en memoria.
+- El horario del gimnasio y el estado "Abierto ahora" de sus sedes usan solo el reloj del dispositivo, con la hora de Bogotá. No consultan ningún servicio.
+- Los mapas de las sedes del gimnasio son SVG ilustrativos, no Google Maps.
+- Cada demo termina con una franja con mi voz y un enlace `wa.me` a mi número. Es un enlace de salida, no carga nada, y nunca está dentro de la marca ficticia. Los botones de las marcas ficticias no abren WhatsApp: muestran el mensaje en pantalla.
 - El botón de WhatsApp de la portada abre `wa.me` con un saludo fijo. No manda ningún dato del visitante. Si el visitante escribe algo, lo hace él mismo dentro de WhatsApp.
 - Los datos de contacto publicados a propósito son **mi número de WhatsApp y mi correo de trabajo**, en el bloque `CONFIG` de `index.html`.
 - `trayectoria/` publica a propósito, como en mi hoja de vida: nombre completo, empresa y cargo actuales, colegio y bootcamp, y enlaces a LinkedIn, GitHub y a mis logros de Microsoft Learn.

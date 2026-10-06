@@ -20,7 +20,10 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 - HTML, CSS y JavaScript, sin frameworks ni dependencias.
 - Cada página es un solo archivo `index.html`.
 - Las tipografías vienen de Google Fonts.
-- El fondo de la portada es una ciudad de noche dibujada con Canvas 2D: calles inventadas (no es un mapa real), sin librerías ni archivos externos. La cámara se mueve con el scroll y, si el sistema pide reducir el movimiento, queda como imagen fija.
+- El fondo de la portada es una ciudad de noche dibujada con Canvas 2D: calles inventadas (no es un mapa real), sin librerías ni archivos externos. La cámara se mueve con el scroll, el fondo se puede pausar con un botón y, si el sistema pide reducir el movimiento, queda como imagen fija.
+- La trayectoria es una ruta por la misma ciudad: su línea de tiempo se dibuja con el scroll. Entre la portada y la trayectoria hay una transición de vista (View Transitions) con el nombre anclado.
+- Las demos tienen su propio momento animado: el producto que vuela al cotizador en la ferretería, el amanecer y el pulso del gimnasio, y las prendas que se recuelgan al filtrar en la tienda de ropa.
+- Todo el movimiento usa técnicas nativas del navegador (CSS, Web Animations, View Transitions y animaciones ligadas al scroll como mejora progresiva) y respeta la opción de reducir movimiento.
 - Publicado con GitHub Pages desde la rama `main`.
 
 ```
