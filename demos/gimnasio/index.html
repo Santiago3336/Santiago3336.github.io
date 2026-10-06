@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <script>if ("IntersectionObserver" in window) document.documentElement.classList.add("js")</script>
     <title>Santiago GYM | Planes, horarios y clase de prueba (demo)</title>
     <meta name="description" content="Demo de sitio web para gimnasio: planes con precio a la vista, horario de clases con cupos y reserva de clase de prueba gratis. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
     <link rel="canonical" href="https://santiago3336.github.io/demos/gimnasio/">
@@ -18,24 +19,18 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap">
     <style>
-      :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-      body{margin:0}
-      img{max-width:100%}
-      [hidden]{display:none!important}
-    </style>
-  </head>
-  <body>
-<style>
-.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--coral);color:#fff;padding:10px 14px;border-radius:0 0 8px 0;font-weight:700;text-decoration:none}
-.skip:focus{left:0}
-/* Layout: una sola columna de decisión — planes primero, horario después, prueba gratis al final */
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+/* Cartel de las 5 a.m.: amanece en el hero y el pulso subraya el titular; luego bloques de cartel
+   (crema, pizarra ciruela, crema, coral) y al final la franja de Santiago, en otra voz. Nada en bucle. */
 :root{
   --bg:#FBF7F4; --surface:#FFFFFF; --deep:#2A1A33;
   --ink:#1F1424; --ink-2:#5E5066; --ink-3:#71677A;
   --line:#E7DFE4; --line-2:#D3C7CE;
-  --coral:#C4302D; --coral-soft:#FBE7E4; --plum:#5B3A6E; --plum-soft:#F0E8F4;
+  --coral:#C4302D; --coral-fill:#C4302D; --coral-soft:#FBE7E4; --plum:#5B3A6E; --plum-soft:#F0E8F4;
+  --sol:#FF8A7E; --suelo:#1D1224; --focus:var(--plum); --ease-out:cubic-bezier(.16,1,.3,1);
   --display:'Anton','Arial Black',sans-serif;
   --body:'Barlow','Helvetica Neue',Arial,sans-serif;
   color-scheme:light;
@@ -45,113 +40,285 @@
   --ink:#F1EBF3; --ink-2:#B3A8B9; --ink-3:#9C91A3;
   --line:#2F2634; --line-2:#3F3446;
   --coral:#F5776F; --coral-soft:#33191B; --plum:#C7A5D9; --plum-soft:#251A2C;
-  color-scheme:dark;
+  --suelo:#0D090F; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#171219; --surface:#211A25; --deep:#120D16;
   --ink:#F1EBF3; --ink-2:#B3A8B9; --ink-3:#9C91A3;
   --line:#2F2634; --line-2:#3F3446;
   --coral:#F5776F; --coral-soft:#33191B; --plum:#C7A5D9; --plum-soft:#251A2C;
-  color-scheme:dark;
+  --suelo:#0D090F; color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
-h1,h2,h3,.num{font-family:var(--display);font-weight:400;letter-spacing:.005em;margin:0;text-transform:uppercase}
+html{scrollbar-color:var(--plum) var(--bg);accent-color:var(--coral-fill);caret-color:var(--coral-fill);scrollbar-gutter:stable}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+::selection{background:var(--coral-fill);color:#fff}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.num{font-family:var(--display);font-weight:400;letter-spacing:.005em;margin:0;text-transform:uppercase;text-wrap:balance}
+p{text-wrap:pretty}
+a{text-underline-offset:.2em}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--coral-fill);color:#fff;padding:10px 14px;border-radius:0 0 8px 0;font-weight:700;text-decoration:none}
+.skip:focus{left:0}
 .demo{margin:0;background:var(--deep);color:#EDE6F0;font-size:12px;text-align:center;padding:7px 16px}
-.demo b{color:var(--coral)}
-.wrap{max-width:900px;margin:0 auto;padding-inline:16px}
+.demo b{color:var(--sol)}
+.wrap{max-width:960px;margin:0 auto;padding-inline:16px}
 
+/* Cabecera: en celular los 4 enlaces pasan a una segunda fila */
 header{background:var(--surface);border-bottom:1px solid var(--line)}
 .hbar{display:flex;align-items:center;gap:12px;padding-block:13px}
 .logo{display:flex;align-items:baseline;gap:7px;text-decoration:none;color:var(--ink)}
 .logo .m{font-family:var(--display);font-size:22px;line-height:1}
 .logo .m i{font-style:normal;color:var(--coral)}
-.logo small{font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
+.logo small{font-size:11px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
 nav{margin-left:auto;display:flex;gap:16px}
-nav a{font-size:14.5px;font-weight:500;color:var(--ink-2);text-decoration:none}
+nav a{font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none;padding-block:6px}
 nav a:hover{color:var(--coral)}
-@media(max-width:680px){nav{display:none}}
+@media(max-width:680px){.hbar{flex-wrap:wrap;row-gap:4px;padding-bottom:8px}nav{margin-left:0;width:100%;gap:18px;overflow-x:auto}}
+h2[id]{scroll-margin-top:16px}
 
-.hero{background:var(--deep);color:#F3EDF5;padding-block:44px 40px;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;right:-70px;top:-70px;width:290px;height:290px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(216,67,63,.34),transparent 68%)}
-.hero h1{font-size:clamp(34px,9vw,62px);line-height:.96;max-width:17ch;position:relative}
-.hero h1 i{font-style:normal;color:var(--coral)}
-.hero p{color:#C3B8C9;max-width:46ch;margin:16px 0 0;font-size:17px;position:relative}
-.hrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;position:relative}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#3A2B44;border-radius:8px;overflow:hidden;margin-top:30px;position:relative}
-.stats div{background:#241A2B;padding:15px 14px}
-.stats b{display:block;font-family:var(--display);font-size:26px;color:#fff;line-height:1}
-.stats small{display:block;color:#AFA2B6;font-size:12px;margin-top:4px}
+/* Hero «5 a.m.» */
+.hero{--focus:#fff;background:var(--deep);color:#F3EDF5;padding-top:44px;position:relative}
+.hero h1{font-size:clamp(40px,10vw,76px);line-height:.92;max-width:15ch}
+.hero h1 i{display:block;font-style:normal;color:var(--sol)}
+.pulso{display:block;width:min(100%,26rem);height:auto;margin-top:14px}
+.pulso path{fill:none;stroke:var(--sol);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.pulso .subr{fill:var(--sol);transform-box:fill-box;transform-origin:left center}
+.hero p{color:#C3B8C9;max-width:46ch;margin:14px 0 0;font-size:18px}
+.hrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.amanecer{position:relative;height:clamp(110px,22vw,190px);overflow:hidden;margin-top:34px}
+.cielo{position:absolute;inset:0;background:linear-gradient(#2A1A33 0 20%,#4A1F3D 20% 38%,#6E2640 38% 54%,#982B3A 54% 70%,#C4302D 70% 84%,#E0584A 84%);
+  background:linear-gradient(var(--deep) 0 20%,color-mix(in oklab,var(--deep),var(--coral-fill) 25%) 20% 38%,color-mix(in oklab,var(--deep),var(--coral-fill) 50%) 38% 54%,color-mix(in oklab,var(--deep),var(--coral-fill) 75%) 54% 70%,var(--coral-fill) 70% 84%,#E0584A 84%)}
+.cielo::after{content:"";position:absolute;inset:0;background:var(--deep);opacity:0}
+.sol{position:absolute;left:58%;bottom:-38%;width:clamp(110px,26vw,220px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 40%,#FFE1D6,#FF9C8C 62%,#FF8A7E)}
+.cerros{position:absolute;left:0;bottom:0;width:100%;height:58%;fill:var(--suelo)}
+.suelo{background:var(--suelo);padding-block:6px 18px}
+.datos{display:grid;gap:0}
+.datos div{display:flex;align-items:baseline;gap:10px;padding-block:10px;border-top:1px solid rgba(255,255,255,.14)}
+.datos div:first-child{border-top:0}
+.datos b{font-family:var(--display);font-weight:400;font-size:30px;line-height:1;color:#F3EDF5}
+.datos span{color:#C3B8C9;font-size:14.5px}
+@media(min-width:620px){.datos{grid-template-columns:repeat(3,1fr)}.datos div{border-top:0;border-left:1px solid rgba(255,255,255,.14);padding-inline:16px}.datos div:first-child{border-left:0;padding-left:0}}
+@media (prefers-reduced-motion:no-preference){
+  .cielo::after{animation:noche 1.2s var(--ease-out) both}
+  .sol{animation:sale 1.3s var(--ease-out) .1s both}
+  .pulso path{stroke-dasharray:1;animation:trazo 1.1s cubic-bezier(.65,0,.35,1) .3s both}
+  .pulso .subr{animation:subr .4s var(--ease-out) 1.35s both}
+}
+@keyframes noche{from{opacity:1}to{opacity:0}}
+@keyframes sale{from{transform:translateY(45%)}}
+@keyframes trazo{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes subr{from{transform:scaleX(0)}}
 
-h2.sec{font-size:clamp(22px,5vw,32px);margin:42px 0 6px}
-.sub{color:var(--ink-2);margin:0 0 18px;max-width:52ch}
-
-.planes{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}
-.plan{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:20px 18px;display:flex;flex-direction:column}
-.plan.best{border-color:var(--coral);border-width:2px;padding:19px 17px}
-.tagbest{font-family:var(--body);font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
-.plan h3{font-size:20px}
-.plan .num{font-size:37px;line-height:1;margin-top:11px;font-variant-numeric:tabular-nums}
-.plan .per{font-family:var(--body);font-size:13px;color:var(--ink-3);margin-top:3px}
-.plan ul{list-style:none;padding:0;margin:15px 0 0;display:flex;flex-direction:column;gap:7px;font-size:14.5px;color:var(--ink-2)}
-.plan li{display:flex;gap:8px;align-items:flex-start}
-.plan li svg{flex:0 0 auto;margin-top:4px}
-.plan .pick{margin-top:auto;padding-top:17px}
-
-.horario{background:var(--surface);border:1px solid var(--line);border-radius:11px;overflow:hidden}
-.dias{display:flex;overflow-x:auto;border-bottom:1px solid var(--line)}
-.dia{flex:1 0 auto;font-family:var(--body);font-size:13.5px;font-weight:600;padding:12px 15px;border:0;background:transparent;color:var(--ink-3);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent}
-.dia[aria-pressed="true"]{color:var(--coral);border-bottom-color:var(--coral)}
-.clases{padding:6px 0}
-.clase{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line)}
-.clase:last-child{border-bottom:0}
-.clase .h{font-family:var(--body);font-weight:700;font-size:14.5px;min-width:62px;font-variant-numeric:tabular-nums}
-.clase .n{flex:1;min-width:0}
-.clase .n b{display:block;font-size:15.5px;font-weight:600}
-.clase .n small{color:var(--ink-3);font-size:13px}
-.cupo{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:4px;white-space:nowrap}
-.cupo.libre{background:var(--plum-soft);color:var(--plum)}
-.cupo.pocos{background:var(--coral-soft);color:var(--coral)}
-
-.sedes{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-@media(max-width:620px){.sedes{grid-template-columns:1fr}}
-.sede{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:18px}
-.sede h3{font-size:18px}
-.sede p{margin:8px 0 0;color:var(--ink-2);font-size:14.5px}
-.sede dl{margin:11px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
-.sede dt{color:var(--ink-3)}
-.sede dd{margin:0;font-variant-numeric:tabular-nums}
-
-.prueba{background:var(--coral);color:#fff;border-radius:13px;padding:26px;margin-top:42px}
-.prueba h2{font-size:clamp(23px,5vw,34px);color:#fff;margin:0}
-.prueba p{color:#FFEDEB;max-width:46ch;margin:10px 0 0}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-@media(max-width:560px){.form{grid-template-columns:1fr}}
-.form label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#FFEDEB;margin-bottom:5px}
-.form input,.form select{width:100%;font-family:var(--body);font-size:15px;padding:11px;border-radius:7px;border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.12);color:#fff}
-.form input::placeholder{color:#FFDDD9}
-.form select option{color:#1F1424}
-.full{grid-column:1/-1}
-
-.btn{font-family:var(--body);font-size:15px;font-weight:700;padding:12px 20px;border-radius:8px;border:2px solid var(--coral);background:var(--coral);color:#fff;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+/* Botones */
+.btn{font-family:var(--body);font-size:15px;font-weight:700;padding:12px 20px;border-radius:6px;border:2px solid var(--coral-fill);background:var(--coral-fill);color:#fff;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
 .btn:hover{filter:brightness(1.08)}
-.btn.line{background:transparent;color:var(--coral)}
-.btn.oncoral{background:#fff;color:var(--coral);border-color:#fff}
+.btn.line{background:transparent;color:var(--coral);border-color:var(--coral)}
+.btn.oncoral{background:#fff;color:var(--coral-fill);border-color:#fff}
 .btn.light{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.45)}
 .btn.block{width:100%}
+@media (prefers-reduced-motion:no-preference){.btn{transition:transform .12s ease}.btn:active{transform:scale(.97)}}
 
-.sheet{position:fixed;inset:0;background:rgba(18,13,22,.6);display:grid;place-items:center;z-index:40;padding:16px}
-.sheet[hidden]{display:none}
-.sheet .box{background:var(--surface);border-radius:13px;max-width:540px;width:100%;padding:22px;max-height:82vh;overflow:auto}
-.sheet h3{font-size:21px}
-.sheet pre{white-space:pre-wrap;font-family:var(--body);font-size:14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:13px;margin:13px 0 0;color:var(--ink)}
-.sheet .nota{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+/* Títulos de cartel */
+h2.sec{font-size:clamp(30px,7vw,52px);line-height:.95;margin:64px 0 10px}
+h2.sec::after{content:"";display:block;width:56px;height:6px;background:var(--coral-fill);margin-top:12px}
+.sub{color:var(--ink-2);margin:0 0 20px;max-width:56ch}
+
+/* Planes «carga de barra» */
+.planes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px}
+.plan{background:var(--surface);border:1.5px solid var(--line-2);border-radius:6px;padding:20px 18px;display:flex;flex-direction:column}
+.tagbest{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
+.plan h3{font-size:22px}
+.precio{margin:10px 0 0}
+.plan .num{display:block;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.plan .per{display:block;font-size:13.5px;color:var(--ink-3);margin-top:4px}
+.carga{margin-top:14px}
+.barra{display:block;height:10px;border-radius:2px;background:var(--line);overflow:hidden}
+.barra i{display:block;height:100%;background:var(--coral-fill);transform-origin:left;transform:scaleX(var(--v))}
+.ahorro{margin:7px 0 0;font-size:13.5px;font-weight:600;color:var(--plum)}
+.plan ul{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:7px;font-size:15px;color:var(--ink-2)}
+.plan li{display:flex;gap:8px;align-items:flex-start}
+.plan li svg{flex:0 0 auto;margin-top:4px;color:var(--coral)}
+.plan .pick{margin-top:auto;padding-top:18px}
+.plan.best{--focus:#fff;background:var(--deep);color:#F3EDF5;border:2px solid var(--coral-fill)}
+.plan.best .tagbest{color:var(--sol)}
+.plan.best .per{color:#C3B8C9}
+.plan.best ul{color:#DDD2E2}
+.plan.best li svg{color:var(--sol)}
+.plan.best .barra{background:rgba(255,255,255,.16)}
+.plan.best .barra i{background:var(--sol)}
+.plan.best .ahorro{color:var(--sol)}
+.nota-planes{font-size:13px;color:var(--ink-3);margin:12px 0 0}
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:view()){
+    .barra i{animation:carga linear both;animation-timeline:view();animation-range:entry 20% cover 40%}
+  }
+  @supports not (animation-timeline:view()){
+    .js .carga:not(.in) .barra i{transform:scaleX(0)}
+    .barra i{transition:transform .9s var(--ease-out)}
+  }
+}
+@keyframes carga{from{transform:scaleX(0)}to{transform:scaleX(var(--v))}}
+
+/* Horario «pizarra» */
+.horario{--focus:#fff;background:var(--deep);color:#F3EDF5;border:1px solid var(--line-2);border-radius:6px;overflow:hidden}
+.dias{display:grid;grid-template-columns:repeat(6,1fr);position:relative;min-height:50px;border-bottom:1px solid rgba(255,255,255,.12)}
+html:not(.js) .dias{display:none}
+.dia{font-family:var(--body);font-size:14px;font-weight:600;padding:13px 4px;border:0;background:transparent;color:#C3B8C9;cursor:pointer;white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px}
+.dia[aria-pressed="true"]{color:#F3EDF5}
+.dia .corto{display:none}
+.hoy{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sol);line-height:1}
+.ind{position:absolute;bottom:-1px;left:0;width:calc(100% / 6);height:3px;background:var(--sol);transform:translateX(calc(var(--i, 0) * 100%))}
+@media (prefers-reduced-motion:no-preference){.ind{transition:transform .32s var(--ease-out)}}
+@media(max-width:520px){.dia .largo{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.dia .corto{display:inline}}
+.clases{padding:4px 0;view-transition-name:clases}
+.dia-t{font-size:20px;padding:16px 18px 4px;color:#F3EDF5}
+.dia-p ul{list-style:none;margin:0;padding:0}
+.js .clases{display:grid}
+.js .dia-p{grid-area:1/1}
+.js .dia-p:not(.on){visibility:hidden}
+.js .dia-t{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.clase{display:grid;grid-template-columns:62px 1fr auto;grid-template-areas:"h n c" ". r r";align-items:center;gap:4px 14px;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.dia-p li:last-child{border-bottom:0}
+@media(min-width:640px){.clase{grid-template-columns:62px 1fr auto auto;grid-template-areas:"h n c r"}}
+.clase .h{grid-area:h;font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.clase .n{grid-area:n;min-width:0}
+.clase .n b{display:block;font-size:16px;font-weight:600}
+.clase .n small{color:#C3B8C9;font-size:13px}
+.cupo{grid-area:c;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 8px;border-radius:3px;white-space:nowrap;justify-self:end}
+.cupo.libre{background:rgba(255,255,255,.10);color:#E2D3EA}
+.cupo.pocos{background:rgba(255,138,126,.16);color:#FF8A7E}
+.reservar{grid-area:r;justify-self:start;color:var(--sol);font-size:14px;font-weight:600;padding:6px 0;text-decoration:underline;text-underline-offset:.25em}
+@media(min-width:640px){.reservar{justify-self:end}}
+@media (prefers-reduced-motion:no-preference){
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+  ::view-transition-old(clases){animation:.16s ease-in both sale-izq}
+  ::view-transition-new(clases){animation:.28s var(--ease-out) both entra-der}
+  html[data-dir="atras"]::view-transition-old(clases){animation-name:sale-der}
+  html[data-dir="atras"]::view-transition-new(clases){animation-name:entra-izq}
+}
+@keyframes sale-izq{to{opacity:0;transform:translateX(-16px)}}
+@keyframes entra-der{from{opacity:0;transform:translateX(16px)}}
+@keyframes sale-der{to{opacity:0;transform:translateX(16px)}}
+@keyframes entra-izq{from{opacity:0;transform:translateX(-16px)}}
+
+/* Sedes con mapa ilustrativo y estado en vivo */
+.sedes{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:620px){.sedes{grid-template-columns:1fr}}
+.sede{background:var(--surface);border:1.5px solid var(--line-2);border-radius:6px;padding:16px 18px 18px}
+.mapa{margin:0 0 14px}
+.mapa svg{display:block;width:100%;height:auto;border-radius:4px;background:var(--bg);color:var(--ink-2)}
+.mapa .mz{fill:var(--line)}
+.mapa .parque{fill:var(--plum-soft)}
+.mapa text{font-family:var(--body);font-size:11px;font-weight:600;fill:currentColor}
+.mapa .pin{fill:var(--coral-fill);transform-box:fill-box;transform-origin:50% 100%}
+.mapa .sombra{fill:rgba(0,0,0,.2);transform-box:fill-box;transform-origin:center}
+.mapa figcaption{font-size:12px;color:var(--ink-3);margin-top:5px}
+.sede h3{font-size:22px}
+.estado{display:inline-block;margin:8px 0 0;font-size:13.5px;font-weight:700;padding:3px 9px;border-radius:3px;background:var(--line);color:var(--ink-2)}
+.estado.abierto{background:var(--plum-soft);color:var(--plum)}
+.sede p.dir{margin:8px 0 0;color:var(--ink-2);font-size:15px}
+.sede dl{margin:11px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14.5px}
+.sede dt{color:var(--ink-3)}
+.sede dd{margin:0;font-variant-numeric:tabular-nums}
+.sede .hoy-d{font-weight:700;color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){
+  .js .mapa:not(.in) .pin{opacity:0}
+  .js .mapa.in .pin{animation:caer .6s cubic-bezier(.3,0,.5,1) both}
+  .js .mapa.in .sombra{animation:sombra .6s cubic-bezier(.3,0,.5,1) both}
+}
+@keyframes caer{0%{opacity:0;transform:translateY(-30px)}55%{opacity:1;transform:none}72%{transform:translateY(-5px)}100%{transform:none}}
+@keyframes sombra{0%{transform:scale(.3)}55%{transform:scale(1.1)}100%{transform:none}}
+
+/* Clase gratis: cartel coral con pista y pesa rusa */
+.prueba{--focus:#fff;background:var(--coral-fill);color:#fff;border-radius:6px;margin-top:64px;overflow:hidden;display:grid}
+.prueba .arte{position:relative;min-height:72px;background:repeating-linear-gradient(-60deg,transparent 0 22px,rgba(42,26,51,.22) 22px 44px);display:grid;place-items:center;order:-1}
+.prueba .arte::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-60deg,transparent 0 43px,rgba(255,255,255,.35) 43px 44px)}
+.pesa{position:relative;z-index:1;width:64px;height:auto}
+.pesa path{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.prueba .cont{padding:26px}
+@media(min-width:760px){.prueba{grid-template-columns:1fr minmax(160px,30%)}.prueba .arte{order:0;min-height:0}.pesa{width:120px}}
+.prueba h2{font-size:clamp(28px,5vw,40px);color:#fff}
+.prueba p{color:#FFEDEB;max-width:46ch;margin:10px 0 0}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+@media(max-width:560px){.form{grid-template-columns:1fr}}
+.form label{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#FFEDEB;margin-bottom:5px}
+.form input,.form select{width:100%;font-family:var(--body);font-size:16px;padding:11px;border-radius:5px;border:0;background:#fff;color:#1F1424}
+.form input::placeholder{color:#71677A}
+.form :focus-visible{outline:3px solid #fff;outline-offset:2px}
+.form [aria-invalid="true"]{box-shadow:inset 0 0 0 2px #2A1A33}
+.full{grid-column:1/-1}
+.elegida{grid-column:1/-1;margin:0;font-weight:600;color:#fff}
+.elegida:empty,.err:empty{display:none}
+.err{grid-column:1/-1;justify-self:start;margin:0;background:#fff;color:var(--coral-fill);font-weight:700;padding:6px 11px;border-radius:4px}
+.lleno{position:relative}
+.lleno::after{content:"";position:absolute;inset:-3px;border-radius:7px;box-shadow:0 0 0 3px #fff;opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .js .pesa:not(.in) path{stroke-dasharray:1;stroke-dashoffset:1}
+  .js .pesa.in path{stroke-dasharray:1;animation:trazo 1.2s cubic-bezier(.65,0,.35,1) both}
+  .lleno::after{animation:lleno .9s ease-out both}
+}
+@keyframes lleno{from{opacity:1}to{opacity:0}}
+
+/* Pase de entrada */
+html:has(.sheet[open]){overflow:hidden}
+.sheet{padding:0;border:0;background:transparent;width:min(540px,100% - 32px);max-width:none;max-height:none;overflow:visible;color:var(--ink);filter:drop-shadow(0 18px 30px rgba(18,13,22,.35));
+  opacity:1;transition:opacity .2s,display .2s allow-discrete,overlay .2s allow-discrete}
+.sheet:not([open]){opacity:0}
+@starting-style{.sheet[open]{opacity:0}}
+.sheet::backdrop{background:rgba(18,13,22,.6);transition:opacity .2s,display .2s allow-discrete,overlay .2s allow-discrete}
+.sheet:not([open])::backdrop{opacity:0}
+@starting-style{.sheet[open]::backdrop{opacity:0}}
+.sheet .box{position:relative;background:var(--surface);border-radius:13px;padding:0 22px 22px;max-height:82vh;max-height:82dvh;overflow:auto;
+  -webkit-mask:radial-gradient(circle 11px at 0 64px,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% 64px,#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 11px at 0 64px,#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% 64px,#0000 98%,#000) right/51% 100% no-repeat}
+.talon{height:64px;display:flex;align-items:center;border-bottom:2px dashed var(--line-2);font-family:var(--display);font-size:16px;letter-spacing:.04em;color:var(--ink-2);text-transform:uppercase;margin-bottom:16px}
+.sello{position:absolute;top:13px;right:20px;transform:rotate(-7deg);border:3px solid currentColor;outline:1.5px solid currentColor;outline-offset:2px;padding:4px 9px;font-family:var(--display);font-size:18px;text-transform:uppercase;color:var(--coral)}
+.sheet h3{font-size:24px}
+.sheet pre{white-space:pre-wrap;font-family:var(--body);font-size:14.5px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:13px;margin:13px 0 0;color:var(--ink)}
+.sheet .nota{font-size:13px;color:var(--ink-3);margin-top:10px}
 .sheet .row{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
-footer{margin-top:44px;padding-block:22px 32px;border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
+@media (prefers-reduced-motion:no-preference){
+  .sheet{transition:opacity .2s,transform .32s var(--ease-out),display .32s allow-discrete,overlay .32s allow-discrete}
+  .sheet:not([open]){transform:translateY(12px);transition-duration:.16s}
+  @starting-style{.sheet[open]{transform:translateY(28px) rotate(-1.5deg)}}
+  .sheet[open] .sello{animation:sello .34s cubic-bezier(.2,.8,.3,1) .16s both}
+}
+@keyframes sello{0%{opacity:0;transform:rotate(-14deg) scale(1.6)}70%{opacity:1;transform:rotate(-6deg) scale(.95)}100%{transform:rotate(-7deg)}}
+
+/* Franja de Santiago: su voz y su mundo «ciudad de noche», separada de la marca */
+.santiago{--focus:#97ACFF;position:relative;overflow:hidden;background:#070A14;color:#ECEEF3;margin-top:72px;padding-block:clamp(44px,7vw,72px)}
+.santiago::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 120% at 88% 0%,rgba(47,75,216,.24),transparent 62%);pointer-events:none}
+.santiago .wrap{position:relative}
+.santiago h2{font-family:'Bricolage Grotesque',var(--body);font-weight:700;font-size:clamp(26px,4.2vw,38px);line-height:1.08;letter-spacing:-.02em;text-transform:none;max-width:22ch;color:#ECEEF3}
+.santiago p{color:#B4BCCA;max-width:56ch;margin:14px 0 0;font-size:16.5px}
+.rasgos{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.rasgos li{display:flex;gap:10px;align-items:center;color:#ECEEF3;font-size:16px}
+.rasgos .chk{flex:none}
+.rasgos .chk circle{fill:none;stroke:#97ACFF;stroke-width:1.6}
+.rasgos .chk path{fill:none;stroke:#97ACFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rasgos .usado .chk circle{fill:#97ACFF}
+.rasgos .usado .chk path{stroke:#070A14}
+.rasgos .ya{display:none;color:#97ACFF;font-style:normal}
+.rasgos .usado .ya{display:inline}
+.st-acc{display:flex;gap:14px 22px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.btn-wa{display:inline-flex;gap:9px;align-items:center;padding:12px 22px;border-radius:999px;background:#25D366;color:#0B141A;font-family:var(--body);font-weight:700;font-size:15px;text-decoration:none}
+.btn-wa svg{width:17px;height:17px;flex:none}
+.st-link{color:#97ACFF;font-weight:600}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){.btn-wa{transition:transform .18s ease}.btn-wa:hover{transform:translateY(-2px)}}
+
+footer{padding-block:24px 32px;color:var(--ink-3);font-size:13px}
 footer b{color:var(--ink-2)}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--plum);outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
+
+/* Red de seguridad con reducir movimiento: sin desplazamientos; quedan fundidos y cambios de color */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,::before,::after{animation-duration:1ms!important;animation-delay:0s!important;transition-property:opacity,color,background-color,border-color!important}
+}
+    </style>
+  </head>
+  <body>
 
 <p class="demo">Sitio de <b>demostración</b> · «Santiago GYM» es una marca inventada para mostrar el diseño. Precios, horarios y sedes son de ejemplo.</p>
 
@@ -159,7 +326,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <header>
   <div class="wrap hbar">
     <a class="logo" href="#top"><span class="m">SANTIAGO <i>GYM</i></span><small>Bucaramanga</small></a>
-    <nav>
+    <nav aria-label="Secciones">
       <a href="#planes">Planes</a>
       <a href="#horario">Horario</a>
       <a href="#sedes">Sedes</a>
@@ -172,15 +339,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <section class="hero" id="top">
   <div class="wrap">
     <h1>Entrena hoy. <i>La primera clase va por nuestra cuenta.</i></h1>
-    <p>Dos sedes en Bucaramanga, 40 clases dirigidas a la semana y planes desde $69.000 al mes. Sin matrícula y sin contratos de un año.</p>
+    <!-- Pulso: plano, un latido y plano; termina en el subrayado del titular. Se traza una sola vez. -->
+    <svg class="pulso" viewBox="0 0 400 32" width="400" height="32" aria-hidden="true" focusable="false"><path pathLength="1" d="M0 20H96l6-5 6 5h20l5 6 9-26 9 32 6-12h43q8-8 16 0h32"/><rect class="subr" x="248" y="17" width="152" height="6" rx="1"/></svg>
+    <p>Dos sedes en Bucaramanga, 28 clases dirigidas a la semana y planes desde $69.000 al mes. Sin matrícula y sin contratos de un año.</p>
     <div class="hrow">
       <a class="btn oncoral" href="#prueba">Reservar clase de prueba</a>
       <a class="btn light" href="#planes">Ver planes y precios</a>
     </div>
-    <div class="stats">
-      <div><b>2</b><small>sedes: Cabecera y Antonia Santos</small></div>
-      <div><b>40</b><small>clases dirigidas por semana</small></div>
-      <div><b>5 a.m.</b><small>abrimos de lunes a sábado</small></div>
+  </div>
+  <!-- Amanecer de cartel sobre los cerros: el cielo pasa de noche a coral y el sol sale una vez -->
+  <div class="amanecer" aria-hidden="true">
+    <div class="cielo"></div>
+    <div class="sol"></div>
+    <svg class="cerros" viewBox="0 0 1200 120" preserveAspectRatio="none" focusable="false"><path d="M0 120V70C80 58 140 30 220 42S340 80 420 70 560 22 650 30 790 74 880 66 1020 34 1100 44 1180 60 1200 62V120Z"/></svg>
+  </div>
+  <div class="suelo">
+    <div class="wrap datos">
+      <div><b>2</b><span>sedes: Cabecera y Antonia Santos</span></div>
+      <div><b>28</b><span>clases dirigidas por semana</span></div>
+      <div><b>5 a.m.</b><span>abrimos de lunes a viernes</span></div>
     </div>
   </div>
 </section>
@@ -188,144 +365,341 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div class="wrap">
   <h2 class="sec" id="planes">Planes y precios</h2>
   <p class="sub">Sin matrícula, sin cláusula de permanencia. Puedes congelar el plan hasta 15 días si viajas.</p>
-  <div class="planes" id="planes-g"></div>
+  <div class="planes" id="planes-g">
+    <article class="plan">
+      <h3>Día</h3>
+      <p class="precio"><span class="num">$12.000</span><span class="per">pase por día</span></p>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Acceso a la sede que elijas</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Incluye clases dirigidas</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Sin inscripción</span></li>
+      </ul>
+      <div class="pick"><button class="btn line block" type="button" data-plan="Día">Quiero el día</button></div>
+    </article>
+    <article class="plan">
+      <h3>Mensual</h3>
+      <p class="precio"><span class="num">$69.000</span><span class="per">al mes</span></p>
+      <div class="carga" data-in style="--v:1"><span class="barra" aria-hidden="true"><i></i></span><p class="ahorro">Es la referencia de las barras: pagar mes a mes.</p></div>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Acceso a las dos sedes</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Clases dirigidas ilimitadas</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Congelación de 15 días</span></li>
+      </ul>
+      <div class="pick"><button class="btn line block" type="button" data-plan="Mensual">Quiero el mensual</button></div>
+    </article>
+    <article class="plan best">
+      <span class="tagbest">El que más escogen</span>
+      <h3>Trimestral</h3>
+      <p class="precio"><span class="num">$179.000</span><span class="per">cada 3 meses · $59.700 al mes</span></p>
+      <div class="carga" data-in style="--v:.8647"><span class="barra" aria-hidden="true"><i></i></span><p class="ahorro">Ahorras $28.000 frente a 3 meses sueltos.</p></div>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Todo lo del mensual</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Valoración física cada mes</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Plan de entrenamiento escrito</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>2 pases de invitado</span></li>
+      </ul>
+      <div class="pick"><button class="btn block" type="button" data-plan="Trimestral">Quiero el trimestral</button></div>
+    </article>
+    <article class="plan">
+      <h3>Anual</h3>
+      <p class="precio"><span class="num">$590.000</span><span class="per">al año · $49.200 al mes</span></p>
+      <div class="carga" data-in style="--v:.7126"><span class="barra" aria-hidden="true"><i></i></span><p class="ahorro">Ahorras $238.000 frente a 12 meses sueltos.</p></div>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Todo lo del trimestral</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Acompañamiento nutricional</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="currentColor" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg><span>Camiseta de la sede</span></li>
+      </ul>
+      <div class="pick"><button class="btn line block" type="button" data-plan="Anual">Quiero el anual</button></div>
+    </article>
+  </div>
+  <p class="nota-planes">La barra muestra lo que pagas por mes. Valores por mes redondeados a la centena.</p>
 
   <h2 class="sec" id="horario">Horario de clases</h2>
   <p class="sub">Cupos por clase. El cupo que ves acá es de ejemplo; en el sitio real se actualiza solo con las reservas.</p>
   <div class="horario">
-    <div class="dias" id="dias"></div>
-    <div class="clases" id="clases" aria-live="polite"></div>
+    <div class="dias" id="dias" role="group" aria-label="Día de la semana"></div>
+    <div class="clases" id="clases" aria-live="polite">
+      <div class="dia-p on" data-dia="Lunes">
+        <h3 class="dia-t">Lunes</h3>
+        <ul>
+          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, lunes 5:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, lunes 6:30</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">11 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, lunes 12:15</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, lunes 18:00</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, lunes 19:00</span></a></li>
+        </ul>
+      </div>
+      <div class="dia-p" data-dia="Martes">
+        <h3 class="dia-t">Martes</h3>
+        <ul>
+          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, martes 5:30</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Antonia Santos · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, martes 6:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Cabecera · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, martes 12:15</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Antonia Santos · 50 min</small></span><span class="cupo pocos">Quedan 3</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, martes 18:00</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, martes 19:00</span></a></li>
+        </ul>
+      </div>
+      <div class="dia-p" data-dia="Miércoles">
+        <h3 class="dia-t">Miércoles</h3>
+        <ul>
+          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, miércoles 5:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, miércoles 6:30</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">10 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, miércoles 12:15</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, miércoles 18:00</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">13 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, miércoles 19:00</span></a></li>
+        </ul>
+      </div>
+      <div class="dia-p" data-dia="Jueves">
+        <h3 class="dia-t">Jueves</h3>
+        <ul>
+          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, jueves 5:30</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Antonia Santos · 45 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, jueves 6:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Cabecera · 30 min</small></span><span class="cupo libre">15 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, jueves 12:15</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Antonia Santos · 50 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, jueves 18:00</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, jueves 19:00</span></a></li>
+        </ul>
+      </div>
+      <div class="dia-p" data-dia="Viernes">
+        <h3 class="dia-t">Viernes</h3>
+        <ul>
+          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, viernes 5:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, viernes 6:30</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, viernes 12:15</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, viernes 18:00</span></a></li>
+          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">16 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, viernes 19:00</span></a></li>
+        </ul>
+      </div>
+      <div class="dia-p" data-dia="Sábado">
+        <h3 class="dia-t">Sábado</h3>
+        <ul>
+          <li class="clase" data-sede="Parque de los Niños"><span class="h">7:00</span><span class="n"><b>Funcional al aire libre</b><small>Parque de los Niños · 60 min</small></span><span class="cupo libre">18 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional al aire libre, sábado 7:00</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">8:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, sábado 8:30</span></a></li>
+          <li class="clase" data-sede="Cabecera"><span class="h">10:00</span><span class="n"><b>Movilidad y estiramiento</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Movilidad y estiramiento, sábado 10:00</span></a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <h2 class="sec" id="sedes">Sedes</h2>
   <div class="sedes">
-    <div class="sede">
+    <div class="sede" data-sede="Cabecera">
+      <figure class="mapa" data-in>
+        <svg role="img" aria-label="Mapa ilustrativo: Calle 49 con Carrera 38, Cabecera del Llano" viewBox="0 0 320 140">
+          <rect class="mz" x="8" y="8" width="62" height="46" rx="4"/><rect class="mz" x="78" y="8" width="62" height="46" rx="4"/><rect class="mz" x="156" y="8" width="70" height="46" rx="4"/><rect class="parque" x="234" y="8" width="78" height="46" rx="4"/>
+          <rect class="mz" x="8" y="70" width="62" height="62" rx="4"/><rect class="mz" x="78" y="70" width="62" height="62" rx="4"/><rect class="mz" x="156" y="70" width="70" height="62" rx="4"/><rect class="mz" x="234" y="70" width="78" height="62" rx="4"/>
+          <text x="14" y="66">Cl. 49</text><text x="0" y="0" transform="translate(152 126) rotate(-90)">Cra. 38</text>
+          <ellipse class="sombra" cx="118" cy="63" rx="7" ry="2.5"/>
+          <g class="pin"><path d="M118 63c0 0-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19Z"/><circle cx="118" cy="44" r="4.5" fill="#fff"/></g>
+        </svg>
+        <figcaption>Mapa ilustrativo</figcaption>
+      </figure>
       <h3>Sede Cabecera</h3>
-      <p>Calle 49 # 38-09<br>Cabecera del Llano</p>
+      <p class="estado" hidden></p>
+      <p class="dir">Calle 49 # 38-09<br>Cabecera del Llano</p>
       <dl>
-        <dt>Lun a vie</dt><dd>5:00 a.m. – 10:00 p.m.</dd>
-        <dt>Sábado</dt><dd>6:00 a.m. – 4:00 p.m.</dd>
-        <dt>Domingo</dt><dd>8:00 a.m. – 1:00 p.m.</dd>
+        <dt>Lun a vie</dt><dd data-min="300-1320">5:00 a.m. – 10:00 p.m.</dd>
+        <dt>Sábado</dt><dd data-min="360-960">6:00 a.m. – 4:00 p.m.</dd>
+        <dt>Domingo</dt><dd data-min="480-780">8:00 a.m. – 1:00 p.m.</dd>
       </dl>
     </div>
-    <div class="sede">
+    <div class="sede" data-sede="Antonia Santos">
+      <figure class="mapa" data-in>
+        <svg role="img" aria-label="Mapa ilustrativo: Carrera 27 con Calle 32, Antonia Santos" viewBox="0 0 320 140">
+          <rect class="mz" x="8" y="8" width="62" height="46" rx="4"/><rect class="parque" x="78" y="8" width="62" height="46" rx="4"/><rect class="mz" x="156" y="8" width="70" height="46" rx="4"/><rect class="mz" x="234" y="8" width="78" height="46" rx="4"/>
+          <rect class="mz" x="8" y="70" width="62" height="62" rx="4"/><rect class="mz" x="78" y="70" width="62" height="62" rx="4"/><rect class="mz" x="156" y="70" width="70" height="62" rx="4"/><rect class="mz" x="234" y="70" width="78" height="62" rx="4"/>
+          <text x="14" y="66">Cl. 32</text><text x="0" y="0" transform="translate(152 126) rotate(-90)">Cra. 27</text>
+          <ellipse class="sombra" cx="148" cy="63" rx="7" ry="2.5"/>
+          <g class="pin"><path d="M148 63c0 0-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19Z"/><circle cx="148" cy="44" r="4.5" fill="#fff"/></g>
+        </svg>
+        <figcaption>Mapa ilustrativo</figcaption>
+      </figure>
       <h3>Sede Antonia Santos</h3>
-      <p>Carrera 27 con Calle 32<br>Antonia Santos</p>
+      <p class="estado" hidden></p>
+      <p class="dir">Carrera 27 con Calle 32<br>Antonia Santos</p>
       <dl>
-        <dt>Lun a vie</dt><dd>5:00 a.m. – 9:00 p.m.</dd>
-        <dt>Sábado</dt><dd>6:00 a.m. – 3:00 p.m.</dd>
+        <dt>Lun a vie</dt><dd data-min="300-1260">5:00 a.m. – 9:00 p.m.</dd>
+        <dt>Sábado</dt><dd data-min="360-900">6:00 a.m. – 3:00 p.m.</dd>
         <dt>Domingo</dt><dd>Cerrado</dd>
       </dl>
     </div>
   </div>
 
   <section class="prueba" id="prueba">
-    <h2>Tu primera clase, gratis</h2>
-    <p>Escoge el día y la clase. Te confirmamos el cupo por WhatsApp en menos de una hora.</p>
-    <div class="form">
-      <div><label for="p-nom">Nombre</label><input id="p-nom" placeholder="Tu nombre"></div>
-      <div><label for="p-tel">Celular</label><input id="p-tel" placeholder="300 000 0000" inputmode="tel"></div>
-      <div><label for="p-sede">Sede</label><select id="p-sede"><option>Cabecera</option><option>Antonia Santos</option></select></div>
-      <div><label for="p-clase">Clase</label><select id="p-clase"></select></div>
-      <div class="full"><button class="btn oncoral block" id="p-enviar">Reservar mi clase gratis</button></div>
+    <div class="cont">
+      <h2>Tu primera clase, gratis</h2>
+      <p>Escoge el día y la clase. Te confirmamos el cupo por WhatsApp en menos de una hora.</p>
+      <div class="form">
+        <p class="elegida" id="p-elegida" aria-live="polite"></p>
+        <div><label for="p-nom">Nombre</label><input id="p-nom" placeholder="Tu nombre" autocomplete="name"></div>
+        <div><label for="p-tel">Celular</label><input id="p-tel" type="tel" placeholder="300 000 0000" inputmode="tel" autocomplete="tel"></div>
+        <div><label for="p-sede">Sede</label><select id="p-sede"><option value="Cabecera">Cabecera</option><option value="Antonia Santos">Antonia Santos</option><option value="Parque de los Niños">Parque de los Niños (clase del sábado)</option></select></div>
+        <div><label for="p-dia">Día</label><select id="p-dia"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option></select></div>
+        <div class="full"><label for="p-clase">Clase</label><select id="p-clase"><option>Boxeo recreativo</option><option>Core y movilidad</option><option>Crossfit</option><option>Fuerza guiada</option><option>Full body express</option><option>Funcional</option><option>Funcional al aire libre</option><option>Movilidad y estiramiento</option><option>Rumba fitness</option><option>Spinning</option></select></div>
+        <p class="err" id="p-err" aria-live="assertive"></p>
+        <div class="full"><button class="btn oncoral block" id="p-enviar" type="button">Reservar mi clase gratis</button></div>
+      </div>
+    </div>
+    <div class="arte" aria-hidden="true">
+      <!-- Pesa rusa en trazo: asa, campana y suelo; se dibuja una vez al entrar en pantalla -->
+      <svg class="pesa" data-in viewBox="0 0 120 130" width="120" height="130" focusable="false"><path pathLength="1" d="M38 50C34 24 44 12 60 12S86 24 82 50M30 116C14 102 14 72 30 60S74 48 90 60 106 102 90 116ZM14 122H106"/></svg>
     </div>
   </section>
-
-  <footer>
-    <b>Santiago GYM</b> es una marca inventada. Este sitio existe para mostrar cómo se vería la página de un gimnasio de Bucaramanga: precios, horarios, sedes y cupos son de ejemplo y no corresponden a ningún negocio real. No se incluyen reseñas ni testimonios porque no se inventan opiniones de clientes.
-  </footer>
 </div>
-
 </main>
 
-<div class="sheet" id="sheet" hidden>
-  <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+<aside class="santiago" aria-labelledby="st-t">
+  <div class="wrap">
+    <h2 id="st-t">¿Tiene un gimnasio en Bucaramanga? Este sitio puede ser el suyo.</h2>
+    <p>Soy Santiago Sierra y hago sitios así para negocios de Bucaramanga. Todo lo que ve en esta demo viene incluido:</p>
+    <ul class="rasgos">
+      <li data-rasgo="planes"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>Planes con el precio a la vista y el ahorro calculado<em class="ya"> · ya lo probó</em></span></li>
+      <li data-rasgo="horario"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>Horario que abre en el día de hoy y llena la reserva con un toque<em class="ya"> · ya lo probó</em></span></li>
+      <li data-rasgo="reserva"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>Reserva de clase de prueba que arma el mensaje completo<em class="ya"> · ya lo probó</em></span></li>
+    </ul>
+    <div class="st-acc">
+      <a class="btn-wa" href="https://wa.me/573155140200?text=Hola%20Santiago%2C%20vi%20la%20demo%20del%20gimnasio%20y%20quiero%20una%20p%C3%A1gina%20as%C3%AD%20para%20mi%20negocio." target="_blank" rel="noopener">
+        <!-- Ícono genérico de burbuja, NO el logotipo de WhatsApp -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
+        Escribirme por WhatsApp</a>
+      <a class="st-link" href="../../#trabajo">Ver más ejemplos</a>
+    </div>
+  </div>
+</aside>
+
+<footer class="wrap">
+  <b>Santiago GYM</b> es una marca inventada. Este sitio existe para mostrar cómo se vería la página de un gimnasio de Bucaramanga: precios, horarios, sedes y cupos son de ejemplo y no corresponden a ningún negocio real. No se incluyen reseñas ni testimonios porque no se inventan opiniones de clientes.
+</footer>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sh-t">
+  <div class="box">
+    <div class="talon"><span>Santiago GYM · Pase</span><span class="sello" id="sh-sello">Clase de prueba</span></div>
     <h3 id="sh-t">Así llega la reserva</h3>
     <pre id="sh-msg"></pre>
     <p class="nota">En el sitio real este botón abre el WhatsApp del gimnasio con el mensaje ya escrito, o guarda la reserva en su sistema. En la demostración solo se muestra el texto.</p>
     <div class="row">
-      <button class="btn" id="copiar">Copiar mensaje</button>
-      <button class="btn line" id="cerrar">Cerrar</button>
+      <button class="btn" id="copiar" type="button">Copiar mensaje</button>
+      <button class="btn line" id="cerrar" type="button">Cerrar</button>
     </div>
   </div>
-</div>
+</dialog>
 
 <script>
-const PLANES = [
-  {n:"Día", p:12000, per:"pase por día", best:false, v:["Acceso a la sede que elijas","Incluye clases dirigidas","Sin inscripción"]},
-  {n:"Mensual", p:69000, per:"al mes", best:false, v:["Acceso a las dos sedes","Clases dirigidas ilimitadas","Congelación de 15 días"]},
-  {n:"Trimestral", p:179000, per:"cada 3 meses · $59.700 al mes", best:true, v:["Todo lo del mensual","Valoración física cada mes","Plan de entrenamiento escrito","2 pases de invitado"]},
-  {n:"Anual", p:590000, per:"al año · $49.100 al mes", best:false, v:["Todo lo del trimestral","Acompañamiento nutricional","Camiseta de la sede"]}
-];
-const DIAS = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
-const HOR = {
-  Lunes:[["5:30","Funcional","Sede Cabecera · 45 min",8],["6:30","Spinning","Sede Cabecera · 50 min",2],["12:15","Full body express","Antonia Santos · 30 min",11],["18:00","Crossfit","Sede Cabecera · 60 min",1],["19:00","Rumba fitness","Antonia Santos · 55 min",14]],
-  Martes:[["5:30","Fuerza guiada","Sede Cabecera · 60 min",6],["6:30","Funcional","Antonia Santos · 45 min",9],["12:15","Core y movilidad","Sede Cabecera · 30 min",12],["18:00","Spinning","Antonia Santos · 50 min",3],["19:00","Boxeo recreativo","Sede Cabecera · 60 min",7]],
-  Miércoles:[["5:30","Funcional","Sede Cabecera · 45 min",5],["6:30","Spinning","Sede Cabecera · 50 min",4],["12:15","Full body express","Antonia Santos · 30 min",10],["18:00","Crossfit","Sede Cabecera · 60 min",2],["19:00","Rumba fitness","Antonia Santos · 55 min",13]],
-  Jueves:[["5:30","Fuerza guiada","Sede Cabecera · 60 min",8],["6:30","Funcional","Antonia Santos · 45 min",7],["12:15","Core y movilidad","Sede Cabecera · 30 min",15],["18:00","Spinning","Antonia Santos · 50 min",1],["19:00","Boxeo recreativo","Sede Cabecera · 60 min",6]],
-  Viernes:[["5:30","Funcional","Sede Cabecera · 45 min",9],["6:30","Spinning","Sede Cabecera · 50 min",5],["12:15","Full body express","Antonia Santos · 30 min",12],["18:00","Crossfit","Sede Cabecera · 60 min",4],["19:00","Rumba fitness","Antonia Santos · 55 min",16]],
-  "Sábado":[["7:00","Funcional al aire libre","Parque de los Niños · 60 min",18],["8:30","Spinning","Sede Cabecera · 50 min",6],["10:00","Movilidad y estiramiento","Sede Cabecera · 45 min",14]]
-};
 const $ = s => document.querySelector(s);
-const cop = n => "$" + n.toLocaleString("es-CO");
-const CHK = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="var(--coral)" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg>';
-let dia = "Lunes", ultimoFoco = null;
+const DIAS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const usado = k => document.querySelector(`[data-rasgo="${k}"]`)?.classList.add("usado");
+let ultimoFoco = null;
 
-$("#planes-g").innerHTML = PLANES.map(p => `
-  <article class="plan ${p.best?"best":""}">
-    ${p.best?'<span class="tagbest">El que más escogen</span>':""}
-    <h3>${p.n}</h3>
-    <span class="num">${cop(p.p)}</span>
-    <span class="per">${p.per}</span>
-    <ul>${p.v.map(v=>`<li>${CHK}<span>${v}</span></li>`).join("")}</ul>
-    <div class="pick"><button class="btn ${p.best?"":"line"} block" data-plan="${p.n}">Quiero el ${p.n.toLowerCase()}</button></div>
-  </article>`).join("");
-
-$("#dias").innerHTML = DIAS.map(d => `<button class="dia" data-d="${d}" aria-pressed="${d===dia}">${d}</button>`).join("");
-
-function pintarDia(){
-  $("#clases").innerHTML = HOR[dia].map(([h,n,s,c]) => `
-    <div class="clase">
-      <span class="h">${h}</span>
-      <span class="n"><b>${n}</b><small>${s}</small></span>
-      <span class="cupo ${c<=3?"pocos":"libre"}">${c<=3?`Quedan ${c}`:`${c} cupos`}</span>
-    </div>`).join("");
-  const set = [...new Set(DIAS.flatMap(d => HOR[d].map(c => c[1])))].sort();
-  $("#p-clase").innerHTML = set.map(c => `<option>${c}</option>`).join("");
+// Hora de Bogotá: día de la semana (0 = domingo) y minutos desde medianoche
+function bogota() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "America/Bogota", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" })
+    .formatToParts(new Date()).map(x => [x.type, x.value]));
+  return { d: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(p.weekday), m: (+p.hour % 24) * 60 + +p.minute };
 }
-function abrir(txt){ ultimoFoco = document.activeElement; $("#sh-msg").textContent = txt; $("#sheet").hidden = false; $("#cerrar").focus(); }
-function cerrarSheet(){ $("#sheet").hidden = true; if(ultimoFoco && ultimoFoco.isConnected) ultimoFoco.focus(); }
+const ahora = bogota();
+const iHoy = ahora.d === 0 ? 5 : ahora.d - 1;          // domingo: se muestra el sábado
+
+// Pestañas del horario (solo con JS; sin JS se ve el horario completo, día por día)
+const dias = $("#dias"), paneles = [...document.querySelectorAll(".dia-p")];
+let actual = 0;
+if (document.documentElement.classList.contains("js")) {
+  dias.innerHTML = DIAS.map((d, i) => `<button class="dia" type="button" data-d="${i}" aria-pressed="false"><span class="largo">${d}</span><span class="corto" aria-hidden="true">${d.slice(0, 3)}</span>${i === iHoy && ahora.d !== 0 ? '<span class="hoy">Hoy</span>' : ""}</button>`).join("")
+    + '<span class="ind" aria-hidden="true"></span>';
+  ir(iHoy);
+  $("#p-dia").value = DIAS[iHoy];
+}
+function ir(i) {
+  actual = i;
+  paneles.forEach((p, k) => p.classList.toggle("on", k === i));
+  dias.querySelectorAll(".dia").forEach((b, k) => b.setAttribute("aria-pressed", k === i));
+  dias.style.setProperty("--i", i);
+}
+function cambiarDia(i) {
+  if (i === actual) return;
+  document.documentElement.dataset.dir = i < actual ? "atras" : "adelante";
+  if (!document.startViewTransition || reduce()) ir(i);
+  else document.startViewTransition(() => ir(i));
+}
+
+// Estado de cada sede según la hora de Bogotá (una vez al cargar)
+const fila = ahora.d === 0 ? 2 : ahora.d === 6 ? 1 : 0;
+document.querySelectorAll(".sede").forEach(s => {
+  const dts = s.querySelectorAll("dt"), dds = s.querySelectorAll("dd"), dd = dds[fila], est = s.querySelector(".estado");
+  dts[fila].classList.add("hoy-d"); dd.classList.add("hoy-d");
+  const [a, b] = (dd.dataset.min || "0-0").split("-").map(Number);
+  const abierto = ahora.m >= a && ahora.m < b;
+  est.textContent = abierto ? `Abierto ahora · cierra a las ${dd.textContent.split("–")[1].trim()}` : "Cerrado ahora";
+  est.classList.toggle("abierto", abierto); est.hidden = false;
+});
+
+// Un solo observador para lo que se revela al entrar en pantalla (barras, pesa, pines)
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -15% 0px" });
+document.querySelectorAll("[data-in]").forEach(el => io.observe(el));
+
+// Pase de entrada (dialog nativo: fondo inerte y Esc de serie)
+const dlg = $("#sheet");
+function abrir(txt, sello) {
+  ultimoFoco = document.activeElement;
+  $("#sh-msg").textContent = txt; $("#sh-sello").textContent = sello;
+  dlg.showModal(); $("#cerrar").focus();
+}
+dlg.addEventListener("close", () => { if (ultimoFoco && ultimoFoco.isConnected) ultimoFoco.focus(); });
+dlg.addEventListener("keydown", e => {
+  if (e.key !== "Tab") return;
+  const f = [...dlg.querySelectorAll("button")], first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+const nom = $("#p-nom"), tel = $("#p-tel"), err = $("#p-err");
+function limpiarError(el) { el.removeAttribute("aria-invalid"); el.removeAttribute("aria-describedby"); if (!nom.getAttribute("aria-invalid") && !tel.getAttribute("aria-invalid")) err.textContent = ""; }
+[nom, tel].forEach(el => el.addEventListener("input", () => limpiarError(el)));
+function destellar(el) { const c = el.parentElement; c.classList.remove("lleno"); void c.offsetWidth; c.classList.add("lleno"); }
 
 document.addEventListener("click", e => {
   const d = e.target.closest("[data-d]");
-  if(d){ dia = d.dataset.d;
-    document.querySelectorAll("[data-d]").forEach(b => b.setAttribute("aria-pressed", b.dataset.d===dia));
-    pintarDia(); return; }
+  if (d) { cambiarDia(+d.dataset.d); usado("horario"); return; }
+  const r = e.target.closest(".reservar");
+  if (r) {                                     // el scroll lo hace el JS: la navegación al ancla le quitaría el foco a Nombre
+    e.preventDefault();
+    $("#prueba").scrollIntoView({ behavior: reduce() ? "auto" : "smooth", block: "start" });
+    const li = r.closest(".clase"), panel = r.closest(".dia-p");
+    $("#p-sede").value = li.dataset.sede; $("#p-dia").value = panel.dataset.dia; $("#p-clase").value = li.querySelector(".n b").textContent;
+    $("#p-elegida").textContent = `Elegiste ${li.querySelector(".n b").textContent}, ${panel.dataset.dia.toLowerCase()} ${li.querySelector(".h").textContent}, ${li.dataset.sede}. Solo faltan tu nombre y tu celular.`;
+    ["#p-sede", "#p-dia", "#p-clase"].forEach(s => destellar($(s)));
+    nom.focus({ preventScroll: true });
+    usado("horario");
+    return;
+  }
   const pl = e.target.closest("[data-plan]");
-  if(pl){ const p = PLANES.find(x=>x.n===pl.dataset.plan);
-    abrir(`Buenos días, quiero el plan ${p.n.toLowerCase()} (${cop(p.p)} ${p.per}).\n\n¿Qué necesito para inscribirme y en qué sede lo activo?`); return; }
-  if(e.target.id==="p-enviar"){
-    const n = $("#p-nom").value.trim(), t = $("#p-tel").value.trim();
-    if(!n || !t){ abrir("Falta tu nombre y tu celular para reservar el cupo."); return; }
-    abrir(`Buenos días, quiero reservar la clase de prueba gratis.\n\nNombre: ${n}\nCelular: ${t}\nSede: ${$("#p-sede").value}\nClase: ${$("#p-clase").value}\n\n¿Me confirman el cupo?`);
-    return; }
-  if(e.target.id==="cerrar" || e.target.id==="sheet"){ cerrarSheet(); return; }
-  if(e.target.id==="copiar"){
+  if (pl) {
+    const card = pl.closest(".plan"), n = card.querySelector("h3").textContent;
+    abrir(`Buenos días, quiero el plan ${n.toLowerCase()} (${card.querySelector(".num").textContent} ${card.querySelector(".per").textContent}).\n\n¿Qué necesito para inscribirme y en qué sede lo activo?`, `Plan ${n.toLowerCase()}`);
+    usado("planes");
+    return;
+  }
+  if (e.target.id === "p-enviar") {
+    const n = nom.value.trim(), t = tel.value.trim();
+    if (!n || !t) {
+      err.textContent = !n && !t ? "Falta tu nombre y tu celular para reservar el cupo." : !n ? "Falta tu nombre para reservar el cupo." : "Falta tu celular para reservar el cupo.";
+      [[nom, !n], [tel, !t]].forEach(([el, falta]) => { if (falta) { el.setAttribute("aria-invalid", "true"); el.setAttribute("aria-describedby", "p-err"); } else limpiarError(el); });
+      (!n ? nom : tel).focus();
+      return;
+    }
+    abrir(`Buenos días, quiero reservar la clase de prueba gratis.\n\nNombre: ${n}\nCelular: ${t}\nSede: ${$("#p-sede").value}\nDía: ${$("#p-dia").value}\nClase: ${$("#p-clase").value}\n\n¿Me confirman el cupo?`, "Clase de prueba");
+    usado("reserva");
+    return;
+  }
+  if (e.target.id === "cerrar" || e.target === dlg) { dlg.close(); return; }
+  if (e.target.id === "copiar") {
     const b = e.target;
-    navigator.clipboard?.writeText($("#sh-msg").textContent)
-      .then(()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar mensaje",1500);})
-      .catch(()=>{b.textContent="Selecciona el texto y cópialo";});
+    const manual = () => { const rg = document.createRange(); rg.selectNodeContents($("#sh-msg")); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); b.textContent = "Selecciona el texto y cópialo"; };
+    if (!navigator.clipboard) { manual(); return; }
+    navigator.clipboard.writeText($("#sh-msg").textContent)
+      .then(() => { b.textContent = "Copiado"; setTimeout(() => b.textContent = "Copiar mensaje", 1500); })
+      .catch(manual);
   }
 });
-document.addEventListener("keydown", e => { if(e.key==="Escape" && !$("#sheet").hidden) cerrarSheet(); });
-$("#sheet").addEventListener("keydown", e => {
-  if(e.key !== "Tab") return;
-  const f = [...$("#sheet").querySelectorAll("button")];
-  const first = f[0], last = f[f.length-1];
-  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-});
-pintarDia();
 </script>
 
   </body>
