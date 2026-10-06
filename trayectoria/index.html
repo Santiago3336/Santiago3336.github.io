@@ -511,6 +511,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 <script>
 document.documentElement.classList.add("js");
+/* Transición entre páginas: si la marca no está a la vista, no viaja (igual que en la portada) */
+const brand = document.querySelector(".brand");
+const brandVT = e => { if (e.viewTransition) brand.style.viewTransitionName = brand.getBoundingClientRect().bottom > 0 ? "" : "none"; };
+addEventListener("pageswap", brandVT); addEventListener("pagereveal", brandVT);
 const menuBtn = document.querySelector(".menu-btn"), nav = document.getElementById("nav");
 const setMenu = open => { nav.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open); };
 menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("open")));

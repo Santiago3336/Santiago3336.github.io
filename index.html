@@ -34,13 +34,16 @@
   --accent:#97ACFF; --accent-2:#7E95F5; --accent-ink:#0B1020; --accent-soft:rgba(151,172,255,.1);
   --glass:rgba(14,18,32,.74); --glass-2:rgba(18,23,40,.84);
   --radius:16px; --radius-lg:24px; --maxw:1120px;
+  --pausa-h:44px; --pausa-b:max(16px,env(safe-area-inset-bottom,0px)); --pausa-libre:calc(var(--pausa-b) + var(--pausa-h) + 12px);
   --shadow:0 30px 80px -30px rgba(0,0,0,.8);
   --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
   --body:'Work Sans','Helvetica Neue',Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-bottom:var(--pausa-libre)}
+/* Navegación con fundido entre la portada y la trayectoria; la marca queda anclada */
+@media (prefers-reduced-motion:no-preference){@view-transition{navigation:auto}}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--display);letter-spacing:-.022em;margin:0;text-wrap:balance}
 a{color:var(--accent);text-underline-offset:3px}
@@ -59,7 +62,7 @@ html{scrollbar-color:#2B3452 #070A14;accent-color:var(--accent);caret-color:var(
 
 /* Encabezado */
 .hbar{display:flex;align-items:center;gap:14px;padding-block:18px;flex-wrap:wrap}
-.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none;view-transition-name:marca}
 .brand span{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
 .nav{margin-left:auto}
 .nav ul{list-style:none;margin:0;padding:0;display:flex;gap:24px}
@@ -101,7 +104,7 @@ html{scrollbar-color:#2B3452 #070A14;accent-color:var(--accent);caret-color:var(
 .js .hero h1 em:not(.found){color:var(--ink);background-size:0% .07em}
 .lede{color:var(--ink-2);font-size:clamp(16px,2vw,19px);line-height:1.6;max-width:52ch;margin:22px 0 0;text-shadow:0 1px 24px rgba(0,0,0,.7)}
 .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 20px clamp(32px,6vw,56px)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 20px max(clamp(32px,6vw,56px),var(--pausa-libre))}
 .facts span{font-family:var(--mono);font-size:12px;color:var(--ink-2);background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 
 /* Secciones */
@@ -117,7 +120,14 @@ h2{font-size:clamp(28px,4.4vw,46px);font-weight:800;line-height:1.06;text-shadow
 @media(max-width:900px){.work{grid-template-columns:1fr;max-width:520px;margin-inline:auto}}
 .wcard{overflow:hidden;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease}
 .wcard:hover{transform:translateY(-4px);border-color:var(--line-2)}
-.wthumb{height:120px;display:grid;place-items:center}
+/* Vitrina: la captura real de cada demo en una ventana de navegador genérica, sobre el color de su marca */
+.wthumb{padding:14px 14px 0;background:var(--g)}
+.win{border:1px solid rgba(255,255,255,.16);border-bottom:0;border-radius:10px 10px 0 0;overflow:hidden;background:#161B2C;box-shadow:0 18px 40px -18px rgba(0,0,0,.7)}
+.bar{display:flex;align-items:center;gap:5px;height:26px;padding:0 10px}
+.bar i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.22);flex:none}
+.bar span{margin-left:8px;flex:1;min-width:0;font:400 11px/1 var(--mono);color:var(--ink-3);background:rgba(255,255,255,.05);border-radius:6px;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot{aspect-ratio:1200/630;background:var(--g)}
+.shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
 .wcard .body{padding:20px;display:flex;flex-direction:column;flex:1}
 .wcard h3{font-size:19px;font-weight:700}
 .tag{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
@@ -194,7 +204,7 @@ ol.pasos small{color:var(--ink-2);font-size:15px}
 .cierre .actions{margin-top:28px}
 
 /* Pie */
-footer{padding-block:48px 40px;border-top:1px solid var(--line);color:var(--ink-3);font-size:14px;background:linear-gradient(transparent,rgba(7,10,20,.9) 40%)}
+footer{padding-block:48px max(40px,var(--pausa-libre));border-top:1px solid var(--line);color:var(--ink-3);font-size:14px;background:linear-gradient(transparent,rgba(7,10,20,.9) 40%)}
 .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .foot nav{display:flex;gap:20px;flex-wrap:wrap}
 .foot nav a{color:var(--ink-2);text-decoration:none}
@@ -202,6 +212,14 @@ footer{padding-block:48px 40px;border-top:1px solid var(--line);color:var(--ink-
 footer p{margin:18px 0 0;max-width:70ch}
 
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* Pausa del fondo (WCAG 2.2.2): pastilla discreta y casi opaca, fija abajo a la izquierda */
+.pausa{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:var(--pausa-b);z-index:5;display:inline-flex;align-items:center;gap:8px;min-height:var(--pausa-h);padding:0 14px 0 12px;font:600 13px/1 var(--body);color:var(--ink-2);background:rgba(14,18,32,.9);border:1px solid var(--line-2);border-radius:999px;cursor:pointer;transition:color .2s,border-color .2s}
+.pausa svg{width:14px;height:14px;flex:none}
+.pausa:hover{color:var(--ink);border-color:var(--accent)}
+.pausa .i-play,.pausa.is-paused .i-pausa{display:none}
+.pausa.is-paused .i-play{display:inline}
+.pausa.is-paused{color:var(--accent);border-color:rgba(151,172,255,.5)}
+@media(max-width:560px){.pausa{width:var(--pausa-h);padding:0;justify-content:center}.pausa span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{transition:none!important;animation:none!important}
@@ -215,6 +233,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
 <div class="page">
 <a class="skip" href="#trabajo">Ir a los ejemplos</a>
+<button class="pausa" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pausa" d="M5 3.5v9M11 3.5v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path class="i-play" d="M5 3.2v9.6L12.8 8Z" fill="currentColor"/></svg><span>Pausar fondo</span></button>
 
 <header class="hero">
   <div class="wrap hbar">
@@ -262,38 +281,38 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
     <div class="work">
       <article class="wcard glass" data-reveal style="--rd:0ms">
-        <div class="wthumb" style="background:linear-gradient(140deg,#C8500F,#8A3407)">
-          <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 16 8M5 17l1.5-4L10 11l5-5 3 3-5 5-2 3.5L7 19z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/></svg>
+        <div class="wthumb" style="--g:linear-gradient(140deg,#C8500F,#8A3407)">
+          <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/demos/ferreteria</span></div><div class="shot"><img src="demos/ferreteria/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago Ferretería»: portada con el titular, la lámina de plano y los filtros del catálogo" onerror="this.hidden=true"></div></div>
         </div>
         <div class="body">
           <h3>Ferretería</h3>
           <span class="tag">Catálogo B2B · Cotizador</span>
           <p>Catálogo filtrable por línea con referencia y precio, cotizador que arma el pedido completo y cuenta para maestros de obra.</p>
-          <div class="go"><a class="btn btn-outline sm" href="demos/ferreteria/">Abrir el ejemplo</a></div>
+          <div class="go"><a class="btn btn-outline sm" href="demos/ferreteria/">Abrir la demo de ferretería</a></div>
         </div>
       </article>
 
       <article class="wcard glass" data-reveal style="--rd:90ms">
-        <div class="wthumb" style="background:linear-gradient(140deg,#C4302D,#5B3A6E)">
-          <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+        <div class="wthumb" style="--g:linear-gradient(140deg,#C4302D,#5B3A6E)">
+          <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/demos/gimnasio</span></div><div class="shot"><img src="demos/gimnasio/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago GYM»: portada de cartel con el titular, la línea de pulso y el botón para reservar la clase de prueba" onerror="this.hidden=true"></div></div>
         </div>
         <div class="body">
           <h3>Gimnasio</h3>
           <span class="tag">Planes · Horario · Reservas</span>
           <p>Planes con precio a la vista, horario de clases con cupos por día y reserva de clase de prueba que llega directo al WhatsApp.</p>
-          <div class="go"><a class="btn btn-outline sm" href="demos/gimnasio/">Abrir el ejemplo</a></div>
+          <div class="go"><a class="btn btn-outline sm" href="demos/gimnasio/">Abrir la demo del gimnasio</a></div>
         </div>
       </article>
 
       <article class="wcard glass" data-reveal style="--rd:180ms">
-        <div class="wthumb" style="background:linear-gradient(140deg,#1F6F5C,#123F35)">
-          <svg width="46" height="46" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 5 6v4l2-1v9h10v-9l2 1V6l-4-3-3 2z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/></svg>
+        <div class="wthumb" style="--g:linear-gradient(140deg,#1D3FD6,#0E1633)">
+          <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/Santiago_Clothes</span></div><div class="shot"><img src="https://santiago3336.github.io/Santiago_Clothes/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago Prendas»: perchero ilustrado con prendas sobre azul rey y el nombre de la marca en amarillo" onerror="this.hidden=true"></div></div>
         </div>
         <div class="body">
           <h3>Marca de ropa</h3>
           <span class="tag">Catálogo · Colección · Políticas</span>
           <p>Catálogo con filtros por colección, políticas de cambio y envío, ubicación del local y horarios.</p>
-          <div class="go"><a class="btn btn-outline sm" href="https://santiago3336.github.io/Santiago_Clothes/">Abrir el ejemplo</a></div>
+          <div class="go"><a class="btn btn-outline sm" href="https://santiago3336.github.io/Santiago_Clothes/">Abrir la demo de ropa</a></div>
         </div>
       </article>
     </div>
@@ -459,10 +478,15 @@ document.addEventListener("click", e => {
   const txt = document.getElementById(b.dataset.copy).textContent;
   navigator.clipboard?.writeText(txt)
     .then(() => { b.textContent = "Copiado"; setTimeout(() => b.textContent = "Copiar", 1500); })
-    .catch(() => { b.textContent = "Selecciónalo"; setTimeout(() => b.textContent = "Copiar", 1800); });
+    .catch(() => { b.textContent = "Selecciónelo"; setTimeout(() => b.textContent = "Copiar", 1800); });
 });
 
 const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Transición entre páginas: si la marca no está a la vista, no viaja (se funde con el resto) */
+const brand = document.querySelector(".brand");
+const brandVT = e => { if (e.viewTransition) brand.style.viewTransitionName = brand.getBoundingClientRect().bottom > 0 ? "" : "none"; };
+addEventListener("pageswap", brandVT); addEventListener("pagereveal", brandVT);
 
 /* Aparición escalonada al entrar en pantalla */
 /* "dónde encontrarlo" se enciende cuando el primer cliente llega a un negocio del fondo (respaldo: 3,2 s) */
@@ -485,7 +509,7 @@ else {
   const cv = document.querySelector(".city"), ctx = cv.getContext && cv.getContext("2d");
   if (!ctx) return;
   const LIGHT = matchMedia("(max-width: 720px), (pointer: coarse)").matches;   // celular: versión ligera
-  const N = LIGHT ? 22 : 34;            // intersecciones por lado
+  const N = LIGHT ? 18 : 34;            // intersecciones por lado (celular: menos calles, más margen en gama baja)
   const H = (N - 1) / 2;
   const BIZ = LIGHT ? 42 : 90, TRIPS = LIGHT ? 2 : 4;
   let seed = 20261001;
@@ -651,7 +675,9 @@ else {
   };
 
   resize();
-  addEventListener("resize", () => { resize(); if (REDUCE) draw(4.2); });
+  let raf = 0, paused = false;
+  // al cambiar cv.width el canvas se borra: en pausa hay que volver a dibujar el último cuadro
+  addEventListener("resize", () => { resize(); if (REDUCE) draw(4.2); else if (!raf) render(); });
   if (REDUCE) {   // un cuadro fijo, sin movimiento
     newTrip(0, nearestBiz()); trips[0].pos = trips[0].path.length * .6;
     draw(4.2);
@@ -659,6 +685,12 @@ else {
   }
 
   const ENTRY = 1.9;                    // entrada única: la cámara baja desde arriba
+  function render() {
+    const e = Math.min(1, t / ENTRY), ease = 1 - (1 - e) ** 3, keepT = cam.t, keepY = cam.y;
+    cam.t = keepT + (1 - ease) * .35; cam.y = keepY - (1 - ease) * 3 + Math.sin(t * .07) * .25;
+    draw(t);
+    cam.t = keepT; cam.y = keepY;
+  }
   let last = performance.now(), t = 0, nextTrip = 2.4, heroSent = false;
   const loop = now => {
     const dt = Math.min(.05, (now - last) / 1000); last = now; t += dt;
@@ -667,9 +699,6 @@ else {
     for (const key in STOPS) cam[key] += (sample(STOPS[key], cam.p) * (key === "x" ? side : 1) - cam[key]) * k;
     // Primer cliente: llega a un negocio bajo los botones y enciende "dónde encontrarlo"
     if (!heroSent && t > .45) { heroSent = true; newTrip(t, bizNearScreen(w * .5, h * .8), 2, true); }
-    const e = Math.min(1, t / ENTRY), ease = 1 - (1 - e) ** 3;
-    const keepT = cam.t, keepY = cam.y;
-    cam.t = keepT + (1 - ease) * .35; cam.y = keepY - (1 - ease) * 3 + Math.sin(t * .07) * .25;
 
     // Al llegar a Contacto, los clientes convergen en el negocio del centro
     if ((nextTrip -= dt) <= 0 && trips.length < TRIPS + (cam.p > .82 ? 2 : 0)) {
@@ -683,11 +712,21 @@ else {
         if (tr.hero) document.dispatchEvent(new Event("city:found"));
       }
     }
-    draw(t);
-    cam.t = keepT; cam.y = keepY;
-    requestAnimationFrame(loop);
+    render();
+    raf = requestAnimationFrame(loop);
   };
-  requestAnimationFrame(loop);
+  // Pausa (WCAG 2.2.2) y pestaña oculta: sin rAF; el último cuadro queda quieto y los pulsos se detienen
+  const run = () => { if (!raf && !paused && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(loop); } };
+  const halt = () => { cancelAnimationFrame(raf); raf = 0; };
+  document.addEventListener("visibilitychange", () => document.hidden ? halt() : run());
+  const pausa = document.querySelector(".pausa"), pTxt = pausa.querySelector("span");
+  pausa.hidden = false;
+  pausa.addEventListener("click", () => {
+    paused = !paused; paused ? halt() : run();
+    pausa.classList.toggle("is-paused", paused);
+    pTxt.textContent = paused ? "Reanudar fondo" : "Pausar fondo";
+  });
+  run();
 })();
 </script>
 
