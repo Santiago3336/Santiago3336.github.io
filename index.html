@@ -112,7 +112,22 @@ html{scrollbar-color:#2B3452 #070A14;accent-color:var(--accent);caret-color:var(
 .head{max-width:660px;margin:0 auto clamp(40px,5vw,64px);text-align:center}
 .eyebrow{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
 h2{font-size:clamp(28px,4.4vw,46px);font-weight:800;line-height:1.06;text-shadow:0 2px 40px rgba(0,0,0,.65)}
-.head p{margin:16px 0 0;color:var(--ink-2);font-size:17px;line-height:1.65;text-shadow:0 1px 24px rgba(0,0,0,.7)}
+.head p:not(.eyebrow),.intro{margin:16px 0 0;color:var(--ink-2);font-size:17px;line-height:1.65;text-shadow:0 1px 24px rgba(0,0,0,.7)}
+/* Encabezado a lo ancho: título a la izquierda, explicación a la derecha */
+.head.lado{margin-inline:0;text-align:left}
+@media(min-width:980px){
+  .head.lado{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 64px;align-items:end;text-align:left}
+  .head.lado p:not(.eyebrow){margin:0;max-width:46ch}
+}
+/* Columna fija: el título se queda quieto mientras el contenido del otro lado pasa */
+.split{display:grid;gap:clamp(32px,5vw,56px)}
+.intro{max-width:40ch}
+@media(min-width:980px){
+  .split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,6vw,88px);align-items:start}
+  .split.inv{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .split.inv>.fijo{order:2}
+}
+@media(min-width:980px) and (min-height:640px){.fijo{position:sticky;top:clamp(28px,9vh,88px)}}
 .glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 
 /* Ejemplos */
@@ -134,12 +149,44 @@ h2{font-size:clamp(28px,4.4vw,46px);font-weight:800;line-height:1.06;text-shadow
 .wcard p{font-size:15px;color:var(--ink-2);margin:10px 0 0}
 .wcard .go{margin-top:auto;padding-top:16px}
 .nota{font-size:14px;color:var(--ink-3);margin:22px auto 0;max-width:760px;text-align:center;text-shadow:0 1px 18px rgba(0,0,0,.8)}
+/* Mosaico: dos vitrinas anchas a la izquierda (la captura sube desde el borde) y una alta a la derecha */
+@media(min-width:1080px){
+  .work{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+  .wcard.alta{grid-column:2;grid-row:1 / span 2}
+  .wcard.ancha{flex-direction:row}
+  .wcard.ancha .wthumb{flex:0 0 54%;display:flex;align-items:flex-end;padding:22px 0 0 22px}
+  .wcard.ancha .win{width:100%;border-right:0;border-radius:10px 0 0 0}
+  .wcard.ancha.inv{flex-direction:row-reverse;grid-column:1}
+  .wcard.ancha.inv .wthumb{padding:22px 22px 0 0}
+  .wcard.ancha.inv .win{border-right:1px solid rgba(255,255,255,.16);border-left:0;border-radius:0 10px 0 0}
+  .wcard.ancha .body{padding:26px}
+  .wcard.alta h3{font-size:22px}
+}
 
-/* Qué incluye */
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
-@media(max-width:980px){.features{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.features{grid-template-columns:1fr}}
-.card{position:relative;padding:28px;background:rgba(12,16,29,.9);transition:background-color .25s ease}
+/* Qué incluye: mosaico de bloques de distinto tamaño */
+.features{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:620px){.features{grid-template-columns:repeat(2,minmax(0,1fr))}.f-sitio,.f-dom{grid-column:1/-1}}
+@media(min-width:980px){
+  .features{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"sitio sitio seo seo" "sitio sitio wa datos" "acc acc dom dom"}
+  .f-sitio{grid-area:sitio}.f-seo{grid-area:seo}.f-wa{grid-area:wa}.f-datos{grid-area:datos}.f-acc{grid-area:acc}.f-dom{grid-area:dom}
+}
+.card{position:relative;overflow:hidden;padding:28px;background:rgba(12,16,29,.9);border:1px solid var(--line);border-radius:var(--radius-lg);transition:background-color .25s ease,border-color .25s ease}
+.card:hover{border-color:var(--line-2)}
+/* Bloque grande: un celular dibujado asoma desde el borde de abajo */
+.f-sitio{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;padding-bottom:0;background:radial-gradient(90% 80% at 100% 100%,rgba(151,172,255,.14),transparent 60%),rgba(12,16,29,.9)}
+.f-sitio>div:first-child{padding-bottom:28px}
+.f-sitio h3{font-size:clamp(22px,2.6vw,28px)}
+.f-sitio p{font-size:16px;max-width:30ch}
+.tel{align-self:end;width:clamp(150px,16vw,190px);height:clamp(230px,24vw,300px);margin-right:8px;border:1.5px solid var(--line-2);border-bottom:0;border-radius:26px 26px 0 0;padding:16px 12px 0;background:#0B0F1C;display:flex;flex-direction:column;gap:8px}
+.tel i{display:block;border-radius:6px;background:rgba(151,172,255,.12)}
+.tel .t-hero{height:34%;background:linear-gradient(150deg,rgba(151,172,255,.45),rgba(126,149,245,.12))}
+.tel .t-l{height:8px;width:80%}.tel .t-l.c{width:55%}
+.tel .t-wa{margin-top:auto;margin-bottom:14px;height:30px;border-radius:999px;background:#25D366}
+@media(max-width:619px){.f-sitio{grid-template-columns:minmax(0,1fr);gap:0}.f-sitio>div:first-child{padding-bottom:22px}.tel{justify-self:center;height:170px;width:150px}}
+/* Detalles pequeños dentro de los bloques anchos (ilustración, no datos) */
+.mini{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font:400 13px/1 var(--mono);color:var(--ink-2);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:9px 14px}
+.mini svg{width:14px;height:14px;flex:none;color:var(--accent)}
+.mini kbd{font:inherit;color:var(--ink);border:1px solid var(--line-2);border-radius:6px;padding:3px 7px}
 .card::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 0% 0%,rgba(151,172,255,.1),transparent 45%);opacity:0;transition:opacity .3s ease;pointer-events:none}
 .card:hover{background:rgba(18,23,40,.95)}
 .card:hover::before{opacity:1}
@@ -148,14 +195,20 @@ h2{font-size:clamp(28px,4.4vw,46px);font-weight:800;line-height:1.06;text-shadow
 .card p{font-size:15px;color:var(--ink-2);margin:10px 0 0}
 
 /* Cómo trabajo */
-.showcase{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(36px,6vw,72px);align-items:center}
-@media(max-width:980px){.showcase{grid-template-columns:1fr}}
-.showcase h2{margin-bottom:6px}
-ol.pasos{list-style:none;counter-reset:p;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:16px}
-ol.pasos li{counter-increment:p;display:flex;gap:14px;align-items:flex-start}
-ol.pasos li::before{content:counter(p);flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);border:1px solid rgba(151,172,255,.22);color:var(--accent);font-family:var(--mono);font-size:13px;display:grid;place-items:center;margin-top:1px}
-ol.pasos b{display:block;font-weight:600}
-ol.pasos small{color:var(--ink-2);font-size:15px}
+/* Los pasos pasan a la derecha; el que está en el centro de la pantalla se enciende junto con su fila del plan */
+ol.pasos{list-style:none;counter-reset:p;padding:0;margin:0;display:flex;flex-direction:column;gap:16px}
+ol.pasos li{counter-increment:p;display:flex;gap:18px;align-items:flex-start;padding:clamp(22px,3vw,34px);background:var(--glass);border:1px solid var(--line);border-radius:var(--radius-lg);transition:border-color .35s ease,background-color .35s ease}
+ol.pasos li::before{content:counter(p);flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--accent-soft);border:1px solid rgba(151,172,255,.22);color:var(--accent);font-family:var(--mono);font-size:16px;display:grid;place-items:center;transition:background-color .35s ease,color .35s ease}
+ol.pasos b{display:block;font-family:var(--display);font-size:clamp(19px,2vw,22px);font-weight:700;letter-spacing:-.015em;line-height:1.2}
+ol.pasos small{display:block;margin-top:8px;color:var(--ink-2);font-size:16px}
+ol.pasos li.on{border-color:rgba(151,172,255,.4);background:var(--glass-2)}
+ol.pasos li.on::before{background:var(--accent);color:var(--accent-ink)}
+@media(max-width:560px){ol.pasos li{gap:14px}ol.pasos li::before{width:36px;height:36px;font-size:14px}}
+.sigue{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;padding:20px clamp(22px,3vw,34px);border:1px dashed var(--line-2);border-radius:var(--radius-lg);color:var(--ink-2);font-size:15px}
+.fijo .plan{margin-top:32px}
+.plan .row>span{transition:color .35s ease}
+.plan .row.on>span{color:var(--ink)}
+.plan .row.on .track{background:rgba(151,172,255,.14)}
 .plan{position:relative;padding:24px;border-radius:var(--radius-lg);background:var(--glass-2);border-color:var(--line-2);box-shadow:var(--shadow)}
 .plan-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .plan-top b{font-family:var(--display);font-size:17px}
@@ -175,21 +228,11 @@ ol.pasos small{color:var(--ink-2);font-size:15px}
 .plan .cap i{display:inline-block;width:9px;height:9px;transform:rotate(45deg);background:#ECEEF3;border-radius:1px;margin-right:6px;font-style:normal}
 @media(max-width:560px){.ticks,.row{grid-template-columns:92px 1fr}}
 
-/* Precio */
-.precio{max-width:760px;margin:0 auto;padding:clamp(28px,5vw,48px);border-radius:var(--radius-lg);background:radial-gradient(120% 140% at 50% 0%,rgba(151,172,255,.14),transparent 55%),var(--glass-2);border-color:var(--line-2);box-shadow:var(--shadow)}
-.precio h3{font-size:clamp(22px,4.4vw,30px);font-weight:800}
-.rango{font-family:var(--display);font-size:clamp(28px,7vw,42px);font-weight:800;color:var(--accent);margin-top:12px;line-height:1}
-.rango small{font-family:var(--body);font-size:15px;font-weight:400;color:var(--ink-2);display:block;margin-top:10px;line-height:1.5}
-.precio ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px;font-size:15px;color:var(--ink-2)}
-.precio li{display:flex;gap:10px;align-items:flex-start}
-.precio li svg{flex:0 0 auto;margin-top:5px}
-.precio .fin{color:var(--ink-3);font-size:14px;margin:20px 0 0;padding-top:18px;border-top:1px solid var(--line)}
-
 /* Sobre mí */
-.yo{max-width:760px;margin:0 auto;padding:clamp(26px,5vw,44px)}
+.yo{padding:clamp(26px,5vw,44px)}
 .yo p{margin:14px 0 0;color:var(--ink-2)}
 .yo p strong{color:var(--ink);font-weight:600}
-.yo .mas{font-weight:600}
+.fijo .btn{margin-top:28px}
 
 /* Contacto */
 .cierre{max-width:760px;margin:0 auto;text-align:center;padding:clamp(40px,7vw,72px) clamp(22px,5vw,56px);border-radius:var(--radius-lg);background:radial-gradient(120% 140% at 50% 0%,rgba(37,211,102,.1),transparent 55%),var(--glass-2);border-color:var(--line-2);box-shadow:var(--shadow)}
@@ -202,6 +245,13 @@ ol.pasos small{color:var(--ink-2);font-size:15px}
 .copy{font-family:var(--body);font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer}
 .copy:hover{border-color:var(--accent);color:var(--accent)}
 .cierre .actions{margin-top:28px}
+/* En pantalla ancha: la invitación a un lado y las vías de contacto al otro */
+@media(min-width:980px){
+  .cierre{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px clamp(40px,5vw,72px);align-items:center;text-align:left}
+  .cierre p.sub{margin-left:0}
+  .cierre .vias{margin:0;max-width:none}
+  .cierre .actions{justify-content:flex-start}
+}
 
 /* Pie */
 footer{padding-block:48px max(40px,var(--pausa-libre));border-top:1px solid var(--line);color:var(--ink-3);font-size:14px;background:linear-gradient(transparent,rgba(7,10,20,.9) 40%)}
@@ -273,14 +323,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 <main>
 <div class="wrap">
   <section class="section" id="trabajo">
-    <div class="head">
-      <p class="eyebrow">Ejemplos</p>
-      <h2>Cómo se ve el trabajo</h2>
+    <div class="head lado">
+      <div><p class="eyebrow">Ejemplos</p>
+      <h2>Cómo se ve el trabajo</h2></div>
       <p>Tres sitios completos y funcionales que puede abrir ahora mismo. Toque los filtros, arme una cotización, reserve una clase: todo funciona.</p>
     </div>
 
     <div class="work">
-      <article class="wcard glass" data-reveal style="--rd:0ms">
+      <article class="wcard glass ancha" data-reveal style="--rd:0ms">
         <div class="wthumb" style="--g:linear-gradient(140deg,#C8500F,#8A3407)">
           <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/demos/ferreteria</span></div><div class="shot"><img src="demos/ferreteria/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago Ferretería»: portada con el titular, la lámina de plano y los filtros del catálogo" onerror="this.hidden=true"></div></div>
         </div>
@@ -292,7 +342,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
         </div>
       </article>
 
-      <article class="wcard glass" data-reveal style="--rd:90ms">
+      <article class="wcard glass alta" data-reveal style="--rd:90ms">
         <div class="wthumb" style="--g:linear-gradient(140deg,#C4302D,#5B3A6E)">
           <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/demos/gimnasio</span></div><div class="shot"><img src="demos/gimnasio/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago GYM»: portada de cartel con el titular, la línea de pulso y el botón para reservar la clase de prueba" onerror="this.hidden=true"></div></div>
         </div>
@@ -304,7 +354,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
         </div>
       </article>
 
-      <article class="wcard glass" data-reveal style="--rd:180ms">
+      <article class="wcard glass ancha inv" data-reveal style="--rd:180ms">
         <div class="wthumb" style="--g:linear-gradient(140deg,#1D3FD6,#0E1633)">
           <div class="win"><div class="bar" aria-hidden="true"><i></i><i></i><i></i><span>santiago3336.github.io/Santiago_Clothes</span></div><div class="shot"><img src="https://santiago3336.github.io/Santiago_Clothes/og.png" width="1200" height="630" loading="lazy" decoding="async" alt="Captura de la demo «Santiago Prendas»: perchero ilustrado con prendas sobre azul rey y el nombre de la marca en amarillo" onerror="this.hidden=true"></div></div>
         </div>
@@ -321,45 +371,43 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
   </section>
 
   <section class="section" id="incluye">
-    <div class="head">
-      <p class="eyebrow">Qué incluye</p>
-      <h2>Lo que entrego, siempre</h2>
+    <div class="head lado">
+      <div><p class="eyebrow">Qué incluye</p>
+      <h2>Lo que entrego, siempre</h2></div>
       <p>Cada sitio sale con lo necesario para que lo encuentren, le escriban y sea suyo desde el primer día.</p>
     </div>
-    <div class="features" data-reveal>
-      <div class="card">
-        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Sitio completo</h3><p>Diseñado para el celular primero, porque ahí lo van a abrir sus clientes.</p>
+    <div class="features">
+      <div class="card f-sitio" data-reveal style="--rd:0ms">
+        <div><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>Sitio completo</h3><p>Diseñado para el celular primero, porque ahí lo van a abrir sus clientes.</p></div>
+        <div class="tel" aria-hidden="true"><i class="t-hero"></i><i class="t-l"></i><i class="t-l c"></i><i class="t-l"></i><i class="t-wa"></i></div>
       </div>
-      <div class="card">
+      <div class="card f-seo" data-reveal style="--rd:80ms">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>SEO local</h3><p>Que aparezca cuando alguien busque su servicio en su zona de la ciudad.</p>
+        <span class="mini" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>ferretería cerca de Cabecera</span>
       </div>
-      <div class="card">
+      <div class="card f-wa" data-reveal style="--rd:160ms">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z"/></svg>WhatsApp que funciona</h3><p>Botón que abre el chat con el mensaje ya escrito, y catálogo ordenado.</p>
       </div>
-      <div class="card">
+      <div class="card f-datos" data-reveal style="--rd:240ms">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>Política de datos</h3><p>Política de tratamiento, aviso de privacidad y autorización, como exige la ley.</p>
       </div>
-      <div class="card">
+      <div class="card f-acc" data-reveal style="--rd:80ms">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor"/></svg>Accesibilidad medida</h3><p>Contraste verificado con instrumento, no a ojo. Se opera con teclado.</p>
+        <span class="mini" aria-hidden="true"><kbd>Tab</kbd><kbd>Enter</kbd>sin mouse</span>
       </div>
-      <div class="card">
+      <div class="card f-dom" data-reveal style="--rd:160ms">
         <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg>Dominio a su nombre</h3><p>Registrado con sus datos. El sitio es suyo, no mío.</p>
+        <span class="mini" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>www.sunegocio.com</span>
       </div>
     </div>
   </section>
 
   <section class="section" id="proceso">
-    <div class="showcase">
-      <div>
+    <div class="split">
+      <div class="fijo">
         <p class="eyebrow">Cómo trabajo</p>
         <h2>Cuatro pasos, sin sorpresas</h2>
-        <ol class="pasos">
-          <li data-reveal style="--rd:0ms"><div><b>Una llamada de 15 minutos</b><small>Me cuenta qué vende y a quién. Yo le digo si un sitio le sirve o si le sirve otra cosa.</small></div></li>
-          <li data-reveal style="--rd:110ms"><div><b>Le armo un ejemplo de su página, sin costo</b><small>Con su negocio, no con el de otro. Si no le gusta, no perdió nada.</small></div></li>
-          <li data-reveal style="--rd:220ms"><div><b>Dos semanas de desarrollo</b><small>Con una revisión a mitad de camino para que no haya sorpresas al final.</small></div></li>
-          <li data-reveal style="--rd:330ms"><div><b>Entrega con todo a su nombre</b><small>Dominio, hosting y accesos suyos. Le explico cómo cambiar textos y fotos usted mismo.</small></div></li>
-        </ol>
-      </div>
+        <p class="intro">De la primera llamada a la entrega, en unas dos semanas.</p>
 
       <div class="plan glass" data-reveal style="--rd:160ms">
         <div class="plan-top"><b>Su sitio, paso a paso</b><span class="pill">Plan típico</span></div>
@@ -370,40 +418,50 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
         <div class="row"><span>Entrega</span><div class="track"><div class="seg" style="--s:92%;--w:8%;--d:450ms"></div></div></div>
         <p class="cap"><i></i>Revisión a mitad de camino. Plan de un sitio de 4 a 5 secciones.</p>
       </div>
-    </div>
-  </section>
+      </div>
 
-  <section class="section" id="precio">
-    <div class="head">
-      <p class="eyebrow">Cuánto cuesta</p>
-      <h2>El precio, de frente</h2>
-    </div>
-    <div class="precio glass">
-      <h3>Entre $2.500.000 y $5.000.000</h3>
-      <div class="rango">COP<small>El precio final depende de cuántas secciones necesite y de si lleva catálogo, agenda o pedidos en línea.</small></div>
-      <ul id="lista-precio"></ul>
-      <p class="fin">Anticipo del 50% para arrancar y el saldo contra entrega. El dominio y el correo del dominio los paga usted directamente, a su nombre: entre $60.000 y $120.000 al año.</p>
+      <div>
+        <ol class="pasos">
+          <li data-reveal style="--rd:0ms"><div><b>Una llamada de 15 minutos</b><small>Me cuenta qué vende y a quién. Yo le digo si un sitio le sirve o si le sirve otra cosa.</small></div></li>
+          <li data-reveal style="--rd:0ms"><div><b>Le armo un ejemplo de su página, sin costo</b><small>Con su negocio, no con el de otro. Si no le gusta, no perdió nada.</small></div></li>
+          <li data-reveal style="--rd:0ms"><div><b>Dos semanas de desarrollo</b><small>Con una revisión a mitad de camino para que no haya sorpresas al final.</small></div></li>
+          <li data-reveal style="--rd:0ms"><div><b>Entrega con todo a su nombre</b><small>Dominio, hosting y accesos suyos. Le explico cómo cambiar textos y fotos usted mismo.</small></div></li>
+        </ol>
+        <div class="sigue"><span>El primer paso es gratis y dura 15 minutos.</span><a class="btn btn-primary sm" href="#contacto">Hablemos 15 minutos</a></div>
+      </div>
     </div>
   </section>
 
   <section class="section" id="sobre-mi">
-    <div class="head">
+    <div class="split inv">
+    <div class="fijo">
       <p class="eyebrow">Quién hace el trabajo</p>
       <h2>Sobre mí</h2>
+      <a class="btn btn-outline" href="trayectoria/">Ver mi trayectoria
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
     </div>
     <div class="yo glass">
       <p style="margin-top:0"><strong>Soy Santiago Sierra, desarrollador web en Bucaramanga.</strong> Hago sitios para negocios de la ciudad: comercio, talleres, consultorios, gimnasios.</p>
       <p>También trabajo en soporte técnico y atención al cliente, y eso cambia cómo hago las cosas: sé qué se siente cuando un cliente escribe y nadie le contesta. Por eso los sitios que hago están armados para que el cliente encuentre lo que busca y pueda escribir en dos toques.</p>
       <p>Llevo poco tiempo haciendo sitios para negocios, y prefiero decirlo que inventar experiencia. Por eso el ejemplo de su página va sin costo y sin compromiso: el riesgo lo corro yo, no usted.</p>
-      <p><a class="mas" href="trayectoria/">Ver mi trayectoria: experiencia, formación y certificados →</a></p>
+    </div>
     </div>
   </section>
 
   <section class="section" id="contacto">
     <div class="cierre glass">
+      <div>
       <p class="eyebrow">Contacto</p>
       <h2>Hablemos 15 minutos</h2>
       <p class="sub">Escríbame por WhatsApp y le digo de una si le puedo ayudar o no. Sin insistir después.</p>
+      <div class="actions">
+        <a class="btn btn-wa" id="cta-wa" href="#" target="_blank" rel="noopener">
+          <!-- Ícono genérico de burbuja, NO el logotipo de WhatsApp. Para usar el logotipo,
+               reemplaza este <svg> por el archivo oficial sin modificar de los recursos de marca de Meta. -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
+          Escribir por WhatsApp</a>
+      </div>
+      </div>
       <div class="vias">
         <div class="via">
           <span class="et">WhatsApp</span>
@@ -415,13 +473,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
           <button class="copy" data-copy="v-mail">Copiar</button>
           <span class="val" id="v-mail"></span>
         </div>
-      </div>
-      <div class="actions">
-        <a class="btn btn-wa" id="cta-wa" href="#" target="_blank" rel="noopener">
-          <!-- Ícono genérico de burbuja, NO el logotipo de WhatsApp. Para usar el logotipo,
-               reemplaza este <svg> por el archivo oficial sin modificar de los recursos de marca de Meta. -->
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
-          Escribir por WhatsApp</a>
       </div>
     </div>
   </section>
@@ -454,16 +505,6 @@ const CONFIG = {
   saludo:   "Hola Santiago, vi su página y quiero preguntarle por un sitio web para mi negocio."
 };
 /* ==================================== */
-
-const CHK = '<svg width="13" height="13" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5 5.5 10.5 11.5 3.5" stroke="#97ACFF" stroke-width="2.1" fill="none" stroke-linecap="round"/></svg>';
-const QUE_DEFINE = [
-  "Un sitio de 4 a 5 secciones, con SEO local: la parte baja del rango.",
-  "Catálogo con filtros, agenda de citas o cuenta para mayoristas: la parte alta.",
-  "Pedidos con pago en línea: es otro proyecto y se cotiza aparte.",
-  "Mantenimiento mensual opcional, desde el segundo mes."
-];
-document.getElementById("lista-precio").innerHTML =
-  QUE_DEFINE.map(t => `<li>${CHK}<span>${t}</span></li>`).join("");
 
 const wa = CONFIG.whatsapp.replace(/\D/g, "");
 document.getElementById("v-wa").textContent = "+57 " + CONFIG.whatsapp;
@@ -500,6 +541,18 @@ else {
     if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
   }), { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
   revealables.forEach(el => io.observe(el));
+}
+
+/* Cuatro pasos: el paso que cruza el centro de la pantalla se enciende, y con él su fila del plan */
+const pasos = [...document.querySelectorAll("ol.pasos li")], filas = document.querySelectorAll(".plan .row");
+if ("IntersectionObserver" in window) {
+  const ioP = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    const k = pasos.indexOf(en.target);
+    pasos.forEach((p, i) => p.classList.toggle("on", i === k));
+    filas.forEach((f, i) => f.classList.toggle("on", i === k));
+  }), { rootMargin: "-45% 0px -45% 0px" });
+  pasos.forEach(p => ioP.observe(p));
 }
 
 /* ===== Ciudad de noche =====
