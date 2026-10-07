@@ -182,10 +182,25 @@ h2{font-size:clamp(26px,4.6vw,40px);font-weight:800;line-height:1.06;margin:0}
 .demo:hover .demo-t{text-decoration:underline}
 .aviso{font-size:14px!important;color:var(--ink-3)!important;margin-top:16px!important}
 
-/* Habilidades: texto plano en listas, sin aspecto de botón */
-.grupos{display:grid;gap:26px;margin-top:28px}
-@media (min-width:720px){.grupos{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+/* Habilidades: mosaico; el bloque de técnicas va a lo ancho */
+.grupos{display:grid;gap:12px;margin-top:28px}
+@media (min-width:720px){.grupos{grid-template-columns:repeat(2,minmax(0,1fr))}.grupo:first-child{grid-column:1/-1}}
+.grupo{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 24px}
 .grupo h3{font-size:17px;font-weight:700}
+
+/* Pantalla ancha: el título de cada sección queda fijo junto a la calle y el contenido pasa a la derecha.
+   Las paradas (.hito) se corren a la izquierda lo que mide esa columna, para seguir sobre la calle. */
+@media (min-width:980px){
+  :root{--col:290px;--gap:56px}
+  .wrap{max-width:1120px}
+  .recorrido > section{display:grid;grid-template-columns:var(--col) minmax(0,1fr);column-gap:var(--gap);align-items:start}
+  .recorrido > section > :not(.fijo){grid-column:2}
+  .recorrido .hito{--nx:calc(var(--calle) - var(--pad) - var(--col) - var(--gap) - 6px)}
+  .recorrido .linea,.recorrido .rutas,.recorrido .grupos{margin-top:0}
+  .fijo .sub{font-size:16px}
+  .fijo .total{flex-direction:column;align-items:flex-start;gap:10px}
+}
+@media (min-width:980px) and (min-height:640px){.fijo{position:sticky;top:calc(var(--ih) + 40px)}}
 .etiquetas{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px;color:var(--ink-2)}
 .etiquetas li{display:flex;align-items:center;gap:9px}
 .etiquetas li::before{content:"";width:6px;height:6px;flex:none;transform:rotate(45deg);background:var(--accent);opacity:.7;border-radius:1px}
@@ -199,6 +214,12 @@ h2{font-size:clamp(26px,4.6vw,40px);font-weight:800;line-height:1.06;margin:0}
 .cierre p{color:var(--ink-2);margin:14px auto 0;max-width:46ch}
 .cierre .actions{justify-content:center}
 .redes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+@media (min-width:980px){
+  .cierre{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 56px;align-items:center;text-align:left}
+  .cierre p{margin-left:0}
+  .cierre .actions{margin-top:0}
+  .cierre .actions,.cierre .redes{justify-content:flex-start}
+}
 @media (max-width:400px){
   .cierre{padding-inline:16px}
   .cierre .btn{padding-inline:16px}
@@ -328,7 +349,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
     <div class="recorrido">
       <section id="experiencia">
-        <h2>Dónde trabajo</h2>
+        <div class="fijo">
+          <h2>Dónde trabajo</h2>
+          <p class="sub">Mi trabajo de hoy: soporte técnico y atención al cliente.</p>
+        </div>
         <ol class="linea">
           <li class="item hito hoy">
             <span class="cuando">Junio 2025 — Actualidad</span>
@@ -344,7 +368,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
       </section>
 
       <section id="formacion">
-        <h2>Dónde estudié</h2>
+        <div class="fijo">
+          <h2>Dónde estudié</h2>
+          <p class="sub">Dónde aprendí a programar.</p>
+        </div>
         <ol class="linea">
           <li class="item hito">
             <span class="cuando">2024</span>
@@ -362,12 +389,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
       </section>
 
       <section id="certificados">
-        <h2>Certificados de Microsoft Learn</h2>
+        <div class="fijo">
+          <h2>Certificados de Microsoft Learn</h2>
         <p class="sub">Dos rutas de aprendizaje completas y 11 módulos. Cada logro se puede verificar en la página oficial de Microsoft.</p>
         <p class="total">
           <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="21"/><circle cx="24" cy="24" r="16" stroke-dasharray="2 4" opacity=".55"/><path d="m16.5 24.5 5 5 10-11"/></svg>
           <span><b>13</b> logros verificables</span>
         </p>
+        </div>
 
         <div class="rutas">
           <div class="ruta hito">
@@ -420,7 +449,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
       </section>
 
       <section id="proyectos">
-        <h2>Lo que he construido</h2>
+        <div class="fijo">
+          <h2>Lo que he construido</h2>
+          <p class="sub">Lo más reciente primero.</p>
+        </div>
         <ol class="linea">
           <li class="item hito destacado">
             <span class="cuando">2026 · Proyecto propio</span>
@@ -459,7 +491,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
       </section>
 
       <section id="habilidades">
-        <h2>Con qué trabajo</h2>
+        <div class="fijo">
+          <h2>Con qué trabajo</h2>
+          <p class="sub">Herramientas, forma de trabajar e idiomas.</p>
+        </div>
         <div class="grupos">
           <div class="grupo">
             <h3>Técnicas</h3>
@@ -485,8 +520,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
 
     <section id="hablemos" class="hito destino">
       <div class="cierre">
+        <div>
         <h2>¿Hablamos?</h2>
         <p>Para un sitio web, escríbame por WhatsApp. Para temas laborales, también estoy en LinkedIn y GitHub.</p>
+        </div>
+        <div>
         <div class="actions">
           <a class="btn btn-wa" href="https://wa.me/573155140200?text=Hola%20Santiago%2C%20vi%20su%20trayectoria%20y%20quiero%20preguntarle%20por%20un%20sitio%20web%20para%20mi%20negocio." target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
@@ -496,6 +534,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
         <div class="redes">
           <a class="btn btn-outline sm" href="https://www.linkedin.com/in/joel-santiago-sierra-leon-691153208/" target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn btn-outline sm" href="https://github.com/Santiago3336" target="_blank" rel="noopener">GitHub</a>
+        </div>
         </div>
       </div>
     </section>
