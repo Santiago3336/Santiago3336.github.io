@@ -326,6 +326,14 @@ html:has(.sheet[open]){overflow:hidden}
 footer{padding-block:24px 32px;color:var(--ink-3);font-size:13px}
 footer b{color:var(--ink-2)}
 
+/* Franja de demo: la voz de Santiago. La pastilla lleva de vuelta a la página principal */
+.demo{display:flex;align-items:center;justify-content:center;gap:6px 14px;flex-wrap:wrap;--focus:#fff}
+.demo p{margin:0}
+.volver{display:inline-flex;align-items:center;gap:6px;flex:none;padding:5px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;color:#fff;font-size:12.5px;font-weight:600;letter-spacing:0;text-decoration:none}
+.volver:hover{background:#fff;color:#161917}
+.demo .volver:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-width:620px){.demo{justify-content:flex-start;text-align:left}}
+
 /* Lista «ya lo probó» flotante: la misma lista de la franja final, fijada en una esquina mientras se recorre la demo.
    Al llegar a la franja vuela a su lugar; en celular empieza plegada. Estilo de la franja de Santiago, no de la marca. */
 html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
@@ -344,7 +352,10 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
 .dock .rasgos{margin:2px 0 0;gap:8px}
 .dock .rasgos li{font-size:13.5px;align-items:flex-start;line-height:1.35}
 .dock .rasgos .chk{width:18px;height:18px}
-.dock-a{display:inline-block;margin-top:12px;color:#97ACFF;font-size:13.5px;font-weight:600}
+.dock-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 14px;margin-top:12px}
+.dock-v{display:inline-flex;align-items:center;gap:5px;color:#B4BCCA;font-size:13.5px;font-weight:600}
+.dock-v:hover{color:#ECEEF3}
+.dock-a{display:inline-block;color:#97ACFF;font-size:13.5px;font-weight:600}
 .dock :focus-visible{outline:2px solid #97ACFF;outline-offset:2px}
 @media (prefers-reduced-motion:no-preference){
   .dock{transition:opacity .3s,transform .3s cubic-bezier(.16,1,.3,1),visibility .3s}
@@ -361,7 +372,7 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
   </head>
   <body>
 
-<p class="demo">Sitio de <b>demostración</b> · «Santiago GYM» es una marca inventada para mostrar el diseño. Precios, horarios y sedes son de ejemplo.</p>
+<div class="demo"><a class="volver" href="../../"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3m4-4L3 8l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Volver al inicio</a><p>Sitio de <b>demostración</b> · «Santiago GYM» es una marca inventada para mostrar el diseño. Precios, horarios y sedes son de ejemplo.</p></div>
 
 <a class="skip" href="#planes">Ir a los planes</a>
 <header>
@@ -766,7 +777,7 @@ document.addEventListener("click", e => {
   const dock = document.createElement("section");
   dock.className = "dock fuera"; dock.setAttribute("aria-label", "Lo que puede probar en esta demo");
   dock.innerHTML = '<button class="dock-t" type="button" aria-expanded="false" aria-controls="dock-c"><span>Pruebe esta demo</span><b class="dock-n"></b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 10 4-4 4 4"/></svg></button>'
-    + '<div class="dock-c" id="dock-c"><a class="dock-a" href="#st-t">Quiero un sitio así</a></div>';
+    + '<div class="dock-c" id="dock-c"><div class="dock-pie"><a class="dock-a" href="#st-t">Quiero un sitio así</a><a class="dock-v" href="../../"><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"M13 8H3m4-4L3 8l4 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>Volver al inicio</a></div></div>';
   document.body.append(dock);
   const btn = dock.querySelector(".dock-t"), cuerpo = dock.querySelector(".dock-c"), n = dock.querySelector(".dock-n");
   const abrir = v => { btn.setAttribute("aria-expanded", v); dock.classList.toggle("abierto", v); };
