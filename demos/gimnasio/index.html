@@ -326,6 +326,31 @@ html:has(.sheet[open]){overflow:hidden}
 footer{padding-block:24px 32px;color:var(--ink-3);font-size:13px}
 footer b{color:var(--ink-2)}
 
+/* Lista «ya lo probó» flotante: la misma lista de la franja final, fijada en una esquina mientras se recorre la demo.
+   Al llegar a la franja vuela a su lugar; en celular empieza plegada. Estilo de la franja de Santiago, no de la marca. */
+html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
+.dock{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:var(--dock-b,max(16px,env(safe-area-inset-bottom,0px)));z-index:28;width:min(292px,calc(100vw - 32px));background:#0B1020;color:#ECEEF3;border:1px solid rgba(151,172,255,.3);border-radius:14px;box-shadow:0 18px 40px -16px rgba(0,0,0,.6)}
+.dock:not(.abierto){width:auto}
+.dock.fuera{opacity:0;visibility:hidden;transform:translateY(12px)}
+.dock-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:10px 14px;background:none;border:0;border-radius:14px;color:inherit;font-family:var(--body);font-size:14px;font-weight:600;line-height:1.2;text-align:left;cursor:pointer}
+.dock-t span{flex:1}
+.dock-n{font-size:12px;font-weight:700;line-height:1;color:#0B1020;background:#97ACFF;border-radius:999px;padding:4px 8px;font-variant-numeric:tabular-nums}
+.dock.completo .dock-n{background:#25D366;color:#0B141A}
+.dock-t svg{flex:none;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dock.abierto .dock-t svg{transform:rotate(180deg)}
+.dock:not(.abierto) .dock-c{display:none}
+.dock-c{padding:0 14px 14px}
+.dock .rasgos{margin:2px 0 0;gap:8px}
+.dock .rasgos li{font-size:13.5px;align-items:flex-start;line-height:1.35}
+.dock .rasgos .chk{width:18px;height:18px}
+.dock-a{display:inline-block;margin-top:12px;color:#97ACFF;font-size:13.5px;font-weight:600}
+.dock :focus-visible{outline:2px solid #97ACFF;outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){
+  .dock{transition:opacity .3s,transform .3s cubic-bezier(.16,1,.3,1),visibility .3s}
+  .dock-t svg{transition:transform .2s}
+  @starting-style{.dock{opacity:0;transform:translateY(16px)}}
+}
+
 /* Red de seguridad con reducir movimiento: sin desplazamientos; quedan fundidos y cambios de color */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -729,6 +754,58 @@ document.addEventListener("click", e => {
       .catch(manual);
   }
 });
+/* Lista «ya lo probó» flotante: vive en una esquina mientras se recorre la demo y, al llegar a la franja final,
+   vuela (FLIP) a su lugar en el bloque; si se vuelve a subir, regresa a la esquina. Sin JS queda en la franja. */
+(() => {
+  const lista = document.querySelector(".rasgos");
+  if (!lista || !("IntersectionObserver" in window)) return;
+  const total = lista.children.length, reduceM = matchMedia("(prefers-reduced-motion: reduce)");
+  const slot = document.createElement("div"); slot.style.display = "flow-root";   // contiene el margen de la lista: el alto guardado es exacto
+  lista.before(slot); slot.append(lista);
+  const dock = document.createElement("section");
+  dock.className = "dock fuera"; dock.setAttribute("aria-label", "Lo que puede probar en esta demo");
+  dock.innerHTML = '<button class="dock-t" type="button" aria-expanded="false" aria-controls="dock-c"><span>Pruebe esta demo</span><b class="dock-n"></b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 10 4-4 4 4"/></svg></button>'
+    + '<div class="dock-c" id="dock-c"><a class="dock-a" href="#st-t">Quiero un sitio así</a></div>';
+  document.body.append(dock);
+  const btn = dock.querySelector(".dock-t"), cuerpo = dock.querySelector(".dock-c"), n = dock.querySelector(".dock-n");
+  const abrir = v => { btn.setAttribute("aria-expanded", v); dock.classList.toggle("abierto", v); };
+  abrir(matchMedia("(min-width: 980px)").matches);           // celular: plegada, para no tapar la página
+  btn.addEventListener("click", () => abrir(btn.getAttribute("aria-expanded") !== "true"));
+  const contar = () => {
+    const k = lista.querySelectorAll(".usado").length;
+    n.textContent = `${k}/${total}`; n.setAttribute("aria-label", `${k} de ${total} probadas`);
+    dock.classList.toggle("completo", k === total);
+    return k;
+  };
+  let antes = contar();
+  new MutationObserver(() => {
+    const k = contar();
+    if (k > antes && !reduceM.matches) n.animate([{ transform: "scale(1.35)" }, { transform: "none" }], { duration: 380, easing: "cubic-bezier(.16,1,.3,1)" });
+    antes = k;
+  }).observe(lista, { subtree: true, attributes: true, attributeFilter: ["class"] });
+
+  let primera = true;
+  function mover(aBloque) {
+    const destino = aBloque ? slot : cuerpo;
+    if (lista.parentElement === destino) return;
+    const visible = lista.getClientRects().length > 0;
+    const desde = (visible ? lista : dock).getBoundingClientRect();
+    if (!aBloque) slot.style.minHeight = slot.getBoundingClientRect().height + "px";   // el bloque guarda el espacio: nada salta
+    aBloque ? slot.append(lista) : cuerpo.prepend(lista);
+    dock.classList.toggle("fuera", aBloque);
+    if (aBloque) slot.style.minHeight = "";
+    const hasta = lista.getBoundingClientRect();
+    if (primera || reduceM.matches || !hasta.width) return;
+    lista.animate([{ transform: `translate(${desde.left - hasta.left}px,${desde.top - hasta.top}px)`, opacity: .5 }, { transform: "none", opacity: 1 }],
+      { duration: 700, easing: "cubic-bezier(.16,1,.3,1)" });
+  }
+  // Llega al bloque cuando su lugar sube al 70 % de la pantalla; vuelve a la esquina solo si el bloque queda abajo
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) mover(true);
+    else if (e.boundingClientRect.top > 0) mover(false);
+    primera = false;
+  }, { rootMargin: "0px 0px -30% 0px" }).observe(slot);
+})();
 </script>
 
   </body>
