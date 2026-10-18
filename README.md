@@ -3,7 +3,7 @@
 Este repositorio es mi sitio profesional, publicado en **https://santiago3336.github.io/**. Hago sitios web para negocios de Bucaramanga. Aquí también están las páginas de demostración que muestro a los clientes y mi [trayectoria](https://santiago3336.github.io/trayectoria/): experiencia, formación y certificados verificables de Microsoft Learn.
 
 > [!WARNING]
-> **Las tres demos son MARCAS INVENTADAS**, creadas solo para mostrar el diseño.
+> **Las cuatro demos son MARCAS INVENTADAS**, creadas solo para mostrar el diseño.
 > Los precios, horarios, referencias y direcciones son de ejemplo y **no corresponden a negocios reales**.
 > No tienen reseñas porque no invento opiniones de clientes.
 
@@ -14,6 +14,7 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 | Santiago Ferretería | [demos/ferreteria/](https://santiago3336.github.io/demos/ferreteria/) | Ferretería y materiales | Catálogo B2B con cotizador |
 | Santiago GYM | [demos/gimnasio/](https://santiago3336.github.io/demos/gimnasio/) | Gimnasio | Planes y reservas |
 | Santiago Prendas | [Santiago_Clothes/](https://santiago3336.github.io/Santiago_Clothes/) | Tienda de ropa | Catálogo de ropa ([repositorio aparte](https://github.com/santiago3336/Santiago_Clothes)) |
+| Santiago Viajes | [demos/viajes/](https://santiago3336.github.io/demos/viajes/) | Agencia de viajes | Historias, mapa de destinos y cotizador de viaje |
 
 ## Cómo está hecho
 
@@ -22,7 +23,7 @@ Este repositorio es mi sitio profesional, publicado en **https://santiago3336.gi
 - Las tipografías vienen de Google Fonts.
 - El fondo de la portada es una ciudad de noche dibujada con Canvas 2D: calles inventadas (no es un mapa real), sin librerías ni archivos externos. La cámara se mueve con el scroll, el fondo se puede pausar con un botón y, si el sistema pide reducir el movimiento, queda como imagen fija.
 - La trayectoria es una ruta por la misma ciudad: su línea de tiempo se dibuja con el scroll. Entre la portada y la trayectoria hay una transición de vista (View Transitions) con el nombre anclado.
-- Las demos tienen su propio momento animado: el producto que vuela al cotizador en la ferretería, el amanecer y el pulso del gimnasio, y las prendas que se recuelgan al filtrar en la tienda de ropa.
+- Las demos tienen su propio momento animado: el producto que vuela al cotizador en la ferretería, el amanecer y el pulso del gimnasio, las prendas que se recuelgan al filtrar en la tienda de ropa, y la persiana de la ventana de avión y las historias en la agencia de viajes.
 - Todo el movimiento usa técnicas nativas del navegador (CSS, Web Animations, View Transitions y animaciones ligadas al scroll como mejora progresiva) y respeta la opción de reducir movimiento.
 - Publicado con GitHub Pages desde la rama `main`.
 
@@ -31,6 +32,7 @@ index.html                  → página profesional
 trayectoria/index.html      → experiencia, formación y certificados
 demos/ferreteria/index.html → demo de ferretería
 demos/gimnasio/index.html   → demo de gimnasio
+demos/viajes/index.html     → demo de agencia de viajes
 ```
 
 ## Verlo en local
