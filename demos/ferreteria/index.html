@@ -152,6 +152,36 @@ h2.sec{font-family:var(--display);font-size:clamp(22px,3.6vw,28px);font-weight:7
   ::view-transition-group(*){animation-duration:.32s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
 }
 
+/* Pantalla ancha: una columna fija a la izquierda (filtros del catálogo, títulos de sección) y el contenido a la derecha */
+.tools-t{display:none}
+.fila-t p{color:var(--ink-2);margin:-6px 0 16px;max-width:30ch}
+@media(min-width:980px){
+  .fila{display:grid;grid-template-columns:250px minmax(0,1fr);gap:0 32px;align-items:start;margin-top:44px}
+  .fila h2.sec{margin-top:0}
+  .fila > .tools{margin-top:0;flex-direction:column;align-items:stretch;gap:14px;padding:16px;border:1px solid var(--line);border-radius:7px}
+  .fila .search{flex:none}
+  .tools-t{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:4px}
+  .fila .lineas{flex-direction:column}
+  .fila .lin{width:100%;text-align:left;font-size:13.5px;padding:9px 12px}
+  .fila-t p{margin:0}
+}
+@media(min-width:980px) and (min-height:640px){.fila > .tools,.fila-t{position:sticky;top:76px}}
+
+/* Líneas en mosaico: la primera ocupa un bloque grande en el color de la marca */
+@media(min-width:760px){
+  .lineas-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"a a b" "a a c" "d e f"}
+  .lcard:nth-child(1){grid-area:a}.lcard:nth-child(2){grid-area:b}.lcard:nth-child(3){grid-area:c}
+  .lcard:nth-child(4){grid-area:d}.lcard:nth-child(5){grid-area:e}.lcard:nth-child(6){grid-area:f}
+  .lcard.big{justify-content:center;background:var(--orange);border-color:var(--orange);color:var(--on-orange)}
+  .lcard.big svg.ico{width:64px;height:64px;color:var(--on-orange)}
+  .lcard.big b{font-size:clamp(26px,3vw,34px)}
+  .lcard.big small,.lcard.big .ver{color:var(--on-orange);font-size:14px}
+}
+
+/* Dirección: espacio reservado, sin ninguna dirección real */
+.dir-vacia{display:flex;gap:10px;align-items:center;margin-top:10px;padding:12px 14px;border:1px dashed var(--ctl);border-radius:6px;color:var(--ink-2);font-size:14px}
+.dir-vacia svg{flex:none;color:var(--orange-ink)}
+
 /* Vuelo al cotizador */
 .vuelo{position:fixed;left:0;top:0;z-index:35;pointer-events:none}
 .vuelo .ficha{display:grid;place-items:center;width:30px;height:30px;background:var(--surface);border:1px solid var(--line);border-radius:50%}
@@ -332,18 +362,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   </section>
 </div>
 
-<div class="wrap">
+<div class="wrap fila">
   <div class="tools" id="catalogo">
     <label class="search">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.8" stroke="var(--ink-3)" stroke-width="1.6" fill="none"/><path d="M10.4 10.4 14 14" stroke="var(--ink-3)" stroke-width="1.6"/></svg>
       <input id="q" type="search" placeholder="Buscar referencia: cable, cemento, taladro…" aria-label="Buscar en el catálogo">
     </label>
+    <span class="tools-t" aria-hidden="true">Filtrar por línea</span>
     <div class="lineas" id="filtros"></div>
     <noscript>Activa JavaScript para buscar, filtrar, armar tu cotización o enviar tu lista de obra. Las referencias y los precios están abajo.</noscript>
   </div>
-</div>
 
-<div class="wrap">
+  <div>
   <h2 class="sec" id="cnt" aria-live="polite">Catálogo · 18 referencias de muestra</h2>
   <div class="grid" id="grid">
     <article class="prod" data-linea="Eléctrico" data-ref="REF 4012-BL" data-u="metro" data-p="3400"><span class="ln"><svg width="18" height="18" aria-hidden="true"><use href="#i-electrico"/></svg>Eléctrico</span><h3>Cable THHN #12 AWG</h3><span class="ref">REF 4012-BL</span><span class="price">$3.400 <small>/ metro</small></span><button class="add" type="button" data-add="REF 4012-BL">Agregar a cotización</button></article>
@@ -366,7 +396,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <article class="prod" data-linea="Pintura" data-ref="REF 7503-BR" data-u="unidad" data-p="9500"><span class="ln"><svg width="18" height="18" aria-hidden="true"><use href="#i-pintura"/></svg>Pintura</span><h3>Brocha 3" cerda natural</h3><span class="ref">REF 7503-BR</span><span class="price">$9.500 <small>/ unidad</small></span><button class="add" type="button" data-add="REF 7503-BR">Agregar a cotización</button></article>
     <p class="none" id="vacio" hidden>No hay referencias que coincidan con «<span id="vacioQ"></span>». Prueba con otra palabra o pide la cotización por lista abajo.</p>
   </div>
+  </div>
+</div>
 
+<div class="wrap">
   <section class="obra" id="obra">
     <div class="obra-top">
       <div>
@@ -393,21 +426,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     </div>
   </section>
 
-  <h2 class="sec" id="lineas">Líneas que manejamos</h2>
+</div>
+
+<div class="wrap fila">
+  <div class="fila-t">
+    <h2 class="sec" id="lineas">Líneas que manejamos</h2>
+    <p>Toca una línea y el catálogo se filtra solo.</p>
+  </div>
   <div class="lineas-grid" id="lgrid">
-    <a class="lcard" href="#catalogo" data-filtro="Eléctrico" data-linea="Eléctrico"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-electrico"/></svg><b>Eléctrico</b><small>cables, breakers, tomas, iluminación</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    <a class="lcard big" href="#catalogo" data-filtro="Eléctrico" data-linea="Eléctrico"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-electrico"/></svg><b>Eléctrico</b><small>cables, breakers, tomas, iluminación</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     <a class="lcard" href="#catalogo" data-filtro="Plomería" data-linea="Plomería"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-plomeria"/></svg><b>Plomería</b><small>PVC, grifería, sanitarios</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     <a class="lcard" href="#catalogo" data-filtro="Herramienta" data-linea="Herramienta"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-herramienta"/></svg><b>Herramienta</b><small>eléctrica y manual</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     <a class="lcard" href="#catalogo" data-filtro="Tornillería" data-linea="Tornillería"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-tornilleria"/></svg><b>Tornillería</b><small>tornillos, chazos, anclajes</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     <a class="lcard" href="#catalogo" data-filtro="Construcción" data-linea="Construcción"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-construccion"/></svg><b>Construcción</b><small>cemento, estuco, agregados</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
     <a class="lcard" href="#catalogo" data-filtro="Pintura" data-linea="Pintura"><svg class="ico" width="28" height="28" aria-hidden="true"><use href="#i-pintura"/></svg><b>Pintura</b><small>vinilos, esmaltes, brochas</small><span class="ver">Ver referencias <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </div>
+</div>
 
-  <h2 class="sec" id="contacto">Dónde estamos</h2>
+<div class="wrap fila">
+  <div class="fila-t">
+    <h2 class="sec" id="contacto">Dónde estamos</h2>
+    <p>Dirección, horario y lo que dicen los clientes.</p>
+  </div>
   <div class="info">
     <div class="icard">
-      <h3>Almacén</h3>
-      <p>Carrera 15 # 33-62, Centro<br>Bucaramanga, Santander</p>
+      <h3>Dirección</h3>
+      <p class="dir-vacia"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="10" r="2.2" fill="currentColor"/></svg>Aquí va la dirección de su negocio.</p>
       <dl>
         <dt>Lun a vie</dt><dd>7:00 a.m. – 6:00 p.m.</dd>
         <dt>Sábado</dt><dd>7:00 a.m. – 4:00 p.m.</dd>
@@ -444,7 +488,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 
 <footer>
   <div class="wrap">
-    <b>Santiago Ferretería</b> es una marca inventada. Este sitio existe para mostrar cómo se vería el catálogo en línea de una ferretería de Bucaramanga: precios, referencias, dirección y descuentos son de ejemplo y no corresponden a ningún negocio real.
+    <b>Santiago Ferretería</b> es una marca inventada. Este sitio existe para mostrar cómo se vería el catálogo en línea de una ferretería de Bucaramanga: precios, referencias y descuentos son de ejemplo y no corresponden a ningún negocio real; tampoco se usa la dirección de ningún lugar existente.
   </div>
 </footer>
 
@@ -461,7 +505,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
     <h3 id="sh-t">Así sale tu cotización</h3>
     <pre id="sh-msg"></pre>
-    <p class="nota">En el sitio real este botón abre directamente el WhatsApp del almacén con el mensaje ya escrito. En la demostración solo se muestra el texto.</p>
+    <p class="nota">En el sitio real este botón abre directamente el WhatsApp del negocio con el mensaje ya escrito. En la demostración solo se muestra el texto.</p>
     <div class="row">
       <button class="cta" id="copiar" type="button">Copiar mensaje</button>
       <button class="cta ghost" id="cerrar" type="button">Cerrar</button>
