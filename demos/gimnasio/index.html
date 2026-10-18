@@ -125,6 +125,21 @@ h2.sec{font-size:clamp(30px,7vw,52px);line-height:.95;margin:64px 0 10px}
 h2.sec::after{content:"";display:block;width:56px;height:6px;background:var(--coral-fill);margin-top:12px}
 .sub{color:var(--ink-2);margin:0 0 20px;max-width:56ch}
 
+/* Pantalla ancha: el título de cada sección queda fijo a la izquierda y el contenido pasa a la derecha */
+.fila-t .sub{margin-bottom:20px}
+@media(min-width:980px){
+  .wrap{max-width:1080px}
+  .fila{display:grid;grid-template-columns:280px minmax(0,1fr);gap:0 44px;align-items:start;margin-top:64px}
+  .fila h2.sec{margin-top:0}
+  .fila-t .sub{margin-bottom:0}
+  .fila .planes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:980px) and (min-height:640px){.fila-t{position:sticky;top:24px}}
+
+/* Dirección: espacio reservado, sin ninguna dirección real */
+.dir-vacia{display:flex;gap:10px;align-items:center;padding:11px 13px;border:1.5px dashed var(--line-2);border-radius:6px}
+.dir-vacia svg{flex:none;color:var(--coral)}
+
 /* Planes «carga de barra» */
 .planes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:13px}
 .plan{background:var(--surface);border:1.5px solid var(--line-2);border-radius:6px;padding:20px 18px;display:flex;flex-direction:column}
@@ -355,7 +370,7 @@ footer b{color:var(--ink-2)}
   </div>
   <div class="suelo">
     <div class="wrap datos">
-      <div><b>2</b><span>sedes: Cabecera y Antonia Santos</span></div>
+      <div><b>2</b><span>sedes: Norte y Sur</span></div>
       <div><b>28</b><span>clases dirigidas por semana</span></div>
       <div><b>5 a.m.</b><span>abrimos de lunes a viernes</span></div>
     </div>
@@ -363,8 +378,12 @@ footer b{color:var(--ink-2)}
 </section>
 
 <div class="wrap">
-  <h2 class="sec" id="planes">Planes y precios</h2>
-  <p class="sub">Sin matrícula, sin cláusula de permanencia. Puedes congelar el plan hasta 15 días si viajas.</p>
+  <div class="fila">
+  <div class="fila-t">
+    <h2 class="sec" id="planes">Planes y precios</h2>
+    <p class="sub">Sin matrícula, sin cláusula de permanencia. Puedes congelar el plan hasta 15 días si viajas.</p>
+  </div>
+  <div>
   <div class="planes" id="planes-g">
     <article class="plan">
       <h3>Día</h3>
@@ -413,115 +432,125 @@ footer b{color:var(--ink-2)}
     </article>
   </div>
   <p class="nota-planes">La barra muestra lo que pagas por mes. Valores por mes redondeados a la centena.</p>
+  </div>
+  </div>
 
-  <h2 class="sec" id="horario">Horario de clases</h2>
-  <p class="sub">Cupos por clase. El cupo que ves acá es de ejemplo; en el sitio real se actualiza solo con las reservas.</p>
+  <div class="fila">
+  <div class="fila-t">
+    <h2 class="sec" id="horario">Horario de clases</h2>
+    <p class="sub">Cupos por clase. El cupo que ves acá es de ejemplo; en el sitio real se actualiza solo con las reservas.</p>
+  </div>
   <div class="horario">
     <div class="dias" id="dias" role="group" aria-label="Día de la semana"></div>
     <div class="clases" id="clases" aria-live="polite">
       <div class="dia-p on" data-dia="Lunes">
         <h3 class="dia-t">Lunes</h3>
         <ul>
-          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, lunes 5:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, lunes 6:30</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">11 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, lunes 12:15</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, lunes 18:00</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, lunes 19:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Norte · 45 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, lunes 5:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Norte · 50 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, lunes 6:30</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Sede Sur · 30 min</small></span><span class="cupo libre">11 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, lunes 12:15</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Norte · 60 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, lunes 18:00</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Sede Sur · 55 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, lunes 19:00</span></a></li>
         </ul>
       </div>
       <div class="dia-p" data-dia="Martes">
         <h3 class="dia-t">Martes</h3>
         <ul>
-          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, martes 5:30</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Antonia Santos · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, martes 6:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Cabecera · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, martes 12:15</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Antonia Santos · 50 min</small></span><span class="cupo pocos">Quedan 3</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, martes 18:00</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, martes 19:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Norte · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, martes 5:30</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Sede Sur · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, martes 6:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Norte · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, martes 12:15</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Sede Sur · 50 min</small></span><span class="cupo pocos">Quedan 3</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, martes 18:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Norte · 60 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, martes 19:00</span></a></li>
         </ul>
       </div>
       <div class="dia-p" data-dia="Miércoles">
         <h3 class="dia-t">Miércoles</h3>
         <ul>
-          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, miércoles 5:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, miércoles 6:30</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">10 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, miércoles 12:15</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, miércoles 18:00</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">13 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, miércoles 19:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Norte · 45 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, miércoles 5:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Norte · 50 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, miércoles 6:30</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Sede Sur · 30 min</small></span><span class="cupo libre">10 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, miércoles 12:15</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Norte · 60 min</small></span><span class="cupo pocos">Quedan 2</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, miércoles 18:00</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Sede Sur · 55 min</small></span><span class="cupo libre">13 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, miércoles 19:00</span></a></li>
         </ul>
       </div>
       <div class="dia-p" data-dia="Jueves">
         <h3 class="dia-t">Jueves</h3>
         <ul>
-          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, jueves 5:30</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Antonia Santos · 45 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, jueves 6:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Cabecera · 30 min</small></span><span class="cupo libre">15 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, jueves 12:15</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Antonia Santos · 50 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, jueves 18:00</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, jueves 19:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">5:30</span><span class="n"><b>Fuerza guiada</b><small>Sede Norte · 60 min</small></span><span class="cupo libre">8 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Fuerza guiada, jueves 5:30</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">6:30</span><span class="n"><b>Funcional</b><small>Sede Sur · 45 min</small></span><span class="cupo libre">7 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, jueves 6:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">12:15</span><span class="n"><b>Core y movilidad</b><small>Sede Norte · 30 min</small></span><span class="cupo libre">15 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Core y movilidad, jueves 12:15</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">18:00</span><span class="n"><b>Spinning</b><small>Sede Sur · 50 min</small></span><span class="cupo pocos">Quedan 1</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, jueves 18:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">19:00</span><span class="n"><b>Boxeo recreativo</b><small>Sede Norte · 60 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Boxeo recreativo, jueves 19:00</span></a></li>
         </ul>
       </div>
       <div class="dia-p" data-dia="Viernes">
         <h3 class="dia-t">Viernes</h3>
         <ul>
-          <li class="clase" data-sede="Cabecera"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, viernes 5:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, viernes 6:30</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Antonia Santos · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, viernes 12:15</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Cabecera · 60 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, viernes 18:00</span></a></li>
-          <li class="clase" data-sede="Antonia Santos"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Antonia Santos · 55 min</small></span><span class="cupo libre">16 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, viernes 19:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">5:30</span><span class="n"><b>Funcional</b><small>Sede Norte · 45 min</small></span><span class="cupo libre">9 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional, viernes 5:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">6:30</span><span class="n"><b>Spinning</b><small>Sede Norte · 50 min</small></span><span class="cupo libre">5 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, viernes 6:30</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">12:15</span><span class="n"><b>Full body express</b><small>Sede Sur · 30 min</small></span><span class="cupo libre">12 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Full body express, viernes 12:15</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">18:00</span><span class="n"><b>Crossfit</b><small>Sede Norte · 60 min</small></span><span class="cupo libre">4 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Crossfit, viernes 18:00</span></a></li>
+          <li class="clase" data-sede="Sur"><span class="h">19:00</span><span class="n"><b>Rumba fitness</b><small>Sede Sur · 55 min</small></span><span class="cupo libre">16 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Rumba fitness, viernes 19:00</span></a></li>
         </ul>
       </div>
       <div class="dia-p" data-dia="Sábado">
         <h3 class="dia-t">Sábado</h3>
         <ul>
-          <li class="clase" data-sede="Parque de los Niños"><span class="h">7:00</span><span class="n"><b>Funcional al aire libre</b><small>Parque de los Niños · 60 min</small></span><span class="cupo libre">18 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional al aire libre, sábado 7:00</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">8:30</span><span class="n"><b>Spinning</b><small>Sede Cabecera · 50 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, sábado 8:30</span></a></li>
-          <li class="clase" data-sede="Cabecera"><span class="h">10:00</span><span class="n"><b>Movilidad y estiramiento</b><small>Sede Cabecera · 45 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Movilidad y estiramiento, sábado 10:00</span></a></li>
+          <li class="clase" data-sede="Al aire libre"><span class="h">7:00</span><span class="n"><b>Funcional al aire libre</b><small>Al aire libre · 60 min</small></span><span class="cupo libre">18 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Funcional al aire libre, sábado 7:00</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">8:30</span><span class="n"><b>Spinning</b><small>Sede Norte · 50 min</small></span><span class="cupo libre">6 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Spinning, sábado 8:30</span></a></li>
+          <li class="clase" data-sede="Norte"><span class="h">10:00</span><span class="n"><b>Movilidad y estiramiento</b><small>Sede Norte · 45 min</small></span><span class="cupo libre">14 cupos</span><a class="reservar" href="#prueba">Reservar esta clase<span class="sr">: Movilidad y estiramiento, sábado 10:00</span></a></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <h2 class="sec" id="sedes">Sedes</h2>
+  </div>
+
+  <div class="fila">
+  <div class="fila-t">
+    <h2 class="sec" id="sedes">Sedes</h2>
+    <p class="sub">Mira cuál te queda más cerca y si está abierta ahora.</p>
+  </div>
   <div class="sedes">
-    <div class="sede" data-sede="Cabecera">
+    <div class="sede" data-sede="Norte">
       <figure class="mapa" data-in>
-        <svg role="img" aria-label="Mapa ilustrativo: Calle 49 con Carrera 38, Cabecera del Llano" viewBox="0 0 320 140">
+        <svg role="img" aria-label="Mapa ilustrativo de la sede Norte" viewBox="0 0 320 140">
           <rect class="mz" x="8" y="8" width="62" height="46" rx="4"/><rect class="mz" x="78" y="8" width="62" height="46" rx="4"/><rect class="mz" x="156" y="8" width="70" height="46" rx="4"/><rect class="parque" x="234" y="8" width="78" height="46" rx="4"/>
           <rect class="mz" x="8" y="70" width="62" height="62" rx="4"/><rect class="mz" x="78" y="70" width="62" height="62" rx="4"/><rect class="mz" x="156" y="70" width="70" height="62" rx="4"/><rect class="mz" x="234" y="70" width="78" height="62" rx="4"/>
-          <text x="14" y="66">Cl. 49</text><text x="0" y="0" transform="translate(152 126) rotate(-90)">Cra. 38</text>
           <ellipse class="sombra" cx="118" cy="63" rx="7" ry="2.5"/>
           <g class="pin"><path d="M118 63c0 0-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19Z"/><circle cx="118" cy="44" r="4.5" fill="#fff"/></g>
         </svg>
         <figcaption>Mapa ilustrativo</figcaption>
       </figure>
-      <h3>Sede Cabecera</h3>
+      <h3>Sede Norte</h3>
       <p class="estado" hidden></p>
-      <p class="dir">Calle 49 # 38-09<br>Cabecera del Llano</p>
+      <p class="dir dir-vacia"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="10" r="2.2" fill="currentColor"/></svg>Aquí va la dirección de su negocio.</p>
       <dl>
         <dt>Lun a vie</dt><dd data-min="300-1320">5:00 a.m. – 10:00 p.m.</dd>
         <dt>Sábado</dt><dd data-min="360-960">6:00 a.m. – 4:00 p.m.</dd>
         <dt>Domingo</dt><dd data-min="480-780">8:00 a.m. – 1:00 p.m.</dd>
       </dl>
     </div>
-    <div class="sede" data-sede="Antonia Santos">
+    <div class="sede" data-sede="Sur">
       <figure class="mapa" data-in>
-        <svg role="img" aria-label="Mapa ilustrativo: Carrera 27 con Calle 32, Antonia Santos" viewBox="0 0 320 140">
+        <svg role="img" aria-label="Mapa ilustrativo de la sede Sur" viewBox="0 0 320 140">
           <rect class="mz" x="8" y="8" width="62" height="46" rx="4"/><rect class="parque" x="78" y="8" width="62" height="46" rx="4"/><rect class="mz" x="156" y="8" width="70" height="46" rx="4"/><rect class="mz" x="234" y="8" width="78" height="46" rx="4"/>
           <rect class="mz" x="8" y="70" width="62" height="62" rx="4"/><rect class="mz" x="78" y="70" width="62" height="62" rx="4"/><rect class="mz" x="156" y="70" width="70" height="62" rx="4"/><rect class="mz" x="234" y="70" width="78" height="62" rx="4"/>
-          <text x="14" y="66">Cl. 32</text><text x="0" y="0" transform="translate(152 126) rotate(-90)">Cra. 27</text>
           <ellipse class="sombra" cx="148" cy="63" rx="7" ry="2.5"/>
           <g class="pin"><path d="M148 63c0 0-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19Z"/><circle cx="148" cy="44" r="4.5" fill="#fff"/></g>
         </svg>
         <figcaption>Mapa ilustrativo</figcaption>
       </figure>
-      <h3>Sede Antonia Santos</h3>
+      <h3>Sede Sur</h3>
       <p class="estado" hidden></p>
-      <p class="dir">Carrera 27 con Calle 32<br>Antonia Santos</p>
+      <p class="dir dir-vacia"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="10" r="2.2" fill="currentColor"/></svg>Aquí va la dirección de su negocio.</p>
       <dl>
         <dt>Lun a vie</dt><dd data-min="300-1260">5:00 a.m. – 9:00 p.m.</dd>
         <dt>Sábado</dt><dd data-min="360-900">6:00 a.m. – 3:00 p.m.</dd>
         <dt>Domingo</dt><dd>Cerrado</dd>
       </dl>
     </div>
+  </div>
   </div>
 
   <section class="prueba" id="prueba">
@@ -532,7 +561,7 @@ footer b{color:var(--ink-2)}
         <p class="elegida" id="p-elegida" aria-live="polite"></p>
         <div><label for="p-nom">Nombre</label><input id="p-nom" placeholder="Tu nombre" autocomplete="name"></div>
         <div><label for="p-tel">Celular</label><input id="p-tel" type="tel" placeholder="300 000 0000" inputmode="tel" autocomplete="tel"></div>
-        <div><label for="p-sede">Sede</label><select id="p-sede"><option value="Cabecera">Cabecera</option><option value="Antonia Santos">Antonia Santos</option><option value="Parque de los Niños">Parque de los Niños (clase del sábado)</option></select></div>
+        <div><label for="p-sede">Sede</label><select id="p-sede"><option value="Norte">Sede Norte</option><option value="Sur">Sede Sur</option><option value="Al aire libre">Al aire libre (clase del sábado)</option></select></div>
         <div><label for="p-dia">Día</label><select id="p-dia"><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option><option>Sábado</option></select></div>
         <div class="full"><label for="p-clase">Clase</label><select id="p-clase"><option>Boxeo recreativo</option><option>Core y movilidad</option><option>Crossfit</option><option>Fuerza guiada</option><option>Full body express</option><option>Funcional</option><option>Funcional al aire libre</option><option>Movilidad y estiramiento</option><option>Rumba fitness</option><option>Spinning</option></select></div>
         <p class="err" id="p-err" aria-live="assertive"></p>
@@ -665,7 +694,7 @@ document.addEventListener("click", e => {
     $("#prueba").scrollIntoView({ behavior: reduce() ? "auto" : "smooth", block: "start" });
     const li = r.closest(".clase"), panel = r.closest(".dia-p");
     $("#p-sede").value = li.dataset.sede; $("#p-dia").value = panel.dataset.dia; $("#p-clase").value = li.querySelector(".n b").textContent;
-    $("#p-elegida").textContent = `Elegiste ${li.querySelector(".n b").textContent}, ${panel.dataset.dia.toLowerCase()} ${li.querySelector(".h").textContent}, ${li.dataset.sede}. Solo faltan tu nombre y tu celular.`;
+    $("#p-elegida").textContent = `Elegiste ${li.querySelector(".n b").textContent}, ${panel.dataset.dia.toLowerCase()} ${li.querySelector(".h").textContent} (${li.querySelector(".n small").textContent.split(" · ")[0]}). Solo faltan tu nombre y tu celular.`;
     ["#p-sede", "#p-dia", "#p-clase"].forEach(s => destellar($(s)));
     nom.focus({ preventScroll: true });
     usado("horario");
