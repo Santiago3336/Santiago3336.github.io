@@ -9,6 +9,7 @@ En vivo: **https://santiago3336.github.io/demos/viajes/**
 
 Es un sitio para una **agencia o asesoría de viajes** que hoy vende sobre todo por Instagram y WhatsApp:
 
+- La página no es una sola columna larga: está dividida en seis planos (Inicio, Destinos, Mapa, Arme su viaje, Salidas y Contacto). Se ve uno a la vez y se pasa de uno a otro con un deslizamiento. Un menú flotante acompaña el recorrido: muestra el plano actual, tiene una flecha al siguiente y despliega los seis con una frase de qué hay en cada uno. Al final de cada plano, una tarjeta invita al siguiente. La dirección cambia con cada plano (`#mapa`, `#arma`…), así que el botón «atrás» funciona y se puede compartir un plano directo. Sin JavaScript, la página se ve completa en una sola columna.
 - Hero con una ventana de avión ilustrada cuya persiana se abre al cargar. La vista cambia al pasar por cada historia.
 - Historias como las de Instagram (Colombia, Latam, Europa, Todo incluido, Lujo). Abren un visor con un destino por historia, avanzan solas cada 6 segundos, se pueden pausar y se manejan con el teclado. Con «reducir movimiento» no avanzan solas.
 - Catálogo de destinos con precio «desde» por persona, filtros por región y estilo, y tarjetas ilustradas tipo afiche.
