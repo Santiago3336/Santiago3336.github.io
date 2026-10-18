@@ -62,6 +62,7 @@ html{scrollbar-color:#2B3452 #070A14;accent-color:var(--accent);caret-color:var(
 
 /* Encabezado */
 .hbar{display:flex;align-items:center;gap:14px;padding-block:18px;flex-wrap:wrap}
+.hero > .hbar{width:100%}   /* en el hero (flex en columna) el encabezado se encogía y quedaba descuadrado */
 .brand{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none;view-transition-name:marca}
 .brand span{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
 .nav{margin-left:auto}
@@ -105,6 +106,27 @@ html{scrollbar-color:#2B3452 #070A14;accent-color:var(--accent);caret-color:var(
 .lede{color:var(--ink-2);font-size:clamp(16px,2vw,19px);line-height:1.6;max-width:52ch;margin:22px 0 0;text-shadow:0 1px 24px rgba(0,0,0,.7)}
 .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .facts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 20px max(clamp(32px,6vw,56px),var(--pausa-libre))}
+/* Menú de la portada: tarjetas con número, nombre y qué se va a ver */
+.mapa{display:grid;gap:10px;width:100%;max-width:520px;margin-top:36px;text-align:left}
+.ir{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:15px 18px;border-radius:var(--radius);background:rgba(12,16,29,.95);border:1px solid var(--line);color:var(--ink);text-decoration:none;transition:border-color .25s ease,background-color .25s ease,transform .25s cubic-bezier(.16,1,.3,1)}
+.ir .n{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font:500 12px/1 var(--mono);color:var(--accent);background:var(--accent-soft);border:1px solid rgba(151,172,255,.22);transition:background-color .25s ease,color .25s ease}
+.ir b{display:block;font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:-.01em}
+.ir small{display:block;margin-top:2px;color:var(--ink-2);font-size:14px;line-height:1.45}
+.ir svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--ink-3);transition:transform .25s cubic-bezier(.16,1,.3,1),color .25s ease}
+.ir:hover,.ir:focus-visible{border-color:rgba(151,172,255,.45);background:rgba(22,28,48,.97)}
+.ir:hover .n,.ir:focus-visible .n{background:var(--accent);color:var(--accent-ink)}
+.ir:hover svg,.ir:focus-visible svg{color:var(--accent);transform:translateX(4px)}
+.ir[href="trayectoria/"]:hover svg,.ir[href="trayectoria/"]:focus-visible svg{transform:translate(3px,-3px)}
+/* Pantalla ancha: título a la izquierda, menú a la derecha; cada sección ocupa la pantalla al llegar */
+@media(min-width:980px){
+  .hero-inner{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(40px,6vw,96px);align-items:center;text-align:left;width:100%;max-width:var(--maxw);margin:0 auto}
+  .hero-inner .actions,.facts{justify-content:flex-start}
+  .mapa{margin-top:0;justify-self:end}
+  .facts{width:100%;max-width:var(--maxw);margin:0 auto}
+}
+@media(min-width:980px) and (min-height:640px){
+  main .section{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+}
 .facts span{font-family:var(--mono);font-size:12px;color:var(--ink-2);background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:7px 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 
 /* Secciones */
@@ -303,16 +325,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var
   </div>
 
   <div class="hero-inner">
-    <h1 data-reveal style="--rd:60ms">Su negocio ya tiene clientes. Lo que no tiene es <em>dónde encontrarlo</em>.</h1>
-    <p class="lede" data-reveal style="--rd:180ms">Hago sitios web para negocios de Bucaramanga que ya tienen reputación en Google pero no tienen a dónde mandar al cliente. Entrega en dos semanas.</p>
-    <div class="actions" data-reveal style="--rd:300ms">
-      <a class="btn btn-primary" href="#contacto">Hablemos 15 minutos
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      <a class="btn btn-outline" href="#trabajo">Ver ejemplos</a>
+    <div class="hero-txt">
+      <h1 data-reveal style="--rd:60ms">Su negocio ya tiene clientes. Lo que no tiene es <em>dónde encontrarlo</em>.</h1>
+      <p class="lede" data-reveal style="--rd:180ms">Hago sitios web para negocios de Bucaramanga que ya tienen reputación en Google pero no tienen a dónde mandar al cliente. Entrega en dos semanas.</p>
+      <div class="actions" data-reveal style="--rd:300ms">
+        <a class="btn btn-primary" href="#contacto">Hablemos 15 minutos
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+      </div>
     </div>
+
+    <!-- Menú de la página: cada tarjeta dice qué va a ver y lleva a esa sección, que ocupa la pantalla -->
+    <nav class="mapa" aria-label="Qué hay en esta página">
+      <a class="ir" href="#trabajo" data-reveal style="--rd:200ms"><span class="n" aria-hidden="true">01</span><span><b>Ejemplos</b><small>Tres sitios funcionando que puede abrir y probar.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a class="ir" href="#incluye" data-reveal style="--rd:280ms"><span class="n" aria-hidden="true">02</span><span><b>Qué incluye</b><small>Lo que trae cada sitio desde el primer día.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a class="ir" href="#proceso" data-reveal style="--rd:360ms"><span class="n" aria-hidden="true">03</span><span><b>Cómo trabajo</b><small>Cuatro pasos, de la llamada a la entrega.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a class="ir" href="#sobre-mi" data-reveal style="--rd:440ms"><span class="n" aria-hidden="true">04</span><span><b>Sobre mí</b><small>Quién hace el trabajo y por qué así.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a class="ir" href="trayectoria/" data-reveal style="--rd:520ms"><span class="n" aria-hidden="true">05</span><span><b>Trayectoria</b><small>Experiencia, formación y certificados. Abre otra página.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </nav>
   </div>
 
-  <div class="facts" data-reveal style="--rd:420ms">
+  <div class="facts">
     <span>Entrega en 2 semanas</span>
     <span>Dominio a su nombre</span>
     <span>Catálogo y agenda por WhatsApp</span>
@@ -751,7 +783,7 @@ if ("IntersectionObserver" in window) {
     const k = Math.min(1, dt * 3.2), side = Math.min(1, Math.max(.5, innerWidth / 1200));
     for (const key in STOPS) cam[key] += (sample(STOPS[key], cam.p) * (key === "x" ? side : 1) - cam[key]) * k;
     // Primer cliente: llega a un negocio bajo los botones y enciende "dónde encontrarlo"
-    if (!heroSent && t > .45) { heroSent = true; newTrip(t, bizNearScreen(w * .5, h * .8), 2, true); }
+    if (!heroSent && t > .45) { heroSent = true; newTrip(t, w >= 980 ? bizNearScreen(w * .3, h * .72) : bizNearScreen(w * .5, h * .8), 2, true); }
 
     // Al llegar a Contacto, los clientes convergen en el negocio del centro
     if ((nextTrip -= dt) <= 0 && trips.length < TRIPS + (cam.p > .82 ? 2 : 0)) {
@@ -779,6 +811,13 @@ if ("IntersectionObserver" in window) {
     pausa.classList.toggle("is-paused", paused);
     pTxt.textContent = paused ? "Reanudar fondo" : "Pausar fondo";
   });
+  // Menú de la portada: al pasar por una tarjeta, un cliente sale hacia un negocio junto a ella
+  const irA = e => {
+    if (!raf || trips.length >= TRIPS + 3) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    newTrip(t, bizNearScreen(r.left - 48, r.top + r.height / 2), 2);   // justo a la izquierda: el viaje se ve, no queda tapado
+  };
+  document.querySelectorAll(".ir").forEach(a => { a.addEventListener("pointerenter", irA); a.addEventListener("focus", irA); });
   run();
 })();
 </script>
