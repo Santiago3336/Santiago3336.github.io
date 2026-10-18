@@ -9,6 +9,7 @@ En vivo: **https://santiago3336.github.io/demos/gimnasio/**
 
 Es un sitio de **planes y reservas** para un gimnasio con varias sedes:
 
+- La página no es una sola columna larga: está dividida en planos (Inicio, Planes, Horario, Sedes y Clase gratis). Se ve uno a la vez y se pasa de uno a otro con un deslizamiento. Un menú flotante acompaña el recorrido, al lado contrario de la lista «Pruebe esta demo»: muestra el plano actual, tiene una flecha al siguiente y despliega todos con una frase de qué hay en cada uno. Al final de cada plano, una tarjeta invita al siguiente. La dirección cambia con cada plano, así que el botón «atrás» funciona. Sin JavaScript, la página se ve completa en una sola columna.
 - Hero de cartel con un amanecer sobre los cerros y una línea de pulso que subraya el titular.
 - Planes con precio a la vista y una barra que muestra cuánto cuesta cada plan por mes.
 - Horario de clases por día, con cupos, que abre en el día de hoy (hora de Bogotá). Cada clase tiene un botón para reservarla directamente.

@@ -187,7 +187,8 @@ html:not(.js) .dias{display:none}
 .ind{position:absolute;bottom:-1px;left:0;width:calc(100% / 6);height:3px;background:var(--sol);transform:translateX(calc(var(--i, 0) * 100%))}
 @media (prefers-reduced-motion:no-preference){.ind{transition:transform .32s var(--ease-out)}}
 @media(max-width:520px){.dia .largo{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.dia .corto{display:inline}}
-.clases{padding:4px 0;view-transition-name:clases}
+.clases{padding:4px 0}
+html:not(.cambio-vista) .clases{view-transition-name:clases}
 .dia-t{font-size:20px;padding:16px 18px 4px;color:#F3EDF5}
 .dia-p ul{list-style:none;margin:0;padding:0}
 .js .clases{display:grid}
@@ -334,6 +335,65 @@ footer b{color:var(--ink-2)}
 .demo .volver:focus-visible{outline:2px solid #fff;outline-offset:2px}
 @media(max-width:620px){.demo{justify-content:flex-start;text-align:left}}
 
+:root{--g-fondo:var(--deep);--g-texto:#F3EDF5;--g-texto-2:#C3B8C9;--g-acento:var(--sol);--g-acento-tinta:#2A1A33;--g-borde:rgba(255,138,126,.42);
+  --g-hover:rgba(255,138,126,.1);--g-actual:rgba(255,138,126,.18);--g-radio:6px;--g-display:var(--display);--g-peso:400;--g-mayus:uppercase;--g-cuerpo:var(--body);
+  --g-tarjeta:var(--surface);--g-tarjeta-texto:var(--ink);--g-tarjeta-texto-2:var(--ink-2);--g-linea:var(--line-2);--g-et:var(--coral);--g-flecha-fondo:var(--coral-fill);--g-flecha:#fff}
+@media (max-width:979px){html .dock{width:min(292px,calc(100% - 32px - 112px))}}   /* abierta en celular, deja libre el menú */
+/* Planos: con JS cada sección es una pantalla y se recorre con el menú flotante; sin JS, la página es una sola columna */
+[data-plano] .vista{min-height:100svh}
+.vista h1:focus,.vista h2:focus{outline:none}
+.vista h1:focus-visible,.vista h2:focus-visible{outline:2px solid currentColor;outline-offset:6px}
+@media (prefers-reduced-motion:no-preference){
+  .cambio-vista .vista{view-transition-name:vista}
+  .cambio-vista::view-transition-old(root),.cambio-vista::view-transition-new(root){animation:none}
+  .cambio-vista::view-transition-old(vista){animation:.2s ease-in both plano-sale}
+  .cambio-vista::view-transition-new(vista){animation:.5s cubic-bezier(.16,1,.3,1) both plano-entra}
+  .cambio-vista[data-plano-dir="atras"]::view-transition-old(vista){animation-name:plano-sale-atras}
+  .cambio-vista[data-plano-dir="atras"]::view-transition-new(vista){animation-name:plano-entra-atras}
+}
+@keyframes plano-sale{to{opacity:0;transform:translateX(-40px)}}
+@keyframes plano-entra{from{opacity:0;transform:translateX(64px)}}
+@keyframes plano-sale-atras{to{opacity:0;transform:translateX(40px)}}
+@keyframes plano-entra-atras{from{opacity:0;transform:translateX(-64px)}}
+/* Al final de cada plano: una tarjeta grande hacia el siguiente */
+.sig-wrap{padding-block:clamp(48px,7vw,80px)}
+.sig-vista{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 22px;padding:22px 26px;border:1.5px solid var(--g-linea);border-radius:var(--g-radio);background:var(--g-tarjeta);color:var(--g-tarjeta-texto);text-decoration:none;transition:border-color .25s}
+.sig-vista:hover{border-color:var(--g-flecha-fondo)}
+.sig-et{grid-column:2;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--g-et)}
+.sig-vista b{grid-column:2;font-family:var(--g-display);font-size:clamp(30px,4vw,46px);font-weight:var(--g-peso);line-height:1.02;text-transform:var(--g-mayus)}
+.sig-vista small{grid-column:2;font-size:15px;color:var(--g-tarjeta-texto-2)}
+.sig-vista svg{grid-column:1;grid-row:1/4;width:54px;height:54px;padding:15px;border-radius:50%;background:var(--g-flecha-fondo);color:var(--g-flecha);fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+@media (hover:hover){.sig-vista:hover svg{transform:translateX(6px)}}
+/* Menú flotante que acompaña el recorrido: al lado contrario de la lista «Pruebe esta demo» */
+.guia{position:fixed;width:auto;margin:0;overflow:visible;left:max(16px,env(safe-area-inset-left,0px));bottom:var(--guia-b,var(--dock-b,max(16px,env(safe-area-inset-bottom,0px))));z-index:29;display:flex;align-items:center;gap:8px;font-family:var(--g-cuerpo)}
+@media (max-width:979px){.guia{left:auto;right:max(16px,env(safe-area-inset-right,0px))}}
+.guia-btn{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 18px 0 14px;border:1px solid var(--g-borde);border-radius:999px;background:var(--g-fondo);color:var(--g-texto);font:600 14.5px var(--g-cuerpo);cursor:pointer;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.guia-btn svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.guia-btn path{transform-box:fill-box;transform-origin:center;transition:transform .25s cubic-bezier(.16,1,.3,1),opacity .2s}
+.guia-btn[aria-expanded="true"] .l1{transform:translateY(5px) rotate(45deg)}
+.guia-btn[aria-expanded="true"] .l2{opacity:0}
+.guia-btn[aria-expanded="true"] .l3{transform:translateY(-5px) rotate(-45deg)}
+.guia-actual{white-space:nowrap}
+.guia-n{font-size:12.5px;color:var(--g-acento);font-variant-numeric:tabular-nums}
+.guia-sig{display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:50%;background:var(--g-acento);color:var(--g-acento-tinta);cursor:pointer;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.guia-sig svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:979px){.guia-actual,.guia-n{display:none}.guia-btn{width:48px;padding:0;justify-content:center}}
+.guia-panel{position:absolute;left:0;bottom:calc(100% + 10px);width:min(330px,calc(100vw - 32px));padding:10px;border:1px solid var(--g-borde);border-radius:calc(var(--g-radio) + 6px);background:var(--g-fondo);color:var(--g-texto);box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+@media (max-width:979px){.guia-panel{left:auto;right:0}}
+.guia-panel p{margin:4px 10px 8px;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--g-acento)}
+.guia-panel ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.guia-panel a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 14px;align-items:center;padding:9px 10px;border-radius:var(--g-radio);color:var(--g-texto);text-decoration:none}
+.guia-panel a:hover{background:var(--g-hover)}
+.guia-panel a[aria-current="page"]{background:var(--g-actual)}
+.g-num{grid-row:span 2;display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--g-borde);border-radius:var(--g-radio);color:var(--g-acento);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.guia-panel a[aria-current="page"] .g-num{background:var(--g-acento);border-color:var(--g-acento);color:var(--g-acento-tinta)}
+.guia-panel b{font-family:var(--g-display);font-size:21px;font-weight:var(--g-peso);line-height:1.1;text-transform:var(--g-mayus)}
+.guia-panel small{color:var(--g-texto-2);font-size:13px;line-height:1.35}
+.guia :focus-visible{outline:2px solid var(--g-acento);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.guia-panel:not([hidden]){animation:guia-sube .28s cubic-bezier(.16,1,.3,1)}}
+@keyframes guia-sube{from{opacity:0;transform:translateY(12px)}}
+@media (prefers-reduced-motion:reduce){.guia-btn path,.sig-vista svg{transition:none}}
+
 /* Lista «ya lo probó» flotante: la misma lista de la franja final, fijada en una esquina mientras se recorre la demo.
    Al llegar a la franja vuela a su lugar; en celular empieza plegada. Estilo de la franja de Santiago, no de la marca. */
 html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
@@ -388,6 +448,7 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
 </header>
 
 <main>
+<div class="vista" data-vista="inicio" data-titulo="Inicio" data-desc="La clase de prueba y los datos clave" data-ancla="top">
 <section class="hero" id="top">
   <div class="wrap">
     <h1>Entrena hoy. <i>La primera clase va por nuestra cuenta.</i></h1>
@@ -413,7 +474,9 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
     </div>
   </div>
 </section>
+</div>
 
+<div class="vista" data-vista="planes" data-titulo="Planes" data-desc="Precio por día, mes, trimestre y año" data-ancla="planes">
 <div class="wrap">
   <div class="fila">
   <div class="fila-t">
@@ -471,7 +534,11 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
   <p class="nota-planes">La barra muestra lo que pagas por mes. Valores por mes redondeados a la centena.</p>
   </div>
   </div>
+</div>
+</div>
 
+<div class="vista" data-vista="horario" data-titulo="Horario" data-desc="28 clases por semana, con cupos" data-ancla="horario">
+<div class="wrap">
   <div class="fila">
   <div class="fila-t">
     <h2 class="sec" id="horario">Horario de clases</h2>
@@ -542,7 +609,11 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
   </div>
 
   </div>
+</div>
+</div>
 
+<div class="vista" data-vista="sedes" data-titulo="Sedes" data-desc="Norte y Sur: horario y si están abiertas" data-ancla="sedes">
+<div class="wrap">
   <div class="fila">
   <div class="fila-t">
     <h2 class="sec" id="sedes">Sedes</h2>
@@ -589,7 +660,11 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
     </div>
   </div>
   </div>
+</div>
+</div>
 
+<div class="vista" data-vista="prueba" data-titulo="Clase gratis" data-desc="Reserva tu primera clase" data-ancla="prueba">
+<div class="wrap">
   <section class="prueba" id="prueba">
     <div class="cont">
       <h2>Tu primera clase, gratis</h2>
@@ -611,7 +686,6 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
     </div>
   </section>
 </div>
-</main>
 
 <aside class="santiago" aria-labelledby="st-t">
   <div class="wrap">
@@ -635,6 +709,12 @@ html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
 <footer class="wrap">
   <b>Santiago GYM</b> es una marca inventada. Este sitio existe para mostrar cómo se vería la página de un gimnasio de Bucaramanga: precios, horarios, sedes y cupos son de ejemplo y no corresponden a ningún negocio real. No se incluyen reseñas ni testimonios porque no se inventan opiniones de clientes.
 </footer>
+</div>
+</main>
+
+
+
+
 
 <dialog class="sheet" id="sheet" aria-labelledby="sh-t">
   <div class="box">
@@ -728,12 +808,11 @@ document.addEventListener("click", e => {
   const r = e.target.closest(".reservar");
   if (r) {                                     // el scroll lo hace el JS: la navegación al ancla le quitaría el foco a Nombre
     e.preventDefault();
-    $("#prueba").scrollIntoView({ behavior: reduce() ? "auto" : "smooth", block: "start" });
     const li = r.closest(".clase"), panel = r.closest(".dia-p");
     $("#p-sede").value = li.dataset.sede; $("#p-dia").value = panel.dataset.dia; $("#p-clase").value = li.querySelector(".n b").textContent;
     $("#p-elegida").textContent = `Elegiste ${li.querySelector(".n b").textContent}, ${panel.dataset.dia.toLowerCase()} ${li.querySelector(".h").textContent} (${li.querySelector(".n small").textContent.split(" · ")[0]}). Solo faltan tu nombre y tu celular.`;
     ["#p-sede", "#p-dia", "#p-clase"].forEach(s => destellar($(s)));
-    nom.focus({ preventScroll: true });
+    irAPlano($("#prueba"), { foco: nom });
     usado("horario");
     return;
   }
@@ -766,6 +845,82 @@ document.addEventListener("click", e => {
       .catch(manual);
   }
 });
+/* Planos: cada sección es una pantalla. La dirección (#catalogo, #obra…) lleva al plano, así el botón «atrás» funciona.
+   El menú flotante acompaña el recorrido, al lado contrario de la lista «Pruebe esta demo». Sin JS no se oculta nada. */
+(() => {
+  const q = (s, c = document) => c.querySelector(s), qq = (s, c = document) => [...c.querySelectorAll(s)];
+  const quieto = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const vistas = qq(".vista"); if (!vistas.length) return;
+  const vistaDe = el => el?.closest(".vista"), ancla = v => v.dataset.ancla, raiz = document.documentElement;
+  const navs = qq('nav a[href^="#"]');
+  let actual = null;
+  function mostrar(v, { destino = null, foco, historial = true } = {}){
+    if (!v) return;
+    if (destino && destino.id === ancla(v)) destino = null;
+    if (historial){ const h = "#" + (destino ? destino.id : ancla(v)); if (location.hash !== h) history.pushState(null, "", h); }
+    const enfocar = foco === false ? null : foco || (destino && destino.matches("h1,h2") ? destino : q("h1, h2", destino || v));
+    const cambiar = () => {
+      vistas.forEach(x => x.hidden = x !== v);
+      actual = v; marcar();
+      destino ? destino.scrollIntoView({ block: "start" }) : scrollTo(0, 0);
+      if (enfocar){ if (!enfocar.hasAttribute("tabindex") && !enfocar.matches("a,button,input,select,textarea")) enfocar.tabIndex = -1; enfocar.focus({ preventScroll: true }); }
+    };
+    if (v === actual || !actual || !document.startViewTransition || quieto()) return cambiar();
+    raiz.dataset.planoDir = vistas.indexOf(v) < vistas.indexOf(actual) ? "atras" : "adelante";
+    raiz.classList.add("cambio-vista");
+    document.startViewTransition(cambiar).finished.finally(() => raiz.classList.remove("cambio-vista"));
+  }
+  window.irAPlano = (el, opt = {}) => mostrar(vistaDe(el), { ...opt, destino: el });
+  function ruta(hash, opt = {}){
+    const el = hash.length > 1 ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    const v = vistaDe(el);
+    mostrar(v || vistas[0], { ...opt, destino: v ? el : null });
+  }
+  document.addEventListener("click", e => {                 // enlaces internos: cambian de plano en vez de saltar
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || a.getAttribute("href").length < 2) return;
+    const el = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+    if (!vistaDe(el)) return;
+    e.preventDefault(); cerrar(false); mostrar(vistaDe(el), { destino: el });
+  });
+  addEventListener("hashchange", () => ruta(location.hash, { historial: false }));
+
+  // Al final de cada plano, una tarjeta grande hacia el siguiente
+  const FLECHA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  vistas.slice(0, -1).forEach((v, i) => {
+    const sig = vistas[i + 1], caja = document.createElement("div");
+    caja.className = "wrap contenedor sig-wrap";
+    caja.innerHTML = `<a class="sig-vista" href="#${ancla(sig)}"><span class="sig-et">Siguiente · ${String(i + 2).padStart(2, "0")}</span><b>${sig.dataset.titulo}</b><small>${sig.dataset.desc}</small>${FLECHA}</a>`;
+    v.append(caja);
+  });
+
+  // Menú flotante
+  const guia = document.createElement("nav");
+  guia.className = "guia"; guia.setAttribute("aria-label", "Secciones de la página");
+  guia.innerHTML = `<div class="guia-panel" id="guia-panel" hidden><p>Recorre el gimnasio</p><ol>${vistas.map((v, i) =>
+      `<li><a href="#${ancla(v)}"><span class="g-num" aria-hidden="true">${String(i + 1).padStart(2, "0")}</span><b>${v.dataset.titulo}</b><small>${v.dataset.desc}</small></a></li>`).join("")}</ol></div>`
+    + '<button class="guia-btn" type="button" aria-expanded="false" aria-controls="guia-panel"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="l1" d="M4 7h16"/><path class="l2" d="M4 12h16"/><path class="l3" d="M4 17h16"/></svg><span class="guia-actual"></span><span class="guia-n"></span><span class="sr-guia" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap">Menú de secciones</span></button>'
+    + `<button class="guia-sig" type="button">${FLECHA}</button>`;
+  document.body.append(guia);
+  const btn = q(".guia-btn"), panel = q("#guia-panel"), sigB = q(".guia-sig");
+  function abrir(){ panel.hidden = false; btn.setAttribute("aria-expanded", "true"); q('a[aria-current="page"]', panel)?.focus(); }
+  function cerrar(devolver){ if (panel.hidden) return; panel.hidden = true; btn.setAttribute("aria-expanded", "false"); if (devolver) btn.focus(); }
+  btn.addEventListener("click", () => panel.hidden ? abrir() : cerrar(true));
+  sigB.addEventListener("click", () => { const i = vistas.indexOf(actual); mostrar(vistas[(i + 1) % vistas.length], { foco: false }); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !panel.hidden) cerrar(true); });
+  document.addEventListener("pointerdown", e => { if (!panel.hidden && !guia.contains(e.target)) cerrar(false); });
+  function marcar(){
+    const i = vistas.indexOf(actual), sig = vistas[(i + 1) % vistas.length], id = ancla(actual);
+    raiz.dataset.plano = actual.dataset.vista;
+    qq("a", panel).forEach((a, k) => k === i ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    navs.forEach(a => a.getAttribute("href") === "#" + id ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+    q(".guia-actual").textContent = actual.dataset.titulo;
+    q(".guia-n").textContent = `${i + 1}/${vistas.length}`;
+    sigB.setAttribute("aria-label", i === vistas.length - 1 ? "Volver al inicio de la página" : `Siguiente sección: ${sig.dataset.titulo}`);
+  }
+  ruta(location.hash, { historial: false, foco: false });
+})();
+
 /* Lista «ya lo probó» flotante: vive en una esquina mientras se recorre la demo y, al llegar a la franja final,
    vuela (FLIP) a su lugar en el bloque; si se vuelve a subir, regresa a la esquina. Sin JS queda en la franja. */
 (() => {
@@ -814,9 +969,9 @@ document.addEventListener("click", e => {
   // Llega al bloque cuando su lugar sube al 70 % de la pantalla; vuelve a la esquina solo si el bloque queda abajo
   new IntersectionObserver(([e]) => {
     if (e.isIntersecting) mover(true);
-    else if (e.boundingClientRect.top > 0) mover(false);
+    else if (e.boundingClientRect.top > 0 || !e.boundingClientRect.height) mover(false);   // abajo, o en otro plano
     primera = false;
-  }, { rootMargin: "0px 0px -30% 0px" }).observe(slot);
+  }, { rootMargin: "0px 0px -30% 0px" }).observe(slot.closest(".santiago") || slot);
 })();
 </script>
 
