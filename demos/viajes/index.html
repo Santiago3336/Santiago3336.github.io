@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <script>if ("IntersectionObserver" in window) document.documentElement.classList.add("js")</script>
+    <title>Santiago Viajes | Destinos, mapa y viajes a la medida (demo)</title>
+    <meta name="description" content="Demo de sitio web para agencia de viajes: historias de destinos como en Instagram, catálogo con precio desde, mapa de destinos y un cotizador que arma la solicitud para el asesor. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <link rel="canonical" href="https://santiago3336.github.io/demos/viajes/">
+    <meta name="theme-color" content="#10171A">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2310171A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='%23D9B77A' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:site_name" content="Santiago Sierra · Desarrollo web">
+    <meta property="og:title" content="Santiago Viajes | Destinos, mapa y viajes a la medida (demo)">
+    <meta property="og:description" content="Demo de sitio web para agencia de viajes: historias de destinos, catálogo con precio desde, mapa y cotizador que arma la solicitud para el asesor. Diseño y desarrollo: Santiago Sierra, Bucaramanga.">
+    <meta property="og:url" content="https://santiago3336.github.io/demos/viajes/">
+    <meta property="og:image" content="https://santiago3336.github.io/demos/viajes/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap">
+    <style>
+:root{
+  --arena:#F4EEE4; --papel:#FBF8F2; --tinta:#1C1813; --tinta-2:#5A5146; --tinta-3:#665C50;
+  --linea:#E3D9C9; --linea-2:#CDBFA8; --oro:#A57F3C; --oro-t:#7A5A22;
+  --noche:#10171A; --noche-2:#17222A; --oro-c:#D9B77A; --crema:#EFE6D6; --crema-2:#BDB4A6;
+  --display:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --body:'Jost','Helvetica Neue',Arial,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:light;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px;accent-color:var(--oro);caret-color:var(--oro);scrollbar-color:var(--oro) var(--arena)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--arena);color:var(--tinta);font-family:var(--body);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.01em;line-height:1.04;margin:0;text-wrap:balance}
+p{text-wrap:pretty}
+a{color:inherit;text-underline-offset:.22em}
+::selection{background:var(--oro-c);color:var(--noche)}
+:focus-visible{outline:2px solid var(--oro-t);outline-offset:3px}
+.oscuro :focus-visible,.visor :focus-visible{outline-color:var(--oro-c)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--oro-c);color:var(--noche);padding:10px 14px;border-radius:0 0 8px 0;font-weight:600;text-decoration:none}
+.skip:focus{left:0}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:20px}
+.eyebrow{margin:0 0 14px;font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--oro-t)}
+.oscuro .eyebrow{color:var(--oro-c)}
+h2.t{font-size:clamp(38px,5.4vw,62px)}
+h2.t em,.hero h1 em{font-style:italic;color:var(--oro-t)}
+.oscuro h2.t em,.hero h1 em{color:var(--oro-c)}
+.sub{margin:16px 0 0;max-width:44ch;color:var(--tinta-2)}
+.oscuro .sub{color:var(--crema-2)}
+.bloque{padding-block:clamp(72px,10vw,128px)}
+.oscuro{background:var(--noche);color:var(--crema)}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid transparent;font:500 15px/1.1 var(--body);letter-spacing:.02em;text-decoration:none;text-align:center;cursor:pointer;transition:background-color .2s,color .2s,border-color .2s,transform .2s}
+.btn-oscuro{background:var(--noche);color:var(--arena)}
+.btn-oscuro:hover{background:#26343C}
+.btn-oro{background:var(--oro-c);color:var(--noche)}
+.btn-oro:hover{background:#E8CB93}
+.btn-linea{background:transparent;border-color:currentColor;color:inherit}   /* <button> no hereda el color por defecto */
+.btn-linea:hover{background:rgba(217,183,122,.12)}
+@media (prefers-reduced-motion:no-preference){.btn:active{transform:scale(.98)}}
+
+/* Franja de demo: la voz de Santiago. La pastilla lleva de vuelta a la página principal */
+.demo{display:flex;align-items:center;justify-content:center;gap:6px 14px;flex-wrap:wrap;margin:0;padding:7px 16px;background:#070A14;color:#E6E3EE;font-size:12px;text-align:center}
+.demo p{margin:0}
+.demo b{color:var(--oro-c);font-weight:600}
+.volver{display:inline-flex;align-items:center;gap:6px;flex:none;padding:5px 12px;border:1px solid rgba(255,255,255,.45);border-radius:999px;color:#fff;font-size:12.5px;font-weight:600;text-decoration:none}
+.volver:hover{background:#fff;color:#070A14}
+.demo .volver:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media(max-width:620px){.demo{justify-content:flex-start;text-align:left}}
+
+/* Cabecera sobre la noche del hero */
+.cab{background:var(--noche);color:var(--crema);border-bottom:1px solid rgba(217,183,122,.16)}
+.cab .wrap{display:flex;align-items:center;gap:20px;padding-block:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--crema)}
+.logo b{font-family:var(--display);font-style:italic;font-weight:600;font-size:28px;line-height:1}
+.logo small{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--oro-c)}
+.cab nav{margin-left:auto;display:flex;gap:22px}
+.cab nav a{font-size:15px;color:var(--crema-2);text-decoration:none;white-space:nowrap}
+.cab nav a:hover{color:var(--crema)}
+.cab .btn{min-height:42px;padding:0 18px;font-size:14px}
+@media(max-width:860px){.cab .btn{display:none}.cab nav{margin-left:0;width:100%;overflow-x:auto;gap:20px;scrollbar-width:none;padding-bottom:2px}}
+
+/* Hero: ventana de avión e historias */
+.hero{position:relative;overflow:hidden;padding:clamp(40px,7vw,88px) 0 clamp(56px,8vw,104px)}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 70% at 85% 30%,rgba(217,183,122,.12),transparent 70%);pointer-events:none}
+.hero-grid{position:relative;display:grid;gap:44px;align-items:center}
+.hero-grid > *,.fila > *,.contacto-grid > *{min-width:0}   /* la fila de historias se desliza: no debe ensanchar la columna */
+@media(min-width:980px){.hero-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+.hero h1{font-size:clamp(48px,7.6vw,96px);line-height:.96}
+.lede{margin:22px 0 0;max-width:44ch;color:var(--crema-2);font-size:clamp(17px,1.6vw,19px)}
+.hero-acc{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.historias{list-style:none;margin:40px 0 0;padding:4px 2px 6px;display:flex;gap:16px;overflow-x:auto;scrollbar-width:none}
+.historias::-webkit-scrollbar{display:none}
+.historia{display:flex;flex-direction:column;align-items:center;gap:8px;width:78px;padding:0;background:none;border:0;color:var(--crema);font:500 13px/1.2 var(--body);cursor:pointer}
+.aro{display:block;width:72px;height:72px;border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#F0D7A3,var(--oro),#F0D7A3,var(--oro),#F0D7A3)}
+.aro svg{display:block;width:100%;height:100%;border-radius:50%;border:3px solid var(--noche)}
+.historia.vista .aro{background:#3A4650}
+.h-nombre{text-align:center}
+@media (prefers-reduced-motion:no-preference){.aro{transition:transform .25s var(--ease)}.historia:hover .aro,.historia:focus-visible .aro{transform:scale(1.06)}}
+.ventana{justify-self:center;width:min(100%,360px)}
+.ventana-marco{position:relative;aspect-ratio:3/4;padding:16px;border-radius:200px;background:linear-gradient(160deg,#33414A,#1A242B);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.12)}
+.vidrio{position:relative;height:100%;border-radius:184px;overflow:hidden;box-shadow:inset 0 0 0 5px rgba(0,0,0,.28)}
+.vidrio svg{position:absolute;inset:0;width:100%;height:100%}
+.vidrio::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.18),transparent 38%);pointer-events:none}
+.persiana{position:absolute;inset:0;z-index:2;background:repeating-linear-gradient(#DCD3C6 0 6px,#D2C8BA 6px 7px);transform:translateY(-88%);box-shadow:0 6px 12px rgba(0,0,0,.25)}
+.ventana-pie{margin:16px 0 0;text-align:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--crema-2)}
+@media (prefers-reduced-motion:no-preference){
+  .persiana{animation:abrir 1.5s var(--ease) .3s backwards}
+  .vidrio svg.entra{animation:fundir .5s ease both}
+}
+@keyframes abrir{from{transform:none}}
+@keyframes fundir{from{opacity:0}}
+@media(max-width:979px){.ventana{width:min(70vw,260px)}}
+
+/* Columna fija: título a la izquierda, contenido a la derecha */
+.fila{display:grid;gap:36px}
+@media(min-width:1000px){.fila{grid-template-columns:300px minmax(0,1fr);gap:0 56px;align-items:start}}
+@media(min-width:1000px) and (min-height:680px){.fijo{position:sticky;top:24px}}
+
+/* Destinos */
+.filtros{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+@media(min-width:1000px){.filtros{flex-direction:column;align-items:flex-start}}
+.filtro{padding:9px 16px;border:1px solid var(--linea-2);border-radius:999px;background:transparent;color:var(--tinta);font:500 14px var(--body);cursor:pointer;transition:background-color .2s,color .2s,border-color .2s}
+.filtro:hover{border-color:var(--tinta)}
+.filtro[aria-pressed="true"]{background:var(--noche);border-color:var(--noche);color:var(--arena)}
+.conteo{margin:16px 0 0;font-size:14px;color:var(--tinta-3)}
+.paquetes{display:grid;gap:22px}
+@media(min-width:720px){.paquetes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.paquete{display:flex;flex-direction:column;background:var(--papel);border:1px solid var(--linea);border-radius:18px;overflow:hidden}
+.postal{position:relative;aspect-ratio:400/230;overflow:hidden;background:var(--linea)}
+.postal svg{display:block;width:100%;height:100%}
+.sello-region{position:absolute;top:14px;left:14px;padding:5px 11px;border-radius:999px;background:rgba(251,248,242,.94);color:var(--tinta);font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase}
+.paq-cuerpo{display:flex;flex-direction:column;flex:1;padding:20px 22px 22px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{padding:3px 10px;border:1px solid rgba(122,90,34,.4);border-radius:999px;color:var(--oro-t);font-size:11.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.paquete h3{margin-top:12px;font-size:32px;font-weight:600}
+.frase{margin:4px 0 0;color:var(--tinta-2);font-family:var(--display);font-size:20px;font-style:italic;line-height:1.3}
+.incluye{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px;color:var(--tinta-2);font-size:14.5px}
+.incluye li{display:flex;gap:10px;align-items:baseline}
+.incluye li::before{content:"";flex:none;width:6px;height:6px;transform:translateY(-2px) rotate(45deg);background:var(--oro)}
+.precio{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin:18px 0 0;padding-top:16px;border-top:1px solid var(--linea)}
+.desde{font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-3)}
+.precio b{font-family:var(--display);font-size:32px;font-weight:600;line-height:1;font-variant-numeric:lining-nums}
+.por{font-size:13.5px;color:var(--tinta-3)}
+.paq-acc{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-top:auto;padding-top:20px}
+.ver-mapa{font-size:14.5px;font-weight:500;color:var(--oro-t)}
+.nota{margin:22px 0 0;font-size:13.5px;color:var(--tinta-3)}
+@media (prefers-reduced-motion:no-preference){
+  .postal svg{transition:transform .6s var(--ease)}
+  @media (hover:hover){.paquete:hover .postal svg{transform:scale(1.04)}}
+  .paquete{view-transition-class:paquete}
+  ::view-transition-group(*.paquete){animation-duration:.45s;animation-timing-function:var(--ease)}
+}
+
+/* Mapa */
+.mapa-lienzo{position:relative;aspect-ratio:1550/1160;border-radius:18px;background:radial-gradient(80% 90% at 50% 40%,#16232A,var(--noche));border:1px solid rgba(217,183,122,.16);overflow:hidden}
+.mapa-lienzo svg{position:absolute;inset:0;width:100%;height:100%}
+.puntos{fill:none;stroke:rgba(217,183,122,.3);stroke-width:9;stroke-linecap:round}
+.arco{fill:none;stroke:rgba(217,183,122,.28);stroke-width:1.2;stroke-dasharray:.012 .014;vector-effect:non-scaling-stroke}
+.arco.on{stroke:var(--oro-c);stroke-width:2.4;stroke-dasharray:1;stroke-dashoffset:0}
+@media (prefers-reduced-motion:no-preference){.arco.on{animation:trazar .9s var(--ease) both}}
+@keyframes trazar{from{stroke-dashoffset:1}}
+.pin{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;padding:0;border:0;border-radius:50%;background:transparent;cursor:pointer}
+.pin::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--oro-c);box-shadow:0 0 0 4px rgba(217,183,122,.2);transition:inset .2s,background-color .2s}
+.pin:hover::before,.pin[aria-pressed="true"]::before{inset:6px;background:#FFF1D4;box-shadow:0 0 0 6px rgba(217,183,122,.35)}
+.origen{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--crema);box-shadow:0 0 0 5px rgba(239,230,214,.16)}
+.origen span{position:absolute;left:18px;top:-5px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--crema);white-space:nowrap}
+.chips{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.chip-dest{padding:8px 14px;border:1px solid rgba(217,183,122,.4);border-radius:999px;background:transparent;color:var(--crema);font:500 14px var(--body);cursor:pointer}
+.chip-dest:hover{border-color:var(--oro-c)}
+.chip-dest[aria-pressed="true"]{background:var(--oro-c);border-color:var(--oro-c);color:var(--noche)}
+.ficha{display:grid;grid-template-columns:132px minmax(0,1fr);gap:18px;align-items:center;margin-top:18px;padding:16px;border:1px solid rgba(217,183,122,.22);border-radius:16px;background:var(--noche-2)}
+.ficha-img{aspect-ratio:400/260;border-radius:10px;overflow:hidden}
+.ficha-img svg{display:block;width:100%;height:100%}
+.ficha h3{font-size:28px;font-weight:600}
+.ficha p{margin:2px 0 0;color:var(--crema-2);font-size:14.5px}
+.ficha .btn{margin-top:12px;min-height:42px;padding:0 18px;font-size:14px}
+@media(max-width:560px){.ficha{grid-template-columns:1fr}}
+
+/* Arme su viaje */
+.armar{margin:0}
+.paso{margin:0;padding:0;border:0;min-width:0}
+.js .paso:not(.on){display:none}
+.paso + .paso{margin-top:48px}
+.js .paso + .paso{margin-top:0}
+.paso legend{padding:0;margin-bottom:6px;font-family:var(--display);font-size:clamp(28px,3.2vw,36px);font-weight:600;line-height:1.1}
+.paso legend:focus{outline:none}
+.paso legend:focus-visible{outline:2px solid var(--oro-t);outline-offset:4px}
+.ayuda{margin:0 0 22px;color:var(--tinta-2)}
+.opciones{display:grid;gap:12px}
+@media(min-width:560px){.opciones{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.opcion{position:relative;display:block;cursor:pointer}
+.opcion input{position:absolute;opacity:0;width:1px;height:1px}
+.opcion > span{display:block;height:100%;padding:18px 18px 16px;border:1px solid var(--linea-2);border-radius:14px;background:var(--papel);transition:border-color .2s,box-shadow .2s,background-color .2s}
+.opcion b{display:block;font-family:var(--display);font-size:23px;font-weight:600;line-height:1.15}
+.opcion small{display:block;margin-top:4px;color:var(--tinta-2);font-size:14px;line-height:1.45}
+.opcion:hover > span{border-color:var(--tinta-3)}
+.opcion input:checked + span{border-color:var(--noche);box-shadow:inset 0 0 0 1px var(--noche);background:#fff}
+.opcion input:focus-visible + span{outline:2px solid var(--oro-t);outline-offset:3px}
+.campos{display:grid;gap:18px 20px}
+@media(min-width:640px){.campos{grid-template-columns:1fr 1fr}}
+.campo label,.campo .et{display:block;margin-bottom:8px;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-3)}
+.campo select,.campo input{width:100%;padding:13px 14px;border:1px solid var(--linea-2);border-radius:12px;background:var(--papel);color:var(--tinta);font:16px var(--body)}
+.campo [aria-invalid="true"]{border-color:#9B2C1F;box-shadow:inset 0 0 0 1px #9B2C1F}
+.contador{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--linea-2);border-radius:999px;background:var(--papel)}
+.contador button{width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--tinta);font-size:20px;line-height:1;cursor:pointer}
+.contador button:hover{background:var(--linea)}
+.contador output{min-width:3ch;text-align:center;font-weight:500;font-variant-numeric:tabular-nums}
+.paso-nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:30px}
+.nojs-nav{display:none}
+.err{margin:14px 0 0;color:#9B2C1F;font-weight:500}
+.err:empty{display:none}
+.resumen{margin-top:28px;padding:20px 22px;border:1px solid var(--linea);border-radius:16px;background:var(--papel)}
+.resumen h3{font-size:22px;font-weight:600}
+.resumen dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 14px;margin:12px 0 0;font-size:14.5px}
+.resumen dt{color:var(--tinta-3)}
+.resumen dd{margin:0;font-weight:500}
+.pasos-cuenta{margin:18px 0 0;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-3)}
+.progreso{height:3px;margin-top:8px;border-radius:2px;background:var(--linea);overflow:hidden}
+.progreso i{display:block;height:100%;width:calc(var(--p,.2) * 100%);background:var(--oro)}
+@media (prefers-reduced-motion:no-preference){.progreso i{transition:width .45s var(--ease)}.js .paso.on{animation:paso .45s var(--ease) both}}
+@keyframes paso{from{opacity:0;transform:translateY(10px)}}
+html:not(.js) .resumen,html:not(.js) .pasos-cuenta,html:not(.js) .progreso{display:none}
+
+/* Salidas en grupo */
+.salidas{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.salida{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 22px;align-items:center;padding:20px 22px;border:1px solid var(--linea);border-radius:16px;background:var(--papel)}
+@media(min-width:760px){.salida{grid-template-columns:auto minmax(0,1fr) auto auto}}
+.fecha{display:grid;place-items:center;width:78px;height:84px;border-radius:12px;background:var(--noche);color:var(--crema);text-align:center;line-height:1}
+.fecha b{display:block;font-family:var(--display);font-size:36px;font-weight:600}
+.fecha span{display:block;margin-top:4px;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--oro-c)}
+.salida h3{font-size:26px;font-weight:600}
+.salida p{margin:2px 0 0;color:var(--tinta-2);font-size:14.5px}
+.cupos{display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--tinta-2)}
+.asientos{display:flex;gap:3px}
+.asientos i{width:8px;height:8px;border-radius:2px;background:var(--oro)}
+.asientos i.libre{background:transparent;box-shadow:inset 0 0 0 1px var(--oro)}
+.cupos b{color:var(--oro-t)}
+@media(max-width:759px){.cupos,.salida .btn{grid-column:1/-1}}
+
+/* Confianza: mosaico */
+.mosaico{display:grid;gap:14px}
+@media(min-width:760px){.mosaico{grid-template-columns:repeat(2,minmax(0,1fr))}.m-asesor{grid-column:1/-1}}
+@media(min-width:1000px){.mosaico{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"asesor asesor pagos rnt" "asesor asesor resenas resenas"}.m-asesor{grid-area:asesor}.m-pagos{grid-area:pagos}.m-rnt{grid-area:rnt}.m-resenas{grid-area:resenas}}
+.tile{padding:26px;border:1px solid var(--linea);border-radius:18px;background:var(--papel)}
+.tile h3{font-size:28px;font-weight:600}
+.tile p{margin:10px 0 0;color:var(--tinta-2);font-size:15px}
+.m-asesor{background:var(--noche);color:var(--crema);border-color:var(--noche);display:flex;flex-direction:column}
+.m-asesor h3{font-size:clamp(32px,3.4vw,42px)}
+.m-asesor p{color:var(--crema-2);max-width:40ch}
+.ruta{list-style:none;margin:auto 0 0;padding:28px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;counter-reset:r}
+.ruta li{position:relative;padding-top:18px;font-size:13.5px;color:var(--crema)}
+.ruta li::before{content:"";position:absolute;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--oro-c)}
+.ruta li::after{content:"";position:absolute;top:4.5px;left:16px;right:-4px;height:1px;background:rgba(217,183,122,.4)}
+.ruta li:last-child::after{display:none}
+.reservado{display:flex;gap:10px;align-items:center;margin-top:14px;padding:12px 14px;border:1.5px dashed var(--linea-2);border-radius:12px;color:var(--tinta-2);font-size:14.5px}
+.reservado svg{flex:none;color:var(--oro-t)}
+
+/* Contacto */
+.contacto-grid{display:grid;gap:36px;align-items:center}
+@media(min-width:1000px){.contacto-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}}
+.tarjeta-c{padding:28px;border:1px solid rgba(217,183,122,.22);border-radius:18px;background:var(--noche-2)}
+.tarjeta-c .reservado{border-color:rgba(217,183,122,.45);color:var(--crema)}
+.tarjeta-c .reservado svg{color:var(--oro-c)}
+.tarjeta-c dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:20px 0 0;font-size:15px}
+.tarjeta-c dt{color:var(--crema-2)}
+.tarjeta-c dd{margin:0}
+.c-acc{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn-wa{background:#25D366;color:#0B141A}
+.btn-wa:hover{background:#3BE07A}
+
+/* Diálogos: historias y solicitud */
+dialog{color:var(--tinta)}
+dialog.visor{width:min(420px,100vw);height:min(760px,100dvh);max-width:none;max-height:none;padding:0;border:0;background:transparent;overflow:visible}
+.visor::backdrop{background:rgba(6,9,11,.88)}
+.v-marco{position:relative;display:flex;flex-direction:column;height:100%;border-radius:20px;overflow:hidden;background:var(--noche);color:var(--crema)}
+@media(max-width:520px){dialog.visor{width:100vw;height:100dvh}.v-marco{border-radius:0}}
+.v-escena{position:absolute;inset:0}
+.v-escena svg{display:block;width:100%;height:100%}
+.v-escena::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(10,14,16,.66),rgba(10,14,16,.4) 14%,transparent 28%,transparent 42%,rgba(10,14,16,.92) 78%)}
+.v-barras{position:relative;z-index:3;display:flex;gap:4px;padding:12px 12px 0}
+.v-barras span{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}
+.v-barras i{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:left}
+.v-barras .lleno i{transform:none}
+.v-barras .activo i{animation:avance 6s linear forwards}
+.visor.pausado .v-barras .activo i{animation-play-state:paused}
+@keyframes avance{to{transform:none}}
+.v-cab{position:relative;z-index:3;display:flex;align-items:center;gap:8px;padding:10px 12px}
+.v-grupo{flex:1;font-size:15px;font-weight:500;letter-spacing:.04em}
+.v-boton{display:grid;place-items:center;width:42px;height:42px;padding:0;border:0;border-radius:50%;background:rgba(16,23,26,.55);color:#fff;cursor:pointer}
+.v-boton svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.v-boton .i-play,.visor.pausado .v-boton .i-pausa{display:none}
+.visor.pausado .v-boton .i-play{display:block}
+.v-texto{position:relative;z-index:3;margin-top:auto;padding:24px 22px 28px}
+.v-region{margin:0;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro-c)}
+.v-nombre{margin-top:8px;font-size:44px;font-weight:600;color:#FFF8EC}
+.v-frase{margin:6px 0 0;font-family:var(--display);font-size:22px;font-style:italic;line-height:1.3;color:var(--crema)}
+.v-precio{margin:14px 0 0;font-size:15px;color:var(--crema-2)}
+.v-precio b{color:#FFF8EC;font-weight:600}
+.v-texto .btn{margin-top:18px}
+.v-zona{position:absolute;z-index:2;top:76px;bottom:250px;width:38%;padding:0;border:0;background:transparent;cursor:pointer}
+.v-ant{left:0}.v-sig{right:0}
+.v-zona span{position:absolute;top:50%;display:grid;place-items:center;width:40px;height:40px;margin-top:-20px;border-radius:50%;background:rgba(16,23,26,.5);color:#fff;font-size:22px;opacity:0;transition:opacity .2s}
+.v-ant span{left:10px}.v-sig span{right:10px}
+.v-zona:hover span,.v-zona:focus-visible span{opacity:1}
+.v-zona:focus-visible{outline-offset:-4px}
+dialog.sheet{width:min(540px,calc(100vw - 32px));padding:0;border:0;border-radius:18px;background:var(--papel);box-shadow:0 30px 60px rgba(16,23,26,.4)}
+.sheet::backdrop{background:rgba(16,23,26,.6)}
+.sheet-cab{padding:22px 24px 18px;background:var(--noche);color:var(--crema)}
+.sheet-cab h2{font-size:30px;font-weight:600}
+.sheet-cuerpo{padding:20px 24px 24px}
+.sheet pre{margin:0;padding:14px 16px;white-space:pre-wrap;border-radius:4px 14px 14px 14px;background:#EAE3D6;font:15px/1.55 var(--body);color:var(--tinta)}
+.sheet .nota{margin-top:12px}
+.sheet-acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+@media (prefers-reduced-motion:no-preference){
+  dialog.sheet[open],dialog.visor[open]{animation:subir .35s var(--ease)}
+}
+@keyframes subir{from{opacity:0;transform:translateY(16px)}}
+
+/* Franja de Santiago: su voz y su mundo «ciudad de noche», separada de la marca */
+.santiago{--focus:#97ACFF;position:relative;overflow:hidden;background:#070A14;color:#ECEEF3;padding-block:clamp(44px,7vw,72px)}
+.santiago::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 120% at 88% 0%,rgba(47,75,216,.24),transparent 62%);pointer-events:none}
+.santiago .wrap{position:relative}
+.santiago h2{font-family:'Bricolage Grotesque',var(--body);font-weight:700;font-size:clamp(26px,4.2vw,38px);line-height:1.08;letter-spacing:-.02em;max-width:22ch;color:#ECEEF3}
+.santiago p{color:#B4BCCA;max-width:56ch;margin:14px 0 0;font-size:16.5px}
+.santiago :focus-visible{outline-color:#97ACFF}
+.rasgos{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.rasgos li{display:flex;gap:10px;align-items:center;color:#ECEEF3;font-size:16px}
+.rasgos .chk{flex:none}
+.rasgos .chk circle{fill:none;stroke:#97ACFF;stroke-width:1.6}
+.rasgos .chk path{fill:none;stroke:#97ACFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rasgos .usado .chk circle{fill:#97ACFF}
+.rasgos .usado .chk path{stroke:#070A14}
+.rasgos .ya{display:none;color:#97ACFF;font-style:normal}
+.rasgos .usado .ya{display:inline}
+.st-acc{display:flex;gap:14px 22px;align-items:center;flex-wrap:wrap;margin-top:28px}
+.santiago .btn-wa{display:inline-flex;gap:9px;align-items:center;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none}
+.btn-wa svg{width:17px;height:17px;flex:none}
+.st-link{color:#97ACFF;font-weight:600}
+footer{padding-block:24px 32px;color:var(--tinta-3);font-size:13px}
+footer b{color:var(--tinta-2)}
+
+/* Lista «ya lo probó» flotante: la misma lista de la franja final, fijada en una esquina mientras se recorre la demo.
+   Al llegar a la franja vuela a su lugar; en celular empieza plegada y va abajo a la izquierda. */
+html{scroll-padding-bottom:calc(var(--dock-b,16px) + 60px)}
+.dock{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:var(--dock-b,max(16px,env(safe-area-inset-bottom,0px)));z-index:28;width:min(292px,calc(100vw - 32px));background:#0B1020;color:#ECEEF3;border:1px solid rgba(151,172,255,.3);border-radius:14px;box-shadow:0 18px 40px -16px rgba(0,0,0,.6);font-family:var(--body)}
+.dock:not(.abierto){width:auto}
+@media (max-width:979px){.dock{right:auto;left:max(16px,env(safe-area-inset-left,0px))}}
+.dock.fuera{opacity:0;visibility:hidden;transform:translateY(12px)}
+.dock-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:10px 14px;background:none;border:0;border-radius:14px;color:inherit;font:600 14px/1.2 var(--body);text-align:left;cursor:pointer}
+.dock-t span{flex:1}
+.dock-n{font-size:12px;font-weight:700;line-height:1;color:#0B1020;background:#97ACFF;border-radius:999px;padding:4px 8px;font-variant-numeric:tabular-nums}
+.dock.completo .dock-n{background:#25D366;color:#0B141A}
+.dock-t svg{flex:none;width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dock.abierto .dock-t svg{transform:rotate(180deg)}
+.dock:not(.abierto) .dock-c{display:none}
+.dock-c{padding:0 14px 14px}
+.dock .rasgos{margin:2px 0 0;gap:8px}
+.dock .rasgos li{font-size:13.5px;align-items:flex-start;line-height:1.35}
+.dock .rasgos .chk{width:18px;height:18px}
+.dock-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 14px;margin-top:12px}
+.dock-v{display:inline-flex;align-items:center;gap:5px;color:#B4BCCA;font-size:13.5px;font-weight:600}
+.dock-v:hover{color:#ECEEF3}
+.dock-a{display:inline-block;color:#97ACFF;font-size:13.5px;font-weight:600}
+.dock :focus-visible{outline:2px solid #97ACFF;outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){
+  .dock{transition:opacity .3s,transform .3s var(--ease),visibility .3s}
+  .dock-t svg{transition:transform .2s}
+  @starting-style{.dock{opacity:0;transform:translateY(16px)}}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,::before,::after{animation-duration:1ms!important;animation-delay:0s!important;transition-property:opacity,color,background-color,border-color!important}
+  .v-barras .activo i{animation:none!important;transform:none}
+}
+    </style>
+  </head>
+  <body>
+<div class="demo"><a class="volver" href="../../"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3m4-4L3 8l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Volver al inicio</a><p>Sitio de <b>demostración</b> · «Santiago Viajes» es una marca inventada para mostrar el diseño. Destinos, precios, fechas y cupos son de ejemplo.</p></div>
+<a class="skip" href="#destinos">Ir a los destinos</a>
+
+<header class="cab oscuro">
+  <div class="wrap">
+    <a class="logo" href="#inicio"><b>Santiago</b><small>Viajes</small></a>
+    <nav aria-label="Secciones">
+      <a href="#destinos">Destinos</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#arma">Arme su viaje</a>
+      <a href="#salidas">Salidas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-oro" href="#arma">Hablar con un asesor</a>
+  </div>
+</header>
+
+<main>
+<section class="hero oscuro" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Asesoría de viajes · Bucaramanga</p>
+      <h1>El mundo, <em>a su medida</em>.</h1>
+      <p class="lede">Viajes nacionales e internacionales con lujo, experiencias y todo incluido. Un asesor arma el plan con usted y lo acompaña de la primera idea al regreso.</p>
+      <div class="hero-acc">
+        <a class="btn btn-oro" href="#arma">Arme su viaje</a>
+        <a class="btn btn-linea" href="#destinos">Ver destinos</a>
+      </div>
+      <ul class="historias" aria-label="Historias de destinos"><li><button class="historia" type="button" data-grupo="0" aria-haspopup="dialog"><span class="aro"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F3DCC0"/><rect y="70" width="400" height="60" fill="#E7AE86"/><rect y="120" width="400" height="60" fill="#CF7E5E"/><circle cx="290" cy="128" r="44" fill="#FBEBD2"/><rect y="150" width="400" height="60" fill="#1F5B5C"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FBEBD2" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#E9D6B6"/><path d="M92 214C96 170 100 140 116 110" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/></svg></span><span class="h-nombre">Colombia</span></button></li><li><button class="historia" type="button" data-grupo="1" aria-haspopup="dialog"><span class="aro"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F6E2C8"/><rect y="70" width="400" height="60" fill="#EFC19A"/><rect y="120" width="400" height="60" fill="#E39A77"/><circle cx="290" cy="128" r="44" fill="#FFF1DC"/><rect y="150" width="400" height="60" fill="#1E6E78"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FFF1DC" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#F3E6CF"/><path d="M92 214C96 170 100 140 116 110" stroke="#164F57" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#164F57" stroke-width="7" fill="none" stroke-linecap="round"/></svg></span><span class="h-nombre">Latam</span></button></li><li><button class="historia" type="button" data-grupo="2" aria-haspopup="dialog"><span class="aro"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#EFE4D8"/><rect y="70" width="400" height="60" fill="#DCC7B3"/><rect y="120" width="400" height="60" fill="#C4A78D"/><circle cx="290" cy="128" r="44" fill="#FBF1E4"/><path d="M0 260V188h30v-20h22v20h18v-40h26v40h14v-58h10v-14h8v14h10v58h22v-30h30v30h12v-52a24 24 0 0 1 48 0v52h18v-36h26v36h20v-62l14-18 14 18v62h20v-26h30v26h18V260Z" fill="#3B4A5A"/><path d="M0 260V226h400V260Z" fill="#57677A"/><path d="M0 238h400" stroke="#FBF1E4" stroke-opacity=".4" stroke-width="2" stroke-dasharray="10 12"/><path d="M226 188v-30M250 188v-30" stroke="#FBF1E4" stroke-opacity=".5" stroke-width="3"/></svg></span><span class="h-nombre">Europa</span></button></li><li><button class="historia" type="button" data-grupo="3" aria-haspopup="dialog"><span class="aro"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F3DCC0"/><rect y="70" width="400" height="60" fill="#E7AE86"/><rect y="120" width="400" height="60" fill="#CF7E5E"/><circle cx="290" cy="128" r="44" fill="#FBEBD2"/><rect y="150" width="400" height="60" fill="#1F5B5C"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FBEBD2" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#E9D6B6"/><path d="M92 214C96 170 100 140 116 110" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/></svg></span><span class="h-nombre">Todo incluido</span></button></li><li><button class="historia" type="button" data-grupo="4" aria-haspopup="dialog"><span class="aro"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#EFE6D6"/><rect y="70" width="400" height="60" fill="#DCCBAE"/><rect y="120" width="400" height="60" fill="#C7AC86"/><circle cx="290" cy="128" r="44" fill="#FFF7E6"/><rect y="150" width="400" height="60" fill="#2D7F86"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FFF7E6" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#F6EEDD"/><path d="M92 214C96 170 100 140 116 110" stroke="#1E5A60" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#1E5A60" stroke-width="7" fill="none" stroke-linecap="round"/></svg></span><span class="h-nombre">Lujo</span></button></li></ul>
+    </div>
+    <figure class="ventana" aria-hidden="true">
+      <div class="ventana-marco"><div class="vidrio"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F3DCC0"/><rect y="70" width="400" height="60" fill="#E7AE86"/><rect y="120" width="400" height="60" fill="#CF7E5E"/><circle cx="290" cy="128" r="44" fill="#FBEBD2"/><rect y="150" width="400" height="60" fill="#1F5B5C"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FBEBD2" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#E9D6B6"/><path d="M92 214C96 170 100 140 116 110" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/></svg><span class="persiana"></span></div></div>
+      <figcaption class="ventana-pie">Por la ventana: <span id="ventana-lugar">Cartagena</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="bloque" id="destinos" aria-labelledby="destinos-t">
+  <div class="wrap fila">
+    <div class="fijo">
+      <p class="eyebrow">Destinos</p>
+      <h2 class="t" id="destinos-t">Viajes <em>de temporada</em></h2>
+      <p class="sub">Paquetes armados por nuestros asesores. Cada uno se ajusta a sus fechas y a cómo le gusta viajar.</p>
+      <div class="filtros" role="group" aria-label="Filtrar destinos">
+        <button class="filtro" type="button" data-f="todos" aria-pressed="true">Todos</button>
+        <button class="filtro" type="button" data-f="colombia" aria-pressed="false">Colombia</button>
+        <button class="filtro" type="button" data-f="latam" aria-pressed="false">Latinoamérica</button>
+        <button class="filtro" type="button" data-f="europa" aria-pressed="false">Europa</button>
+        <button class="filtro" type="button" data-f="todo-incluido" aria-pressed="false">Todo incluido</button>
+        <button class="filtro" type="button" data-f="lujo" aria-pressed="false">Lujo</button>
+      </div>
+      <p class="conteo" id="conteo" aria-live="polite">9 destinos</p>
+    </div>
+    <div>
+      <div class="paquetes" id="paquetes">
+<article class="paquete" data-id="cartagena" data-region="colombia" data-tags="todo-incluido"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F3DCC0"/><rect y="70" width="400" height="60" fill="#E7AE86"/><rect y="120" width="400" height="60" fill="#CF7E5E"/><circle cx="290" cy="128" r="44" fill="#FBEBD2"/><rect y="150" width="400" height="60" fill="#1F5B5C"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FBEBD2" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#E9D6B6"/><path d="M92 214C96 170 100 140 116 110" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#15403F" stroke-width="7" fill="none" stroke-linecap="round"/></svg><span class="sello-region">Colombia</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-todo-incluido">Todo incluido</span></div><h3>Cartagena</h3><p class="frase">Murallas, atardeceres y mar Caribe.</p><ul class="incluye"><li>Vuelo desde Bucaramanga</li><li>Hotel en la ciudad amurallada</li><li>Traslados y recorrido por la ciudad</li></ul><p class="precio"><span class="desde">Desde</span> <b>$1.890.000</b> <span class="por">por persona · 4 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="cartagena">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="cartagena">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="san-andres" data-region="colombia" data-tags="todo-incluido"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#DCEDE8"/><rect y="70" width="400" height="60" fill="#B7DCD4"/><rect y="120" width="400" height="60" fill="#8CC6BD"/><circle cx="290" cy="128" r="44" fill="#FFF6DF"/><rect y="150" width="400" height="60" fill="#2A8A88"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FFF6DF" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#F1E5CC"/><path d="M92 214C96 170 100 140 116 110" stroke="#1C5E5D" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#1C5E5D" stroke-width="7" fill="none" stroke-linecap="round"/></svg><span class="sello-region">Colombia</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-todo-incluido">Todo incluido</span></div><h3>San Andrés</h3><p class="frase">El mar de los siete colores.</p><ul class="incluye"><li>Vuelo</li><li>Hotel todo incluido</li><li>Vuelta a la isla en lancha</li></ul><p class="precio"><span class="desde">Desde</span> <b>$2.350.000</b> <span class="por">por persona · 5 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="san-andres">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="san-andres">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="eje-cafetero" data-region="colombia" data-tags="experiencias"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#E8EBD9"/><rect y="70" width="400" height="60" fill="#CFD8B4"/><rect y="120" width="400" height="60" fill="#AFC08C"/><circle cx="290" cy="128" r="44" fill="#FBF2D5"/><path d="M0 180C70 140 150 150 220 170S350 150 400 160V260H0Z" fill="#4F6B3A"/><path d="M0 214C80 186 170 196 260 214S360 200 400 206V260H0Z" fill="#6E8A4E"/><path d="M20 236C100 214 180 222 260 236M40 250C120 230 200 238 300 250" stroke="#34492A" stroke-width="3" fill="none" stroke-dasharray="3 9" stroke-linecap="round"/><path d="M318 214V96M318 96C306 86 292 86 282 92M318 96C330 84 344 84 354 90M318 96C318 82 322 72 330 66" stroke="#34492A" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M348 220V122M348 122C340 114 330 114 322 118M348 122C356 112 366 112 374 116" stroke="#34492A" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg><span class="sello-region">Colombia</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-experiencias">Experiencias</span></div><h3>Eje Cafetero</h3><p class="frase">Café, montaña y palmas de cera.</p><ul class="incluye"><li>Hotel campestre</li><li>Recorrido por una finca cafetera</li><li>Visita al valle de palmas de cera</li></ul><p class="precio"><span class="desde">Desde</span> <b>$1.250.000</b> <span class="por">por persona · 3 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="eje-cafetero">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="eje-cafetero">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="cancun" data-region="latam" data-tags="todo-incluido"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F6E2C8"/><rect y="70" width="400" height="60" fill="#EFC19A"/><rect y="120" width="400" height="60" fill="#E39A77"/><circle cx="290" cy="128" r="44" fill="#FFF1DC"/><rect y="150" width="400" height="60" fill="#1E6E78"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FFF1DC" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#F3E6CF"/><path d="M92 214C96 170 100 140 116 110" stroke="#164F57" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#164F57" stroke-width="7" fill="none" stroke-linecap="round"/></svg><span class="sello-region">Latinoamérica</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-todo-incluido">Todo incluido</span></div><h3>Cancún</h3><p class="frase">Caribe mexicano, sin pensar en nada.</p><ul class="incluye"><li>Vuelo internacional</li><li>Resort todo incluido</li><li>Traslados aeropuerto-hotel</li></ul><p class="precio"><span class="desde">Desde</span> <b>$5.900.000</b> <span class="por">por persona · 6 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="cancun">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="cancun">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="punta-cana" data-region="latam" data-tags="todo-incluido lujo"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#EFE6D6"/><rect y="70" width="400" height="60" fill="#DCCBAE"/><rect y="120" width="400" height="60" fill="#C7AC86"/><circle cx="290" cy="128" r="44" fill="#FFF7E6"/><rect y="150" width="400" height="60" fill="#2D7F86"/><path d="M0 162h400M0 176h400M0 190h400" stroke="#FFF7E6" stroke-opacity=".35" stroke-width="2" stroke-dasharray="18 14"/><path d="M0 260V206C90 192 190 200 400 214V260Z" fill="#F6EEDD"/><path d="M92 214C96 170 100 140 116 110" stroke="#1E5A60" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M116 110C94 96 70 98 54 112M116 110C124 88 146 78 168 84M116 110C140 104 160 112 170 128M116 110C104 92 102 74 108 58M116 110C92 108 78 122 72 140" stroke="#1E5A60" stroke-width="7" fill="none" stroke-linecap="round"/></svg><span class="sello-region">Latinoamérica</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-todo-incluido">Todo incluido</span><span class="tag t-lujo">Lujo</span></div><h3>Punta Cana</h3><p class="frase">Arena blanca y descanso total.</p><ul class="incluye"><li>Vuelo internacional</li><li>Resort frente al mar</li><li>Traslados</li></ul><p class="precio"><span class="desde">Desde</span> <b>$5.400.000</b> <span class="por">por persona · 6 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="punta-cana">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="punta-cana">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="cusco" data-region="latam" data-tags="experiencias"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#EADFD3"/><rect y="70" width="400" height="60" fill="#D6BFA7"/><rect y="120" width="400" height="60" fill="#BE9B7C"/><circle cx="290" cy="128" r="44" fill="#FBEFDF"/><path d="M0 200L70 120L120 160L190 70L250 140L300 110L400 196V260H0Z" fill="#5B6E5A"/><path d="M150 190L190 70L230 120Z" fill="#3E4D3B" fill-opacity=".35"/><path d="M0 260V214L120 196L260 206L400 200V260Z" fill="#7E8F68"/><path d="M110 206h150M120 196h130M134 186h100M150 176h70" stroke="#3E4D3B" stroke-width="5" stroke-linecap="round"/><path d="M150 176v-10h12v10M180 176v-14h12v14M206 176v-10h12v10" stroke="#3E4D3B" stroke-width="3" fill="none"/></svg><span class="sello-region">Latinoamérica</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-experiencias">Experiencias</span></div><h3>Cusco y Machu Picchu</h3><p class="frase">La ciudadela inca al amanecer.</p><ul class="incluye"><li>Vuelos</li><li>Hoteles en Cusco y el Valle Sagrado</li><li>Tren y entrada a Machu Picchu</li></ul><p class="precio"><span class="desde">Desde</span> <b>$4.800.000</b> <span class="por">por persona · 5 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="cusco">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="cusco">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="buenos-aires" data-region="latam" data-tags="experiencias"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#E5E3EA"/><rect y="70" width="400" height="60" fill="#C9C3D3"/><rect y="120" width="400" height="60" fill="#A89FB8"/><circle cx="290" cy="128" r="44" fill="#F8F1E6"/><path d="M0 260V188h30v-20h22v20h18v-40h26v40h14v-58h10v-14h8v14h10v58h22v-30h30v30h12v-52a24 24 0 0 1 48 0v52h18v-36h26v36h20v-62l14-18 14 18v62h20v-26h30v26h18V260Z" fill="#3E3A55"/><path d="M0 260V226h400V260Z" fill="#5C5672"/><path d="M0 238h400" stroke="#F8F1E6" stroke-opacity=".4" stroke-width="2" stroke-dasharray="10 12"/><path d="M226 188v-30M250 188v-30" stroke="#F8F1E6" stroke-opacity=".5" stroke-width="3"/></svg><span class="sello-region">Latinoamérica</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-experiencias">Experiencias</span></div><h3>Buenos Aires</h3><p class="frase">Tango, cafés y buena mesa.</p><ul class="incluye"><li>Vuelo</li><li>Hotel en Palermo</li><li>Cena con show de tango</li></ul><p class="precio"><span class="desde">Desde</span> <b>$4.200.000</b> <span class="por">por persona · 5 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="buenos-aires">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="buenos-aires">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="europa-clasica" data-region="europa" data-tags="lujo"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#EFE4D8"/><rect y="70" width="400" height="60" fill="#DCC7B3"/><rect y="120" width="400" height="60" fill="#C4A78D"/><circle cx="290" cy="128" r="44" fill="#FBF1E4"/><path d="M0 260V188h30v-20h22v20h18v-40h26v40h14v-58h10v-14h8v14h10v58h22v-30h30v30h12v-52a24 24 0 0 1 48 0v52h18v-36h26v36h20v-62l14-18 14 18v62h20v-26h30v26h18V260Z" fill="#3B4A5A"/><path d="M0 260V226h400V260Z" fill="#57677A"/><path d="M0 238h400" stroke="#FBF1E4" stroke-opacity=".4" stroke-width="2" stroke-dasharray="10 12"/><path d="M226 188v-30M250 188v-30" stroke="#FBF1E4" stroke-opacity=".5" stroke-width="3"/></svg><span class="sello-region">Europa</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-lujo">Lujo</span></div><h3>Europa clásica</h3><p class="frase">Tres capitales en dos semanas.</p><ul class="incluye"><li>Madrid, París y Roma</li><li>Hoteles de cuatro y cinco estrellas</li><li>Trenes entre ciudades</li></ul><p class="precio"><span class="desde">Desde</span> <b>$18.900.000</b> <span class="por">por persona · 13 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="europa-clasica">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="europa-clasica">Ver en el mapa</a></div></div></article>
+<article class="paquete" data-id="costa-amalfitana" data-region="europa" data-tags="lujo"><div class="postal"><svg viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><rect width="400" height="260" fill="#F4E6D5"/><rect y="70" width="400" height="60" fill="#EAC9A6"/><rect y="120" width="400" height="60" fill="#DDA67F"/><circle cx="290" cy="128" r="44" fill="#FFF3E2"/><rect y="160" width="400" height="100" fill="#255F78"/><path d="M0 260V110C40 104 70 120 96 140S140 180 170 200 220 240 240 260Z" fill="#C98A5E"/><path d="M20 126h18v14h-18zM46 132h16v14h-16zM28 150h20v14h-20zM60 154h16v14h-16zM88 162h18v14h-18zM50 178h18v14h-18zM96 188h16v14h-16z" fill="#FFF3E2"/><path d="M20 126h18v4h-18zM46 132h16v4h-16zM28 150h20v4h-20zM60 154h16v4h-16zM88 162h18v4h-18z" fill="#1A4456"/><path d="M270 214l40-4 10 8h-56z" fill="#FFF3E2"/><path d="M292 210v-26l16 22" stroke="#FFF3E2" stroke-width="2" fill="none"/></svg><span class="sello-region">Europa</span></div><div class="paq-cuerpo"><div class="tags"><span class="tag t-lujo">Lujo</span></div><h3>Costa Amalfitana</h3><p class="frase">Pueblos de colores sobre el mar.</p><ul class="incluye"><li>Vuelos</li><li>Hoteles con vista al mar</li><li>Paseo en barco por la costa</li></ul><p class="precio"><span class="desde">Desde</span> <b>$16.500.000</b> <span class="por">por persona · 7 noches</span></p><div class="paq-acc"><button class="btn btn-oscuro cotizar" type="button" data-id="costa-amalfitana">Cotizar este viaje</button><a class="ver-mapa" href="#mapa" data-id="costa-amalfitana">Ver en el mapa</a></div></div></article>
+      </div>
+      <p class="nota">Precios de ejemplo por persona, en acomodación doble. En el sitio real se actualizan con cada temporada.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bloque oscuro" id="mapa" aria-labelledby="mapa-t">
+  <div class="wrap fila">
+    <div class="fijo">
+      <p class="eyebrow">Desde Bucaramanga</p>
+      <h2 class="t" id="mapa-t">¿Hacia <em>dónde</em> quiere ir?</h2>
+      <p class="sub">Elija un destino y vea la ruta. El mapa está dibujado para la página: no carga servicios externos.</p>
+      <ul class="chips" aria-label="Destinos en el mapa"><li><button class="chip-dest" type="button" data-id="cartagena" aria-pressed="false">Cartagena</button></li><li><button class="chip-dest" type="button" data-id="san-andres" aria-pressed="false">San Andrés</button></li><li><button class="chip-dest" type="button" data-id="eje-cafetero" aria-pressed="false">Eje Cafetero</button></li><li><button class="chip-dest" type="button" data-id="cancun" aria-pressed="false">Cancún</button></li><li><button class="chip-dest" type="button" data-id="punta-cana" aria-pressed="false">Punta Cana</button></li><li><button class="chip-dest" type="button" data-id="cusco" aria-pressed="false">Cusco y Machu Picchu</button></li><li><button class="chip-dest" type="button" data-id="buenos-aires" aria-pressed="false">Buenos Aires</button></li><li><button class="chip-dest" type="button" data-id="europa-clasica" aria-pressed="false">Europa clásica</button></li><li><button class="chip-dest" type="button" data-id="costa-amalfitana" aria-pressed="false">Costa Amalfitana</button></li></ul>
+    </div>
+    <div>
+      <div class="mapa-lienzo">
+        <svg viewBox="0 0 1550 1160" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path class="puntos" d="M12 12h0M38 12h0M62 12h0M88 12h0M112 12h0M138 12h0M162 12h0M188 12h0M212 12h0M238 12h0M262 12h0M288 12h0M312 12h0M338 12h0M362 12h0M388 12h0M412 12h0M438 12h0M462 12h0M488 12h0M512 12h0M538 12h0M1288 12h0M1312 12h0M1338 12h0M1362 12h0M1388 12h0M1412 12h0M1438 12h0M1462 12h0M1488 12h0M1512 12h0M1538 12h0M12 38h0M38 38h0M62 38h0M88 38h0M112 38h0M138 38h0M162 38h0M188 38h0M212 38h0M238 38h0M262 38h0M288 38h0M312 38h0M338 38h0M362 38h0M388 38h0M412 38h0M438 38h0M462 38h0M488 38h0M512 38h0M538 38h0M562 38h0M1162 38h0M1312 38h0M1338 38h0M1362 38h0M1388 38h0M1412 38h0M1438 38h0M1462 38h0M1488 38h0M1512 38h0M1538 38h0M12 62h0M38 62h0M62 62h0M88 62h0M112 62h0M138 62h0M162 62h0M188 62h0M212 62h0M238 62h0M262 62h0M288 62h0M312 62h0M338 62h0M362 62h0M388 62h0M412 62h0M438 62h0M462 62h0M488 62h0M512 62h0M538 62h0M562 62h0M588 62h0M612 62h0M1112 62h0M1138 62h0M1162 62h0M1188 62h0M1288 62h0M1312 62h0M1338 62h0M1362 62h0M1388 62h0M1412 62h0M1438 62h0M1462 62h0M1488 62h0M1512 62h0M1538 62h0M12 88h0M38 88h0M62 88h0M88 88h0M112 88h0M138 88h0M162 88h0M188 88h0M212 88h0M238 88h0M262 88h0M288 88h0M312 88h0M338 88h0M362 88h0M388 88h0M412 88h0M438 88h0M462 88h0M488 88h0M512 88h0M538 88h0M562 88h0M588 88h0M612 88h0M638 88h0M1162 88h0M1188 88h0M1212 88h0M1238 88h0M1262 88h0M1288 88h0M1312 88h0M1338 88h0M1362 88h0M1388 88h0M1412 88h0M1438 88h0M1462 88h0M1488 88h0M1512 88h0M1538 88h0M12 112h0M38 112h0M62 112h0M88 112h0M112 112h0M138 112h0M162 112h0M188 112h0M212 112h0M238 112h0M262 112h0M288 112h0M312 112h0M338 112h0M362 112h0M388 112h0M412 112h0M438 112h0M462 112h0M488 112h0M512 112h0M538 112h0M562 112h0M588 112h0M612 112h0M1162 112h0M1188 112h0M1212 112h0M1238 112h0M1262 112h0M1288 112h0M1312 112h0M1338 112h0M1362 112h0M1388 112h0M1412 112h0M1438 112h0M1462 112h0M1488 112h0M1512 112h0M1538 112h0M12 138h0M38 138h0M62 138h0M88 138h0M112 138h0M138 138h0M162 138h0M188 138h0M212 138h0M238 138h0M262 138h0M288 138h0M312 138h0M338 138h0M362 138h0M388 138h0M412 138h0M438 138h0M462 138h0M488 138h0M512 138h0M538 138h0M562 138h0M588 138h0M1188 138h0M1212 138h0M1238 138h0M1262 138h0M1288 138h0M1312 138h0M1338 138h0M1362 138h0M1388 138h0M1412 138h0M1438 138h0M1462 138h0M1488 138h0M1512 138h0M1538 138h0M12 162h0M38 162h0M62 162h0M88 162h0M112 162h0M138 162h0M162 162h0M188 162h0M212 162h0M238 162h0M262 162h0M288 162h0M312 162h0M338 162h0M362 162h0M388 162h0M412 162h0M438 162h0M462 162h0M488 162h0M512 162h0M1138 162h0M1162 162h0M1188 162h0M1212 162h0M1238 162h0M1262 162h0M1388 162h0M1412 162h0M1438 162h0M1462 162h0M1488 162h0M1512 162h0M1538 162h0M12 188h0M38 188h0M62 188h0M88 188h0M112 188h0M138 188h0M162 188h0M188 188h0M212 188h0M238 188h0M262 188h0M288 188h0M312 188h0M338 188h0M362 188h0M388 188h0M412 188h0M438 188h0M462 188h0M1112 188h0M1138 188h0M1162 188h0M1188 188h0M1212 188h0M1338 188h0M1412 188h0M1438 188h0M1462 188h0M1488 188h0M1512 188h0M1538 188h0M12 212h0M38 212h0M62 212h0M88 212h0M112 212h0M138 212h0M162 212h0M188 212h0M212 212h0M238 212h0M262 212h0M288 212h0M312 212h0M338 212h0M362 212h0M388 212h0M412 212h0M438 212h0M1112 212h0M1138 212h0M1162 212h0M1188 212h0M1362 212h0M1412 212h0M1438 212h0M12 238h0M38 238h0M62 238h0M88 238h0M112 238h0M138 238h0M162 238h0M188 238h0M212 238h0M238 238h0M262 238h0M288 238h0M312 238h0M338 238h0M362 238h0M388 238h0M412 238h0M438 238h0M1138 238h0M1212 238h0M1238 238h0M1262 238h0M1288 238h0M12 262h0M38 262h0M62 262h0M88 262h0M112 262h0M138 262h0M162 262h0M188 262h0M212 262h0M238 262h0M262 262h0M288 262h0M312 262h0M338 262h0M362 262h0M388 262h0M412 262h0M1138 262h0M1162 262h0M1188 262h0M1212 262h0M1238 262h0M1262 262h0M1288 262h0M38 288h0M62 288h0M88 288h0M112 288h0M138 288h0M162 288h0M188 288h0M212 288h0M238 288h0M262 288h0M288 288h0M312 288h0M338 288h0M362 288h0M388 288h0M1112 288h0M1138 288h0M1162 288h0M1188 288h0M1212 288h0M1238 288h0M1262 288h0M1288 288h0M1312 288h0M1338 288h0M1362 288h0M1388 288h0M1412 288h0M1438 288h0M1462 288h0M1488 288h0M1512 288h0M62 312h0M88 312h0M112 312h0M138 312h0M162 312h0M188 312h0M212 312h0M238 312h0M388 312h0M1112 312h0M1138 312h0M1162 312h0M1188 312h0M1212 312h0M1238 312h0M1262 312h0M1288 312h0M1312 312h0M1338 312h0M1362 312h0M1388 312h0M1412 312h0M1438 312h0M1462 312h0M1488 312h0M1512 312h0M1538 312h0M88 338h0M112 338h0M138 338h0M162 338h0M188 338h0M212 338h0M388 338h0M1062 338h0M1088 338h0M1112 338h0M1138 338h0M1162 338h0M1188 338h0M1212 338h0M1238 338h0M1262 338h0M1288 338h0M1312 338h0M1338 338h0M1362 338h0M1388 338h0M1412 338h0M1438 338h0M1462 338h0M1488 338h0M1512 338h0M1538 338h0M112 362h0M138 362h0M162 362h0M188 362h0M212 362h0M1062 362h0M1088 362h0M1112 362h0M1138 362h0M1162 362h0M1188 362h0M1212 362h0M1238 362h0M1262 362h0M1288 362h0M1312 362h0M1338 362h0M1362 362h0M1388 362h0M1412 362h0M1438 362h0M1462 362h0M1488 362h0M1512 362h0M1538 362h0M138 388h0M162 388h0M188 388h0M212 388h0M312 388h0M412 388h0M1038 388h0M1062 388h0M1088 388h0M1112 388h0M1138 388h0M1162 388h0M1188 388h0M1212 388h0M1238 388h0M1262 388h0M1288 388h0M1312 388h0M1338 388h0M1362 388h0M1388 388h0M1412 388h0M1438 388h0M1462 388h0M1488 388h0M1512 388h0M1538 388h0M188 412h0M212 412h0M238 412h0M288 412h0M312 412h0M462 412h0M488 412h0M1038 412h0M1062 412h0M1088 412h0M1112 412h0M1138 412h0M1162 412h0M1188 412h0M1212 412h0M1238 412h0M1262 412h0M1288 412h0M1312 412h0M1338 412h0M1362 412h0M1388 412h0M1412 412h0M1438 412h0M1462 412h0M1488 412h0M1512 412h0M1538 412h0M262 438h0M288 438h0M312 438h0M1038 438h0M1062 438h0M1088 438h0M1112 438h0M1138 438h0M1162 438h0M1188 438h0M1212 438h0M1238 438h0M1262 438h0M1288 438h0M1312 438h0M1338 438h0M1362 438h0M1388 438h0M1412 438h0M1438 438h0M1462 438h0M1488 438h0M1512 438h0M1538 438h0M312 462h0M338 462h0M1038 462h0M1062 462h0M1088 462h0M1112 462h0M1138 462h0M1162 462h0M1188 462h0M1212 462h0M1238 462h0M1262 462h0M1288 462h0M1312 462h0M1338 462h0M1362 462h0M1388 462h0M1412 462h0M1438 462h0M1462 462h0M1488 462h0M1512 462h0M1538 462h0M338 488h0M362 488h0M488 488h0M512 488h0M1062 488h0M1088 488h0M1112 488h0M1138 488h0M1162 488h0M1188 488h0M1212 488h0M1238 488h0M1262 488h0M1288 488h0M1312 488h0M1338 488h0M1362 488h0M1388 488h0M1412 488h0M1438 488h0M1462 488h0M1488 488h0M1512 488h0M1538 488h0M388 512h0M412 512h0M438 512h0M462 512h0M488 512h0M512 512h0M538 512h0M562 512h0M588 512h0M1088 512h0M1112 512h0M1138 512h0M1162 512h0M1188 512h0M1212 512h0M1238 512h0M1262 512h0M1288 512h0M1312 512h0M1338 512h0M1362 512h0M1388 512h0M1412 512h0M1438 512h0M1462 512h0M1488 512h0M1512 512h0M1538 512h0M412 538h0M438 538h0M462 538h0M488 538h0M512 538h0M538 538h0M562 538h0M588 538h0M612 538h0M638 538h0M1112 538h0M1138 538h0M1162 538h0M1188 538h0M1212 538h0M1238 538h0M1262 538h0M1288 538h0M1312 538h0M1338 538h0M1362 538h0M1388 538h0M1412 538h0M1438 538h0M1462 538h0M1488 538h0M1512 538h0M1538 538h0M438 562h0M462 562h0M488 562h0M512 562h0M538 562h0M562 562h0M588 562h0M612 562h0M638 562h0M662 562h0M1312 562h0M1338 562h0M1362 562h0M1388 562h0M1412 562h0M1438 562h0M1462 562h0M1488 562h0M1512 562h0M1538 562h0M438 588h0M462 588h0M488 588h0M512 588h0M538 588h0M562 588h0M588 588h0M612 588h0M638 588h0M662 588h0M688 588h0M1312 588h0M1338 588h0M1362 588h0M1388 588h0M1412 588h0M1438 588h0M1462 588h0M1488 588h0M1512 588h0M1538 588h0M412 612h0M438 612h0M462 612h0M488 612h0M512 612h0M538 612h0M562 612h0M588 612h0M612 612h0M638 612h0M662 612h0M688 612h0M712 612h0M1312 612h0M1338 612h0M1362 612h0M1388 612h0M1412 612h0M1438 612h0M1462 612h0M1488 612h0M1512 612h0M1538 612h0M412 638h0M438 638h0M462 638h0M488 638h0M512 638h0M538 638h0M562 638h0M588 638h0M612 638h0M638 638h0M662 638h0M688 638h0M712 638h0M738 638h0M762 638h0M788 638h0M1338 638h0M1362 638h0M1388 638h0M1412 638h0M1438 638h0M1462 638h0M1488 638h0M1512 638h0M1538 638h0M412 662h0M438 662h0M462 662h0M488 662h0M512 662h0M538 662h0M562 662h0M588 662h0M612 662h0M638 662h0M662 662h0M688 662h0M712 662h0M738 662h0M762 662h0M788 662h0M812 662h0M838 662h0M1338 662h0M1362 662h0M1388 662h0M1412 662h0M1438 662h0M1462 662h0M1488 662h0M1512 662h0M1538 662h0M412 688h0M438 688h0M462 688h0M488 688h0M512 688h0M538 688h0M562 688h0M588 688h0M612 688h0M638 688h0M662 688h0M688 688h0M712 688h0M738 688h0M762 688h0M788 688h0M812 688h0M838 688h0M1338 688h0M1362 688h0M1388 688h0M1412 688h0M1438 688h0M1462 688h0M1488 688h0M1512 688h0M1538 688h0M438 712h0M462 712h0M488 712h0M512 712h0M538 712h0M562 712h0M588 712h0M612 712h0M638 712h0M662 712h0M688 712h0M712 712h0M738 712h0M762 712h0M788 712h0M812 712h0M1338 712h0M1362 712h0M1388 712h0M1412 712h0M1438 712h0M1462 712h0M1488 712h0M1512 712h0M1538 712h0M462 738h0M488 738h0M512 738h0M538 738h0M562 738h0M588 738h0M612 738h0M638 738h0M662 738h0M688 738h0M712 738h0M738 738h0M762 738h0M788 738h0M812 738h0M1338 738h0M1362 738h0M1388 738h0M1412 738h0M1438 738h0M1462 738h0M1488 738h0M1512 738h0M1538 738h0M488 762h0M512 762h0M538 762h0M562 762h0M588 762h0M612 762h0M638 762h0M662 762h0M688 762h0M712 762h0M738 762h0M762 762h0M788 762h0M1338 762h0M1362 762h0M1388 762h0M1412 762h0M1438 762h0M1462 762h0M1488 762h0M1512 762h0M1538 762h0M512 788h0M538 788h0M562 788h0M588 788h0M612 788h0M638 788h0M662 788h0M688 788h0M712 788h0M738 788h0M762 788h0M788 788h0M1338 788h0M1362 788h0M1388 788h0M1412 788h0M1438 788h0M1462 788h0M1488 788h0M1512 788h0M1538 788h0M512 812h0M538 812h0M562 812h0M588 812h0M612 812h0M638 812h0M662 812h0M688 812h0M712 812h0M738 812h0M762 812h0M788 812h0M1338 812h0M1362 812h0M1388 812h0M1412 812h0M1438 812h0M1462 812h0M1488 812h0M1512 812h0M1538 812h0M512 838h0M538 838h0M562 838h0M588 838h0M612 838h0M638 838h0M662 838h0M688 838h0M712 838h0M738 838h0M1362 838h0M1388 838h0M1412 838h0M1438 838h0M1462 838h0M1488 838h0M1512 838h0M1538 838h0M512 862h0M538 862h0M562 862h0M588 862h0M612 862h0M638 862h0M662 862h0M688 862h0M712 862h0M1362 862h0M1388 862h0M1412 862h0M1438 862h0M1462 862h0M1488 862h0M1512 862h0M1538 862h0M512 888h0M538 888h0M562 888h0M588 888h0M612 888h0M638 888h0M662 888h0M688 888h0M1362 888h0M1388 888h0M1412 888h0M1438 888h0M1462 888h0M1488 888h0M1512 888h0M1538 888h0M488 912h0M512 912h0M538 912h0M562 912h0M588 912h0M612 912h0M638 912h0M662 912h0M1388 912h0M1412 912h0M1438 912h0M1462 912h0M1488 912h0M1512 912h0M1538 912h0M488 938h0M512 938h0M538 938h0M562 938h0M588 938h0M612 938h0M638 938h0M662 938h0M1388 938h0M1412 938h0M1438 938h0M1462 938h0M1488 938h0M1512 938h0M1538 938h0M488 962h0M512 962h0M538 962h0M562 962h0M588 962h0M612 962h0M638 962h0M488 988h0M512 988h0M538 988h0M562 988h0M588 988h0M488 1012h0M512 1012h0M538 1012h0M562 1012h0M462 1038h0M488 1038h0M512 1038h0M538 1038h0M462 1062h0M488 1062h0M512 1062h0M538 1062h0M462 1088h0M488 1088h0M512 1088h0M462 1112h0M488 1112h0M512 1112h0"/><path class="arco" data-id="cartagena" pathLength="1" d="M469 529Q450 505 445 496"/><path class="arco" data-id="san-andres" pathLength="1" d="M469 529Q414 478 383 474"/><path class="arco" data-id="eje-cafetero" pathLength="1" d="M469 529Q462 534 444 554"/><path class="arco" data-id="cancun" pathLength="1" d="M469 529Q369 419 332 388"/><path class="arco" data-id="punta-cana" pathLength="1" d="M469 529Q518 455 516 414"/><path class="arco" data-id="cusco" pathLength="1" d="M469 529Q429 619 480 735"/><path class="arco" data-id="buenos-aires" pathLength="1" d="M469 529Q451 683 616 946"/><path class="arco" data-id="europa-clasica" pathLength="1" d="M469 529Q938 111 1224 111"/><path class="arco" data-id="costa-amalfitana" pathLength="1" d="M469 529Q981 121 1346 194"/></svg>
+        <span class="origen" style="left:30.25%;top:45.59%" aria-hidden="true"><span>Bucaramanga</span></span>
+        <div aria-hidden="true"><button class="pin" type="button" data-id="cartagena" style="left:28.72%;top:42.77%" aria-pressed="false"><span class="sr">Cartagena</span></button><button class="pin" type="button" data-id="san-andres" style="left:24.71%;top:40.88%" aria-pressed="false"><span class="sr">San Andrés</span></button><button class="pin" type="button" data-id="eje-cafetero" style="left:28.66%;top:47.72%" aria-pressed="false"><span class="sr">Eje Cafetero</span></button><button class="pin" type="button" data-id="cancun" style="left:21.39%;top:33.48%" aria-pressed="false"><span class="sr">Cancún</span></button><button class="pin" type="button" data-id="punta-cana" style="left:33.29%;top:35.71%" aria-pressed="false"><span class="sr">Punta Cana</span></button><button class="pin" type="button" data-id="cusco" style="left:30.99%;top:63.39%" aria-pressed="false"><span class="sr">Cusco y Machu Picchu</span></button><button class="pin" type="button" data-id="buenos-aires" style="left:39.75%;top:81.55%" aria-pressed="false"><span class="sr">Buenos Aires</span></button><button class="pin" type="button" data-id="europa-clasica" style="left:78.94%;top:9.60%" aria-pressed="false"><span class="sr">Europa clásica</span></button><button class="pin" type="button" data-id="costa-amalfitana" style="left:86.84%;top:16.70%" aria-pressed="false"><span class="sr">Costa Amalfitana</span></button></div>
+      </div>
+      <div class="ficha" id="ficha" aria-live="polite" hidden>
+        <div class="ficha-img"></div>
+        <div>
+          <p class="ficha-region"></p>
+          <h3 class="ficha-nombre"></h3>
+          <p class="ficha-dato"></p>
+          <button class="btn btn-oro cotizar ficha-cotizar" type="button">Cotizar este viaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloque" id="arma" aria-labelledby="arma-t">
+  <div class="wrap fila">
+    <div class="fijo">
+      <p class="eyebrow">Arme su viaje</p>
+      <h2 class="t" id="arma-t">Cuéntenos <em>cómo lo imagina</em></h2>
+      <p class="sub">Cinco preguntas. Un asesor le responde con opciones, fechas y precios reales.</p>
+      <p class="pasos-cuenta" id="pasos-cuenta">Paso 1 de 5</p>
+      <div class="progreso"><i id="progreso"></i></div>
+      <div class="resumen" aria-live="polite">
+        <h3>Su viaje hasta ahora</h3>
+        <dl id="resumen"></dl>
+      </div>
+    </div>
+    <form class="armar" id="armar" novalidate>
+      <fieldset class="paso on" data-paso="1">
+        <legend tabindex="-1">¿Qué quiere vivir?</legend>
+        <p class="ayuda">Elija lo que más se parece a su viaje ideal.</p>
+        <div class="opciones">
+          <label class="opcion"><input type="radio" name="exp" value="Playa y descanso"><span><b>Playa y descanso</b><small>Mar, sol y cero preocupaciones.</small></span></label>
+          <label class="opcion"><input type="radio" name="exp" value="Ciudades y cultura"><span><b>Ciudades y cultura</b><small>Museos, comida y calles con historia.</small></span></label>
+          <label class="opcion"><input type="radio" name="exp" value="Naturaleza y aventura"><span><b>Naturaleza y aventura</b><small>Montañas, caminatas y paisajes.</small></span></label>
+          <label class="opcion"><input type="radio" name="exp" value="Lujo y bienestar"><span><b>Lujo y bienestar</b><small>Hoteles especiales y descanso total.</small></span></label>
+        </div>
+      </fieldset>
+      <fieldset class="paso" data-paso="2">
+        <legend tabindex="-1">¿Tiene un destino en mente?</legend>
+        <p class="ayuda">Si todavía no sabe, el asesor le recomienda según lo que eligió.</p>
+        <div class="campo"><label for="f-dest">Destino</label>
+          <select id="f-dest" name="destino"><option value="">Que el asesor me recomiende</option><option value="cartagena">Cartagena · Colombia</option><option value="san-andres">San Andrés · Colombia</option><option value="eje-cafetero">Eje Cafetero · Colombia</option><option value="cancun">Cancún · Latinoamérica</option><option value="punta-cana">Punta Cana · Latinoamérica</option><option value="cusco">Cusco y Machu Picchu · Latinoamérica</option><option value="buenos-aires">Buenos Aires · Latinoamérica</option><option value="europa-clasica">Europa clásica · Europa</option><option value="costa-amalfitana">Costa Amalfitana · Europa</option></select></div>
+      </fieldset>
+      <fieldset class="paso" data-paso="3">
+        <legend tabindex="-1">¿Cuándo y quiénes viajan?</legend>
+        <p class="ayuda">Con un mes aproximado es suficiente para empezar.</p>
+        <div class="campos">
+          <div class="campo"><label for="f-mes">Mes del viaje</label>
+            <select id="f-mes" name="mes"><option>Lo antes posible</option><option>En los próximos tres meses</option><option>Fechas flexibles</option></select></div>
+          <div class="campo"><label for="f-noches">Noches</label>
+            <select id="f-noches" name="noches"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>10</option><option>14</option></select></div>
+          <div class="campo"><span class="et" id="et-adultos">Adultos</span>
+            <div class="contador" role="group" aria-labelledby="et-adultos"><button type="button" data-cont="adultos" data-d="-1" aria-label="Un adulto menos">−</button><output id="c-adultos" aria-live="polite">2</output><button type="button" data-cont="adultos" data-d="1" aria-label="Un adulto más">+</button></div></div>
+          <div class="campo"><span class="et" id="et-ninos">Niños</span>
+            <div class="contador" role="group" aria-labelledby="et-ninos"><button type="button" data-cont="ninos" data-d="-1" aria-label="Un niño menos">−</button><output id="c-ninos" aria-live="polite">0</output><button type="button" data-cont="ninos" data-d="1" aria-label="Un niño más">+</button></div></div>
+        </div>
+      </fieldset>
+      <fieldset class="paso" data-paso="4">
+        <legend tabindex="-1">¿Cómo le gusta viajar?</legend>
+        <p class="ayuda">El presupuesto es por persona y solo sirve de guía.</p>
+        <div class="opciones">
+          <label class="opcion"><input type="radio" name="estilo" value="Todo incluido" checked><span><b>Todo incluido</b><small>Comidas y bebidas resueltas.</small></span></label>
+          <label class="opcion"><input type="radio" name="estilo" value="Vuelo y hotel"><span><b>Vuelo y hotel</b><small>Libertad para explorar a su ritmo.</small></span></label>
+          <label class="opcion"><input type="radio" name="estilo" value="Con experiencias guiadas"><span><b>Con experiencias</b><small>Recorridos y actividades incluidas.</small></span></label>
+        </div>
+        <div class="campo" style="margin-top:20px"><label for="f-presu">Presupuesto por persona</label>
+          <select id="f-presu" name="presupuesto"><option>Prefiero que me asesoren</option><option>Hasta $3 millones</option><option>Entre $3 y $6 millones</option><option>Entre $6 y $10 millones</option><option>Más de $10 millones</option></select></div>
+      </fieldset>
+      <fieldset class="paso" data-paso="5">
+        <legend tabindex="-1">¿A quién le escribimos?</legend>
+        <p class="ayuda">Un asesor le responde por WhatsApp con las opciones.</p>
+        <div class="campos">
+          <div class="campo"><label for="f-nom">Nombre</label><input id="f-nom" name="nombre" autocomplete="name" placeholder="Su nombre"></div>
+          <div class="campo"><label for="f-cel">Celular</label><input id="f-cel" name="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 000 0000"></div>
+        </div>
+      </fieldset>
+      <p class="err" id="f-err" aria-live="assertive"></p>
+      <div class="paso-nav">
+        <button class="btn btn-linea" type="button" id="atras" hidden>Atrás</button>
+        <button class="btn btn-oscuro" type="button" id="siguiente">Siguiente</button>
+        <button class="btn btn-oscuro" type="submit" id="enviar" hidden>Enviar a un asesor</button>
+      </div>
+      <noscript><p class="ayuda" style="margin-top:20px">Para enviar la solicitud desde esta página hace falta JavaScript. También puede escribirnos directamente por WhatsApp.</p></noscript>
+    </form>
+  </div>
+</section>
+
+<section class="bloque" id="salidas" aria-labelledby="salidas-t" style="padding-top:0">
+  <div class="wrap fila">
+    <div class="fijo">
+      <p class="eyebrow">Viajes en grupo</p>
+      <h2 class="t" id="salidas-t">Próximas <em>salidas</em></h2>
+      <p class="sub">Fecha fija, grupo pequeño y un asesor que viaja con ustedes. Las fechas y los cupos son de ejemplo.</p>
+    </div>
+    <ul class="salidas" id="lista-salidas">
+      <li class="salida" data-id="san-andres" data-semanas="5" data-dias="5" data-total="16" data-tomados="12"><div class="fecha"><b>—</b><span>Pronto</span></div><div><h3>San Andrés</h3><p>5 días · acompañado por un asesor</p></div><div class="cupos"><span class="asientos" aria-hidden="true"></span><span>Quedan <b>4 cupos</b> de 16</span></div><button class="btn btn-oscuro separar" type="button">Separar cupo</button></li>
+      <li class="salida" data-id="cartagena" data-semanas="9" data-dias="4" data-total="20" data-tomados="9"><div class="fecha"><b>—</b><span>Pronto</span></div><div><h3>Cartagena</h3><p>4 días · acompañado por un asesor</p></div><div class="cupos"><span class="asientos" aria-hidden="true"></span><span>Quedan <b>11 cupos</b> de 20</span></div><button class="btn btn-oscuro separar" type="button">Separar cupo</button></li>
+      <li class="salida" data-id="cusco" data-semanas="15" data-dias="6" data-total="14" data-tomados="10"><div class="fecha"><b>—</b><span>Pronto</span></div><div><h3>Cusco y Machu Picchu</h3><p>6 días · acompañado por un asesor</p></div><div class="cupos"><span class="asientos" aria-hidden="true"></span><span>Quedan <b>4 cupos</b> de 14</span></div><button class="btn btn-oscuro separar" type="button">Separar cupo</button></li>
+      <li class="salida" data-id="europa-clasica" data-semanas="26" data-dias="14" data-total="18" data-tomados="11"><div class="fecha"><b>—</b><span>Pronto</span></div><div><h3>Europa clásica</h3><p>14 días · acompañado por un asesor</p></div><div class="cupos"><span class="asientos" aria-hidden="true"></span><span>Quedan <b>7 cupos</b> de 18</span></div><button class="btn btn-oscuro separar" type="button">Separar cupo</button></li>
+    </ul>
+  </div>
+</section>
+
+<section class="bloque" id="confianza" aria-labelledby="confianza-t" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">Por qué viajar con nosotros</p>
+    <h2 class="t" id="confianza-t" style="max-width:16ch">Viajar <em>tranquilo</em> también es parte del viaje</h2>
+    <div class="mosaico" style="margin-top:40px">
+      <div class="tile m-asesor">
+        <h3>Un asesor de principio a fin</h3>
+        <p>Arma el plan con usted, hace las reservas y está pendiente por WhatsApp mientras viaja.</p>
+        <ol class="ruta"><li>La idea</li><li>El plan</li><li>El viaje</li><li>El regreso</li></ol>
+      </div>
+      <div class="tile m-pagos"><h3>Pagos claros</h3><p>Separe con un abono y pague el saldo antes de viajar. Formas de pago de ejemplo.</p></div>
+      <div class="tile m-rnt"><h3>Registro Nacional de Turismo</h3>
+        <p class="reservado"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Aquí va el número RNT de su agencia.</p></div>
+      <div class="tile m-resenas"><h3>Lo que dicen los viajeros</h3><p>En el sitio real, aquí van las reseñas verdaderas de Google del negocio. En la demo queda vacío a propósito: no se inventan opiniones.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="bloque oscuro" id="contacto" aria-labelledby="contacto-t">
+  <div class="wrap contacto-grid">
+    <div>
+      <p class="eyebrow">Contacto</p>
+      <h2 class="t" id="contacto-t">Hablemos de <em>su próximo viaje</em></h2>
+      <p class="sub">Escríbanos y un asesor le responde el mismo día. También puede visitarnos.</p>
+    </div>
+    <div class="tarjeta-c">
+      <p class="reservado"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="10" r="2.2" fill="currentColor"/></svg>Aquí va la dirección de su negocio.</p>
+      <dl><dt>Lun a vie</dt><dd>8:00 a.m. – 6:00 p.m.</dd><dt>Sábado</dt><dd>9:00 a.m. – 1:00 p.m.</dd></dl>
+      <div class="c-acc">
+        <button class="btn btn-wa" type="button" data-demo="whatsapp">Escribir por WhatsApp</button>
+        <button class="btn btn-linea" type="button" data-demo="instagram">Ver Instagram</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<aside class="santiago" aria-labelledby="st-t">
+  <div class="wrap">
+    <h2 id="st-t">¿Tiene una agencia de viajes? Este sitio puede ser el suyo.</h2>
+    <p>Soy Santiago Sierra y hago sitios así para negocios de Bucaramanga. Todo lo que ve en esta demo viene incluido:</p>
+    <ul class="rasgos">
+      <li data-rasgo="historias"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>Historias de destinos, como en Instagram<em class="ya"> · ya lo probó</em></span></li>
+      <li data-rasgo="catalogo"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>Catálogo y mapa de destinos con el precio desde<em class="ya"> · ya lo probó</em></span></li>
+      <li data-rasgo="viaje"><svg class="chk" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5"/><path d="m6 10.3 2.6 2.6L14 7.6"/></svg><span>«Arme su viaje»: la solicitud llega completa al asesor<em class="ya"> · ya lo probó</em></span></li>
+    </ul>
+    <div class="st-acc">
+      <a class="btn-wa" href="https://wa.me/573155140200?text=Hola%20Santiago%2C%20vi%20la%20demo%20de%20agencia%20de%20viajes%20y%20quiero%20una%20p%C3%A1gina%20as%C3%AD%20para%20mi%20negocio." target="_blank" rel="noopener">
+        <!-- Ícono genérico de burbuja, NO el logotipo de WhatsApp -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5a7.5 7 0 1 1 3.4 5.9L4 19l1.1-3.3A6.8 6.8 0 0 1 4 11.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
+        Escribirme por WhatsApp</a>
+      <a class="st-link" href="../../#trabajo">Ver más ejemplos</a>
+    </div>
+  </div>
+</aside>
+
+<footer class="wrap">
+  <b>Santiago Viajes</b> es una marca inventada. Este sitio existe para mostrar cómo se vería la página de una agencia de viajes de Bucaramanga: destinos, precios, salidas y cupos son de ejemplo y no corresponden a ningún negocio real; tampoco se usa la dirección de ningún lugar existente. No se incluyen reseñas porque no se inventan opiniones de clientes.
+</footer>
+
+<dialog class="visor" id="visor" aria-labelledby="v-grupo">
+  <div class="v-marco">
+    <div class="v-escena" aria-hidden="true"></div>
+    <div class="v-barras" aria-hidden="true"></div>
+    <div class="v-cab">
+      <span class="v-grupo" id="v-grupo"></span>
+      <button class="v-boton" type="button" id="v-pausa" aria-label="Pausar historias"><svg class="i-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15L19 12Z" fill="currentColor"/></svg></button>
+      <button class="v-boton" type="button" id="v-cerrar" aria-label="Cerrar historias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <button class="v-zona v-ant" type="button" id="v-ant" aria-label="Historia anterior"><span aria-hidden="true">‹</span></button>
+    <button class="v-zona v-sig" type="button" id="v-sig" aria-label="Historia siguiente"><span aria-hidden="true">›</span></button>
+    <div class="v-texto" aria-live="polite">
+      <p class="v-region" id="v-region"></p>
+      <h3 class="v-nombre" id="v-nombre"></h3>
+      <p class="v-frase" id="v-frase"></p>
+      <p class="v-precio" id="v-precio"></p>
+      <button class="btn btn-oro cotizar" type="button" id="v-cotizar">Cotizar este viaje</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sh-t">
+  <div class="sheet-cab"><h2 id="sh-t">Así llega su solicitud</h2></div>
+  <div class="sheet-cuerpo">
+    <pre id="sh-msg"></pre>
+    <p class="nota" id="sh-nota">En el sitio real este botón abre el WhatsApp del asesor con el mensaje ya escrito. En la demostración solo se muestra el texto.</p>
+    <div class="sheet-acc">
+      <button class="btn btn-oscuro" type="button" id="copiar">Copiar mensaje</button>
+      <button class="btn btn-linea" type="button" id="cerrar">Cerrar</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const DESTINOS = [{"id": "cartagena", "nombre": "Cartagena", "region": "colombia", "escena": "playa", "noches": 4, "desde": 1890000, "tags": ["todo-incluido"], "frase": "Murallas, atardeceres y mar Caribe."}, {"id": "san-andres", "nombre": "San Andrés", "region": "colombia", "escena": "playa", "noches": 5, "desde": 2350000, "tags": ["todo-incluido"], "frase": "El mar de los siete colores."}, {"id": "eje-cafetero", "nombre": "Eje Cafetero", "region": "colombia", "escena": "cafe", "noches": 3, "desde": 1250000, "tags": ["experiencias"], "frase": "Café, montaña y palmas de cera."}, {"id": "cancun", "nombre": "Cancún", "region": "latam", "escena": "playa", "noches": 6, "desde": 5900000, "tags": ["todo-incluido"], "frase": "Caribe mexicano, sin pensar en nada."}, {"id": "punta-cana", "nombre": "Punta Cana", "region": "latam", "escena": "playa", "noches": 6, "desde": 5400000, "tags": ["todo-incluido", "lujo"], "frase": "Arena blanca y descanso total."}, {"id": "cusco", "nombre": "Cusco y Machu Picchu", "region": "latam", "escena": "ruinas", "noches": 5, "desde": 4800000, "tags": ["experiencias"], "frase": "La ciudadela inca al amanecer."}, {"id": "buenos-aires", "nombre": "Buenos Aires", "region": "latam", "escena": "ciudad", "noches": 5, "desde": 4200000, "tags": ["experiencias"], "frase": "Tango, cafés y buena mesa."}, {"id": "europa-clasica", "nombre": "Europa clásica", "region": "europa", "escena": "ciudad", "noches": 13, "desde": 18900000, "tags": ["lujo"], "frase": "Tres capitales en dos semanas."}, {"id": "costa-amalfitana", "nombre": "Costa Amalfitana", "region": "europa", "escena": "acantilado", "noches": 7, "desde": 16500000, "tags": ["lujo"], "frase": "Pueblos de colores sobre el mar."}];
+const HISTORIAS = [{"nombre": "Colombia", "ids": ["cartagena", "san-andres", "eje-cafetero"]}, {"nombre": "Latam", "ids": ["cancun", "punta-cana", "cusco", "buenos-aires"]}, {"nombre": "Europa", "ids": ["europa-clasica", "costa-amalfitana"]}, {"nombre": "Todo incluido", "ids": ["cartagena", "san-andres", "cancun", "punta-cana"]}, {"nombre": "Lujo", "ids": ["punta-cana", "europa-clasica", "costa-amalfitana"]}];
+const POR = Object.fromEntries(DESTINOS.map(d => [d.id, d]));
+const REGION = { colombia: "Colombia", latam: "Latinoamérica", europa: "Europa" };
+const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cop = n => "$" + n.toLocaleString("es-CO");
+const probar = k => $(`[data-rasgo="${k}"]`)?.classList.add("usado");
+const escenaDe = id => $(`.paquete[data-id="${id}"] .postal svg`).cloneNode(true);
+let ultimoFoco = null;
+
+/* Ventana del hero: al pasar por una historia, la vista cambia a ese destino */
+function verPorVentana(id){
+  const vidrio = $(".vidrio"), nueva = escenaDe(id), vieja = $(".vidrio > svg");
+  if (vieja.dataset.id === id) return;
+  nueva.dataset.id = id; nueva.classList.add("entra");
+  vidrio.insertBefore(nueva, $(".persiana"));
+  setTimeout(() => vieja.remove(), reduce() ? 0 : 500);
+  $("#ventana-lugar").textContent = POR[id].nombre;
+}
+$(".vidrio > svg").dataset.id = "cartagena";
+$$(".historia").forEach(b => {
+  const ver = () => verPorVentana(HISTORIAS[+b.dataset.grupo].ids[0]);
+  b.addEventListener("pointerenter", ver); b.addEventListener("focus", ver);
+  b.addEventListener("click", () => abrirHistorias(+b.dataset.grupo));
+});
+
+/* Historias: visor tipo Instagram (avanza solo cada 6 s; se puede pausar; con reducir movimiento no avanza solo) */
+const visor = $("#visor"), barras = $(".v-barras");
+let grupo = 0, idx = 0;
+function abrirHistorias(g){
+  ultimoFoco = document.activeElement;
+  grupo = g; idx = 0; visor.classList.remove("pausado"); pausaTexto();
+  armarBarras(); mostrar();
+  visor.showModal(); $("#v-sig").focus({ preventScroll: true });
+  probar("historias");
+}
+function armarBarras(){ barras.innerHTML = HISTORIAS[grupo].ids.map(() => "<span><i></i></span>").join(""); $$(".historia")[grupo].classList.add("vista"); }
+function mostrar(){
+  const d = POR[HISTORIAS[grupo].ids[idx]];
+  $(".v-escena").replaceChildren(escenaDe(d.id));
+  $("#v-grupo").textContent = `${HISTORIAS[grupo].nombre} · ${idx + 1} de ${HISTORIAS[grupo].ids.length}`;
+  $("#v-region").textContent = REGION[d.region];
+  $("#v-nombre").textContent = d.nombre;
+  $("#v-frase").textContent = d.frase;
+  $("#v-precio").innerHTML = `${d.noches} noches · desde <b>${cop(d.desde)}</b> por persona`;
+  $("#v-cotizar").dataset.id = d.id;
+  $$("span", barras).forEach((s, k) => {
+    s.className = k < idx ? "lleno" : "";
+    if (k === idx){ void s.offsetWidth; s.className = reduce() ? "lleno" : "activo"; }
+  });
+}
+function siguiente(){
+  if (idx < HISTORIAS[grupo].ids.length - 1) idx++;
+  else if (grupo < HISTORIAS.length - 1){ grupo++; idx = 0; armarBarras(); }
+  else { visor.close(); return; }
+  mostrar();
+}
+function anterior(){
+  if (idx > 0) idx--;
+  else if (grupo > 0){ grupo--; idx = HISTORIAS[grupo].ids.length - 1; armarBarras(); }
+  mostrar();
+}
+function pausaTexto(){ $("#v-pausa").setAttribute("aria-label", visor.classList.contains("pausado") ? "Reanudar historias" : "Pausar historias"); }
+barras.addEventListener("animationend", siguiente);
+$("#v-sig").addEventListener("click", siguiente);
+$("#v-ant").addEventListener("click", anterior);
+$("#v-cerrar").addEventListener("click", () => visor.close());
+$("#v-pausa").addEventListener("click", () => { visor.classList.toggle("pausado"); pausaTexto(); });
+visor.addEventListener("keydown", e => { if (e.key === "ArrowRight") siguiente(); if (e.key === "ArrowLeft") anterior(); });
+visor.addEventListener("click", e => { if (e.target === visor) visor.close(); });
+visor.addEventListener("close", () => { barras.innerHTML = ""; if (ultimoFoco?.isConnected) ultimoFoco.focus(); });
+
+/* Catálogo: filtros (las tarjetas se reacomodan con transición de vista, con guarda) */
+const paquetes = $$(".paquete");
+paquetes.forEach(p => p.style.viewTransitionName = "p-" + p.dataset.id);
+function filtrar(f){
+  let n = 0;
+  $$(".filtro").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.f === f)));
+  paquetes.forEach(p => {
+    const ok = f === "todos" || p.dataset.region === f || p.dataset.tags.split(" ").includes(f);
+    p.hidden = !ok; if (ok) n++;
+  });
+  $("#conteo").textContent = `${n} ${n === 1 ? "destino" : "destinos"}`;
+}
+$$(".filtro").forEach(b => b.addEventListener("click", () => {
+  probar("catalogo");
+  if (!document.startViewTransition || reduce()) return filtrar(b.dataset.f);
+  document.startViewTransition(() => filtrar(b.dataset.f));
+}));
+
+/* Mapa: elegir un destino traza su ruta desde Bucaramanga */
+function elegir(id, contar){
+  const d = POR[id];
+  $$(".pin, .chip-dest").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+  $$(".arco").forEach(a => a.classList.remove("on"));
+  const arco = $(`.arco[data-id="${id}"]`); void arco.getBoundingClientRect(); arco.classList.add("on");
+  arco.parentNode.append(arco);                       // la ruta elegida queda encima de las demás
+  const f = $("#ficha");
+  $(".ficha-img", f).replaceChildren(escenaDe(id));
+  $(".ficha-region", f).textContent = REGION[d.region];
+  $(".ficha-nombre", f).textContent = d.nombre;
+  $(".ficha-dato", f).textContent = `${d.noches} noches · desde ${cop(d.desde)} por persona`;
+  $(".ficha-cotizar", f).dataset.id = id;
+  f.hidden = false;
+  if (contar) probar("catalogo");
+}
+$$(".pin, .chip-dest").forEach(b => b.addEventListener("click", () => elegir(b.dataset.id, true)));
+$$(".ver-mapa").forEach(a => a.addEventListener("click", e => {
+  e.preventDefault(); elegir(a.dataset.id, true);
+  $("#mapa").scrollIntoView({ behavior: reduce() ? "auto" : "smooth" });
+  $(`.chip-dest[data-id="${a.dataset.id}"]`).focus({ preventScroll: true });
+}));
+elegir("cartagena", false);
+
+/* Arme su viaje: cinco pasos con resumen en vivo */
+const form = $("#armar"), pasos = $$(".paso"), err = $("#f-err");
+const cuenta = { adultos: 2, ninos: 0 };
+let paso = 0;
+// Meses: los próximos doce, más «fechas flexibles»
+(() => {
+  const m = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"], hoy = new Date();
+  $("#f-mes").innerHTML = Array.from({ length: 12 }, (_, k) => { const f = new Date(hoy.getFullYear(), hoy.getMonth() + 1 + k, 1); return `<option>${m[f.getMonth()]} ${f.getFullYear()}</option>`; }).join("") + "<option>Fechas flexibles</option>";
+})();
+function valor(name){ const el = form.elements[name]; return el instanceof RadioNodeList ? el.value : el.value; }
+function resumen(){
+  const dest = $("#f-dest");
+  const filas = [
+    ["Experiencia", valor("exp") || "Por elegir"],
+    ["Destino", dest.value ? POR[dest.value].nombre : "Que el asesor recomiende"],
+    ["Cuándo", `${$("#f-mes").value}, ${$("#f-noches").value} noches`],
+    ["Viajeros", `${cuenta.adultos} ${cuenta.adultos === 1 ? "adulto" : "adultos"}${cuenta.ninos ? `, ${cuenta.ninos} ${cuenta.ninos === 1 ? "niño" : "niños"}` : ""}`],
+    ["Estilo", valor("estilo")],
+    ["Presupuesto", $("#f-presu").value],
+  ];
+  $("#resumen").innerHTML = filas.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("");
+  return filas;
+}
+function irPaso(k, enfocar){
+  paso = k;
+  pasos.forEach((p, i) => p.classList.toggle("on", i === k));
+  $("#pasos-cuenta").textContent = `Paso ${k + 1} de ${pasos.length}`;
+  $("#progreso").style.setProperty("--p", (k + 1) / pasos.length);
+  $("#atras").hidden = k === 0; $("#siguiente").hidden = k === pasos.length - 1; $("#enviar").hidden = k !== pasos.length - 1;
+  err.textContent = "";
+  if (enfocar) $("legend", pasos[k]).focus({ preventScroll: true });
+}
+function valido(){
+  if (paso === 0 && !valor("exp")){ err.textContent = "Elija una opción para seguir."; return false; }
+  return true;
+}
+$("#siguiente").addEventListener("click", () => { if (valido()) irPaso(paso + 1, true); });
+$("#atras").addEventListener("click", () => irPaso(paso - 1, true));
+form.addEventListener("change", () => { resumen(); if (paso === 0) err.textContent = ""; });
+$$("[data-cont]").forEach(b => b.addEventListener("click", () => {
+  const k = b.dataset.cont, min = k === "adultos" ? 1 : 0;
+  cuenta[k] = Math.max(min, Math.min(12, cuenta[k] + +b.dataset.d));
+  $("#c-" + k).textContent = cuenta[k]; resumen();
+}));
+const nom = $("#f-nom"), cel = $("#f-cel");
+[nom, cel].forEach(el => el.addEventListener("input", () => { el.removeAttribute("aria-invalid"); if (!nom.hasAttribute("aria-invalid") && !cel.hasAttribute("aria-invalid")) err.textContent = ""; }));
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const n = nom.value.trim(), t = cel.value.trim();
+  if (!n || !t){
+    err.textContent = !n && !t ? "Falta su nombre y su celular." : !n ? "Falta su nombre." : "Falta su celular.";
+    [[nom, !n], [cel, !t]].forEach(([el, falta]) => falta ? (el.setAttribute("aria-invalid", "true"), el.setAttribute("aria-describedby", "f-err")) : el.removeAttribute("aria-invalid"));
+    (!n ? nom : cel).focus(); return;
+  }
+  const filas = resumen();
+  abrirSheet("Así llega su solicitud", "Buenos días, quiero armar un viaje.\n\n" + filas.map(([a, b]) => `${a}: ${b}`).join("\n") + `\n\nNombre: ${n}\nCelular: ${t}\n\n¿Me ayudan con opciones?`);
+  probar("viaje");
+});
+// Cotizar desde el catálogo, el mapa o una historia: llena lo que ya se sabe y salta a las fechas
+const EXP = { playa: "Playa y descanso", ciudad: "Ciudades y cultura", cafe: "Naturaleza y aventura", ruinas: "Naturaleza y aventura", acantilado: "Lujo y bienestar" };
+document.addEventListener("click", e => {
+  const b = e.target.closest(".cotizar"); if (!b || !b.dataset.id) return;
+  const d = POR[b.dataset.id];
+  if (visor.open) visor.close();
+  $("#f-dest").value = d.id;
+  form.elements.exp.value = EXP[d.escena];
+  form.elements.estilo.value = d.tags.includes("todo-incluido") ? "Todo incluido" : d.tags.includes("experiencias") ? "Con experiencias guiadas" : "Vuelo y hotel";
+  $("#f-noches").value = [...$("#f-noches").options].some(o => o.value == d.noches) ? String(d.noches) : "7";
+  resumen(); irPaso(2, false);
+  $("#arma").scrollIntoView({ behavior: reduce() ? "auto" : "smooth" });
+  $("legend", pasos[2]).focus({ preventScroll: true });
+});
+irPaso(0, false); resumen();
+
+/* Salidas en grupo: fechas siempre por delante (sábados a N semanas de hoy) */
+(() => {
+  const m = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  $$(".salida").forEach(li => {
+    const f = new Date(); f.setDate(f.getDate() + 7 * +li.dataset.semanas); f.setDate(f.getDate() + (6 - f.getDay() + 7) % 7);
+    li.dataset.fecha = `${f.getDate()} de ${["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"][f.getMonth()]}`;
+    $(".fecha", li).innerHTML = `<b>${f.getDate()}</b><span>${m[f.getMonth()]} ${String(f.getFullYear()).slice(2)}</span>`;
+    const total = +li.dataset.total, tomados = +li.dataset.tomados;
+    $(".asientos", li).innerHTML = Array.from({ length: total }, (_, k) => `<i${k < tomados ? "" : ' class="libre"'}></i>`).join("");
+  });
+})();
+document.addEventListener("click", e => {
+  const b = e.target.closest(".separar"); if (!b) return;
+  const li = b.closest(".salida"), d = POR[li.dataset.id];
+  abrirSheet("Así llega su solicitud", `Buenos días, quiero separar un cupo para la salida en grupo a ${d.nombre} del sábado ${li.dataset.fecha} (${li.dataset.dias} días).\n\n¿Qué necesito para separarlo?`);
+});
+
+/* Contacto de la marca: en la demo se muestra qué haría el botón */
+const DEMOS = {
+  whatsapp: ["Así le escribirían", "Hola, vi su página y quiero información sobre un viaje.", "En el sitio real este botón abre el WhatsApp de la agencia con el mensaje ya escrito."],
+  instagram: ["Su Instagram, a un toque", "", "En el sitio real este botón lleva directo al Instagram de la agencia, donde están sus historias y reels."],
+};
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-demo]"); if (!b) return;
+  const [t, msg, nota] = DEMOS[b.dataset.demo]; abrirSheet(t, msg, nota);
+});
+
+/* Hoja de mensaje (dialog nativo: fondo inerte y Esc de serie) */
+const sheet = $("#sheet"), NOTA = $("#sh-nota").textContent;
+function abrirSheet(titulo, msg, nota = NOTA){
+  ultimoFoco = document.activeElement;
+  $("#sh-t").textContent = titulo; $("#sh-msg").textContent = msg; $("#sh-msg").hidden = !msg; $("#sh-nota").textContent = nota;
+  $("#copiar").hidden = !msg;
+  sheet.showModal(); $("#cerrar").focus();
+}
+$("#cerrar").addEventListener("click", () => sheet.close());
+sheet.addEventListener("click", e => { if (e.target === sheet) sheet.close(); });
+sheet.addEventListener("close", () => { if (ultimoFoco?.isConnected) ultimoFoco.focus(); });
+$("#copiar").addEventListener("click", e => {
+  const b = e.target;
+  navigator.clipboard?.writeText($("#sh-msg").textContent)
+    .then(() => { b.textContent = "Copiado"; setTimeout(() => b.textContent = "Copiar mensaje", 1500); })
+    .catch(() => { b.textContent = "Selecciónelo y cópielo"; });
+});
+
+/* Lista «ya lo probó» flotante: vive en una esquina mientras se recorre la demo y, al llegar a la franja final,
+   vuela (FLIP) a su lugar en el bloque; si se vuelve a subir, regresa a la esquina. Sin JS queda en la franja. */
+(() => {
+  const lista = $(".rasgos");
+  if (!lista || !("IntersectionObserver" in window)) return;
+  const total = lista.children.length;
+  const slot = document.createElement("div"); slot.style.display = "flow-root";   // contiene el margen de la lista: el alto guardado es exacto
+  lista.before(slot); slot.append(lista);
+  const dock = document.createElement("section");
+  dock.className = "dock fuera"; dock.setAttribute("aria-label", "Lo que puede probar en esta demo");
+  dock.innerHTML = '<button class="dock-t" type="button" aria-expanded="false" aria-controls="dock-c"><span>Pruebe esta demo</span><b class="dock-n"></b><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 10 4-4 4 4"/></svg></button>'
+    + '<div class="dock-c" id="dock-c"><div class="dock-pie"><a class="dock-a" href="#st-t">Quiero un sitio así</a><a class="dock-v" href="../../"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3m4-4L3 8l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Volver al inicio</a></div></div>';
+  document.body.append(dock);
+  const btn = $(".dock-t"), cuerpo = $(".dock-c"), n = $(".dock-n");
+  const abrir = v => { btn.setAttribute("aria-expanded", v); dock.classList.toggle("abierto", v); };
+  abrir(matchMedia("(min-width: 980px)").matches);           // celular: plegada, para no tapar la página
+  btn.addEventListener("click", () => abrir(btn.getAttribute("aria-expanded") !== "true"));
+  const contar = () => {
+    const k = lista.querySelectorAll(".usado").length;
+    n.textContent = `${k}/${total}`; n.setAttribute("aria-label", `${k} de ${total} probadas`);
+    dock.classList.toggle("completo", k === total);
+    return k;
+  };
+  let antes = contar();
+  new MutationObserver(() => {
+    const k = contar();
+    if (k > antes && !reduce()) n.animate([{ transform: "scale(1.35)" }, { transform: "none" }], { duration: 380, easing: "cubic-bezier(.16,1,.3,1)" });
+    antes = k;
+  }).observe(lista, { subtree: true, attributes: true, attributeFilter: ["class"] });
+  let primera = true;
+  function mover(aBloque){
+    const destino = aBloque ? slot : cuerpo;
+    if (lista.parentElement === destino) return;
+    const desde = (lista.getClientRects().length ? lista : dock).getBoundingClientRect();
+    if (!aBloque) slot.style.minHeight = slot.getBoundingClientRect().height + "px";   // el bloque guarda el espacio: nada salta
+    aBloque ? slot.append(lista) : cuerpo.prepend(lista);
+    dock.classList.toggle("fuera", aBloque);
+    if (aBloque) slot.style.minHeight = "";
+    const hasta = lista.getBoundingClientRect();
+    if (primera || reduce() || !hasta.width) return;
+    lista.animate([{ transform: `translate(${desde.left - hasta.left}px,${desde.top - hasta.top}px)`, opacity: .5 }, { transform: "none", opacity: 1 }],
+      { duration: 700, easing: "cubic-bezier(.16,1,.3,1)" });
+  }
+  // Llega al bloque cuando su lugar sube al 70 % de la pantalla; vuelve a la esquina solo si el bloque queda abajo
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) mover(true);
+    else if (e.boundingClientRect.top > 0) mover(false);
+    primera = false;
+  }, { rootMargin: "0px 0px -30% 0px" }).observe(slot);
+})();
+</script>
+
+  </body>
+</html>
